@@ -61,7 +61,7 @@ public class Utility {
 		Set<char[]> stopWordsSet = new HashSet<char[]>();
 		try
 		{
-			FileInputStream fstream = new FileInputStream("F:\\My Courses\\MWDB\\MWDBProject\\Phase1\\StopWords.txt");
+			FileInputStream fstream = new FileInputStream(".\\src\\StopWords.txt");
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
