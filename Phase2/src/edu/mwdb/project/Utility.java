@@ -2,6 +2,7 @@ package edu.mwdb.project;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,12 +31,22 @@ import org.apache.lucene.store.Directory;
 
 public class Utility {
 
+	private static File stopWordsFile;
+	
+	private static File getStopWordsFile(){
+		if(stopWordsFile == null){
+			stopWordsFile = new File(".\\src\\StopWords.txt");
+		}
+		return stopWordsFile;
+	}
+	
+	
 	/*
 	 * Method to get the DB Connection.
 	 */
 	public Connection getDBConnection()
 	{
-		String dbUrl = "jdbc:mysql://localhost:3307/dblp";
+		String dbUrl = "jdbc:mysql://localhost:3306/dblp";
 		Connection con=null;
 		try 
 		{
@@ -61,7 +72,7 @@ public class Utility {
 		Set<char[]> stopWordsSet = new HashSet<char[]>();
 		try
 		{
-			FileInputStream fstream = new FileInputStream(".\\src\\StopWords.txt");
+			FileInputStream fstream = new FileInputStream(getStopWordsFile());
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
@@ -271,7 +282,7 @@ public class Utility {
 	/*
 	 * Method to generate the TF and the TF-IDF vector mapping
 	 */
-	public Map<String,Float> createTFIDF(int noOfDocs, Directory indexDir, Map<String,Float> termFreq, String arg) throws IOException
+	public Map<String,Float> createTFIDF(int noOfDocs, Directory indexDir, Map<String,Float> termFreq) throws IOException
 	{
 		IndexReader iReader = IndexReader.open(indexDir);
 

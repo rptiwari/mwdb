@@ -111,6 +111,8 @@ public class UserCompKeywordVector {
 
 			Statement stmtauthorPapers = con.createStatement();
 			Iterator<Integer> itr = userIdList.iterator();
+			stopWordsCharArrSet = new CharArraySet(Version.LUCENE_36, utilityObj.createStopWordsSet(), true);
+
 			while (itr.hasNext()) 
 			{
 				userId = itr.next();
@@ -128,7 +130,6 @@ public class UserCompKeywordVector {
 				}
 
 				//Creating the Character Array Set from the list of stop words
-				stopWordsCharArrSet = new CharArraySet(Version.LUCENE_36, utilityObj.createStopWordsSet(), true);
 
 				//Creating a token stream from the abstract got from the DB for the given paperId
 				docStream = new StandardTokenizer(Version.LUCENE_36, new StringReader(rowData));
@@ -147,7 +148,7 @@ public class UserCompKeywordVector {
 				docKeywords.add(keywordsList);
 
 				//Calling the method createTFIDF to create TF-IDF vector output
-				Map<String,Float> idfMap = utilityObj.createTFIDF(noOfDocs,indexDirectory, termFreq,"TF-IDF");
+				Map<String,Float> idfMap = utilityObj.createTFIDF(noOfDocs,indexDirectory, termFreq);
 				listTFIDFMaps.add(idfMap);
 
 				if(userId == personId)

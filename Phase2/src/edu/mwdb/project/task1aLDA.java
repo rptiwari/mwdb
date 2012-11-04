@@ -1,10 +1,13 @@
 package edu.mwdb.project;
 
+
+
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +22,7 @@ import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
@@ -27,7 +31,52 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
-public class Top5SemanticsUsingPCA {
+public class task1aLDA {
+
+
+	public double[][] makeDocumentMatrix(int rowSize, int columnSize, List<List<String>> docKeywords, Map<String,Float> termFinalFreq, List<Map<String,Float>> docIdfMapList){
+
+		double docKeywordCorpusMatrix[][] = new double[rowSize][columnSize];
+		// Build the input Corpus matrix.
+		for(int row=0;row<rowSize;row++)
+		{
+			List<String> tempList = docKeywords.get(row);
+			for(int column=0;column<columnSize;column++)
+			{
+				for(Map.Entry<String, Float> k: termFinalFreq.entrySet())
+				{
+					for(int i=0;i<tempList.size();i++)
+					{
+						if(k.getKey().equals(tempList.get(i)))
+						{
+							docKeywordCorpusMatrix[row][column] = docIdfMapList.get(row).get(k.getKey());
+							break;
+						}
+						docKeywordCorpusMatrix[row][column] = 0;
+					}
+					if (column<columnSize-1)
+						column++;
+				}
+			}
+		}
+		return docKeywordCorpusMatrix;
+	}
+	/*
+	 *  Helper method that creates a static word list that will reflect the indices in
+	 *  the data matrix.  HashMap does not guarantee iterative order.
+	 */
+	public String[] makeStaticKeywordList(Map<String,Float> termFinalFreq ){
+		String[] staticVocabulary = new String[(termFinalFreq.size())];
+		int i = 0;
+		for(Map.Entry<String, Float> k: termFinalFreq.entrySet()){
+			staticVocabulary[i] = new String(k.getKey());
+			i++;
+		}
+		/* */
+		List<String> allterms = new ArrayList(termFinalFreq.keySet());
+		staticVocabulary = allterms.toArray(new String[allterms.size()]);
+		return staticVocabulary;
+	}
 
 	/**
 	 * @param args
@@ -39,11 +88,11 @@ public class Top5SemanticsUsingPCA {
 		{
 			Connection con = utilityObj.getDBConnection();
 			// List to store the author abstracts
-			List<String> abstracts = new ArrayList<String>();
+			List<String> rowData = new ArrayList<String>();
 
 			Statement stmt = con.createStatement();
 			// use 1632672 instead of args[0]
-			//String personId = args[0];
+			//		String personId = args[0];
 
 			String personId = "1632672";
 
@@ -57,7 +106,7 @@ public class Top5SemanticsUsingPCA {
 			ResultSet rs = stmt.executeQuery(query_authorid);
 			while (rs.next())
 			{
-				abstracts.add(rs.getString("abstract"));
+				rowData.add(rs.getString("abstract"));
 			}
 
 			// To know the count of abstracts in the DB and store it in noOfDocs.
@@ -99,7 +148,7 @@ public class Top5SemanticsUsingPCA {
 			int noOfWords = 0;
 
 			Map<String,Float> termFreq = new HashMap<String, Float>();
-			KeywordConfig config;		
+			KeywordConfig config;			
 			List<KeywordConfig> configList = new ArrayList<KeywordConfig>();
 
 			// List of Lists - where each list stores the keywords of the respective documents.
@@ -109,20 +158,20 @@ public class Top5SemanticsUsingPCA {
 			List<Map<String,Float>> docIdfMapList = new ArrayList<Map<String,Float>>();
 			stopWordsCharArrSet = new CharArraySet(Version.LUCENE_36, utilityObj.createStopWordsSet(), true);
 
-			for (int i=0;i<abstracts.size();i++)
+			for (int i=0;i<rowData.size();i++)
 			{
-				String[] rowDataArr = abstracts.get(i).split("[ ]+");
+				String[] rowDataArr = rowData.get(i).split("[ ]+");
 				noOfWords += rowDataArr.length;
 
 				//Creating the Character Array Set from the list of stop words
 
 				//Creating a token stream from the abstract got from the DB for the given paperId
-				docStream = new StandardTokenizer(Version.LUCENE_36, new StringReader(abstracts.get(i)));
+				docStream = new StandardTokenizer(Version.LUCENE_36, new StringReader(rowData.get(i)));
 
 				//Creating the Keywords of a given abstract
 				keywords = new StopFilter(Version.LUCENE_36, docStream ,stopWordsCharArrSet);
 
-				termFreq = utilityObj.createNewTF(keywords, abstracts.get(i));
+				termFreq = utilityObj.createauthorTF(keywords, rowData.get(i));
 
 				List<String> keywordsList = new ArrayList<String>();
 				for(Map.Entry<String, Float> k : termFreq.entrySet())
@@ -131,7 +180,8 @@ public class Top5SemanticsUsingPCA {
 				}
 				docKeywords.add(keywordsList);
 
-				Map<String,Float> idfMap = utilityObj.createTFIDF(noOfDocs,indexDirectory, termFreq);
+				//					Map<String,Float> idfMap = utilityObj.createTFIDF(noOfDocs,indexDirectory, termFreq,"TF");
+				Map<String,Float> idfMap = new HashMap<String,Float>(termFreq);
 				docIdfMapList.add(idfMap);
 
 				for(Map.Entry<String, Float> keys : termFreq.entrySet())
@@ -147,116 +197,96 @@ public class Top5SemanticsUsingPCA {
 			for (KeywordConfig itr: configList){
 				Float val = termFinalFreq.get(itr.getKeyword());
 				termFinalFreq.put(itr.getKeyword(), (val == null) ? itr.getWeightedFreq() : (val + itr.getWeightedFreq()));
-			}		
-			for(Map.Entry<String, Float> k: termFinalFreq.entrySet())
-			{
-				termFinalFreq.put(k.getKey(), k.getValue()/noOfWords);
-			}
-
-			int rowSize = abstracts.size();
+			}	
+			/* do not normalize for lda */
+			/*
+				for(Map.Entry<String, Float> k: termFinalFreq.entrySet())
+				{
+					termFinalFreq.put(k.getKey(), k.getValue()/noOfWords);
+				}
+			 */
+			int rowSize = rowData.size();
 			int columnSize = termFinalFreq.size();
 
-			double docKeywordCorpusMatrix[][] = new double[rowSize][columnSize];
+			task1aLDA lda = new task1aLDA();
 
-			// Build the input Corpus matrix.
-			for(int row=0;row<rowSize;row++)
-			{
-				List<String> tempList = docKeywords.get(row);
-				for(int column=0;column<columnSize;column++)
+
+			String[] staticVocabulary = lda.makeStaticKeywordList(termFinalFreq );
+
+			double docKeywordCorpusMatrix[][] = lda.makeDocumentMatrix(rowSize, columnSize,  docKeywords,  termFinalFreq, docIdfMapList);
+
+			/*
+
+
+				// Print the i/p Corpus matrix.
+				for (int row=0;row<rowSize;row++)
 				{
-					for(Map.Entry<String, Float> k: termFinalFreq.entrySet())
+					for(int column=0;column<columnSize;column++)
 					{
-						for(int i=0;i<tempList.size();i++)
-						{
-							if(k.getKey().equals(tempList.get(i)))
-							{
-								docKeywordCorpusMatrix[row][column] = docIdfMapList.get(row).get(k.getKey());
-								break;
-							}
-							docKeywordCorpusMatrix[row][column] = 0;
-						}
-						if (column<columnSize-1)
-							column++;
+						System.out.print(docKeywordCorpusMatrix[row][column] + "\t");
 					}
+					System.out.println();
 				}
-			}
 
-			// Print the i/p Corpus matrix.
-			/*for(int row=0;row<rowSize;row++)
-			{
-				for(int column=0;column<columnSize;column++)
-				{
-					System.out.print(docKeywordCorpusMatrix[row][column] + "\t");
-				}
-				System.out.println();
-			}*/
+			 */			
 
-			double[][] docKeywordCoeffMatrix = new double[columnSize][columnSize];
 
-			// Connecting to the Matlab
+			//Create a proxy, which we will use to control MATLAB
 			MatlabProxyFactory factory = new MatlabProxyFactory();
 			MatlabProxy proxy = factory.getProxy();
 
+
+			//set matlab path
+			String path = "cd(\'C:\\Users\\Katherine\\Documents\\MATLAB\\')";
+			proxy.eval(path);
+
+			LDAPrep ldaInputs = new LDAPrep();
+
+			ldaInputs.doLDAPrepFullMatrix(docKeywordCorpusMatrix);
+			ldaInputs.makeDictionaryFile(staticVocabulary);
+
+			double[][] WS = new double[1][ldaInputs.WS.length];
+			WS[0] = ldaInputs.WS;
+			double[][] DS = new double[1][ldaInputs.DS.length];
+			DS[0] = ldaInputs.DS;
+
+			double[] WS3 = ldaInputs.WS;
+			/* lose precision this way */    
+			//	proxy.setVariable("WS3",WS3);
+			// proxy.setVariable("DS",DS);
+
+
 			MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
-			processor.setNumericArray("docKeywordCorpusMatrix", new MatlabNumericArray(docKeywordCorpusMatrix, null));
 
-			// For PCA:
-			proxy.eval("[pc,score]=princomp(docKeywordCorpusMatrix);");
-			double[][] tempMatrix = new double[columnSize][columnSize];
+			processor.setNumericArray("WS", new MatlabNumericArray(WS, null));
+			processor.setNumericArray("DS", new MatlabNumericArray(DS, null));
 
-			for(int k=0;k<columnSize;k++)
-			{
-				Object[] obj=proxy.returningEval("pc(:,"+ (k+1) +")" ,1);
-				tempMatrix[k]=(double[]) obj[0];
-			}
+			/* set the number of latent semantics to retrieve */
+			double T = 5.0;
+			proxy.setVariable("T", 5);
 
-			double[][] resultSematicMatrixPCA = new double[columnSize][5];
-			for(int a=0;a<columnSize;a++)
-			{
-				for(int b=0;b<5;b++)
-				{
-					resultSematicMatrixPCA[a][b]= tempMatrix[b][a];
-				}
-			}
-			
-			// Print the Top5 Latent/Topic Matrix
-			/*for(int i=0;i<columnSize;i++)
-			{
-				for(int j=0;j<5;j++)
-				{
-					System.out.print(resultSematicMatrixPCA[i][j] + "\t");
-				}
-				System.out.println();
-			}*/
-			
-			// For SVD:
-			proxy.eval("[U,S,V]=svd(docKeywordCorpusMatrix);");
-			for(int k=0;k<columnSize;k++)
-			{
-				Object[] obj=proxy.returningEval("V(:,"+ (k+1) +")" ,1);
-				tempMatrix[k]=(double[])obj[0];
-			}
-			
-			System.out.println("***********Printing the Latent Semantics using SVD***********");
-			double[][] resultSematicMatrixSVD = new double[5][columnSize];
-			for(int a=0;a<5;a++)
-			{
-				for(int b=0;b<columnSize;b++)
-				{
-					resultSematicMatrixSVD[a][b]= tempMatrix[b][a];
-				}
-			}
-			
-			for(int i=0;i<5;i++)
-			{
-				for(int j=0;j<columnSize;j++)
-				{
-					System.out.print(resultSematicMatrixSVD[i][j] + "\t");
-				}
-				System.out.println();
-			}
+			proxy.eval("[WPALL,DPALL,ZALL] = LDA1(WS,DS,T)");
 
+			double[][] WP = processor.getNumericArray("WPALL").getRealArray2D();
+			double[][] DP = processor.getNumericArray("DPALL").getRealArray2D();
+			double[][] Z = processor.getNumericArray("ZALL").getRealArray2D();
+
+			//Do processing of Topics probability Matrix generated by matlab in text file to display top k topics
+
+			/* numImportantTopics = T,  numRelevantWords = 7 + 1 for header */
+			String filename = "C:\\users\\katherine\\documents\\matlab\\topics.txt";
+			//				 List<KeywordConfig>[] topicsconfigList = ldaInputs.readLDATopics( filename,  5, 8);
+			List<KeywordConfig>[] topicsconfigList = ldaInputs.readPrintTopics(filename, 5,8);
+
+
+
+			//	proxy.eval("quit");
+			//Disconnect the proxy from MATLAB
 			proxy.disconnect();
+
+
+
+
 
 			con.close();
 		}
@@ -266,4 +296,9 @@ public class Top5SemanticsUsingPCA {
 		}
 
 	}
+
+
 }
+
+
+

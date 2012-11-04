@@ -81,7 +81,8 @@ public class UserCompDiffVector {
 			List<List<String>> docKeywords = new ArrayList<List<String>>();
 			
 			Iterator<Integer> itr = userIdList.iterator();
-			
+			CharArraySet stopWordsCharArrSet = new CharArraySet(Version.LUCENE_36, utilityObj.createStopWordsSet(), true);
+
 			while (itr.hasNext()) 
 			{
 				userId = itr.next();
@@ -117,8 +118,6 @@ public class UserCompDiffVector {
 					indexWr.addDocument(document);
 					indexWr.commit();
 				}
-
-				CharArraySet stopWordsCharArrSet;
 				TokenStream docStream;
 				TokenStream keywords;
 				
@@ -126,7 +125,6 @@ public class UserCompDiffVector {
 				noOfWords += rowDataArr.length;
 
 				//Creating the Character Array Set from the list of stop words
-				stopWordsCharArrSet = new CharArraySet(Version.LUCENE_36, utilityObj.createStopWordsSet(), true);
 				//Creating a token stream from the abstract got from the DB for the given paperId
 				docStream = new StandardTokenizer(Version.LUCENE_36, new StringReader(rowData));
 				//Creating the Keywords of a given abstract
@@ -143,7 +141,7 @@ public class UserCompDiffVector {
 				docKeywords.add(keywordsList);
 
 				//Calling the method createTFIDF to create TF-IDF vector output
-				Map<String,Float> idfMap = utilityObj.createTFIDF(rowData1.size(),indexDirectory, termFreq,"TF-IDF2");
+				Map<String,Float> idfMap = utilityObj.createTFIDF(rowData1.size(),indexDirectory, termFreq);
 				listTFIDFMaps.add(idfMap);
 
 				if(userId == personId)
