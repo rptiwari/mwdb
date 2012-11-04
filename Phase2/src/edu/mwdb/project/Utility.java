@@ -318,6 +318,34 @@ public class Utility {
 		return idfMap;
 	}
 
+	
+	/**
+	 * Calculate Cosine Similarity between 2 vectors. Calculated by: a*b/|a||b|
+	 * @param a
+	 * @param b
+	 * @return the cosine similarity between the two vectors "a" and "b"
+	 */
+	public double cosineSimilarity(double[] a, double[] b) throws Exception {
+		if (a.length != b.length)
+			throw new Exception("Both vectors length should match");
+		
+		// a*b = multiply each a[i] by b[i], then sum all the results
+		// |a| = square each a[i] and then get the square root
+		double numerator = 0;
+		double magnitudeA = 0; // |a|
+		double magnitudeB = 0; // |b|
+		for (int i=0; i<a.length; i++) {
+			numerator += a[i]*b[i];
+			magnitudeA += Math.pow(a[i], 2);
+			magnitudeB += Math.pow(b[i], 2);
+		}
+		
+		magnitudeA = Math.sqrt(magnitudeA);
+		magnitudeB = Math.sqrt(magnitudeB);
+		double denominator = magnitudeA*magnitudeB;
+		
+		return numerator/denominator;
+	}
 
 	/*
 	 * Method to sort the vector maps in descending order
