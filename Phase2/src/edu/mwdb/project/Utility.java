@@ -174,7 +174,6 @@ public class Utility {
 	{
 		Map<String,Float> termFreq = new HashMap<String,Float>();
 		float counter = 0;
-		boolean b=true;
 		try 
 		{
 			for(int i=0;i<rowData.size();i++)
@@ -335,7 +334,7 @@ public class Utility {
 				return ((Comparable) ((Map.Entry) (ele2)).getValue()).compareTo(((Map.Entry) (ele1)).getValue());
 			}
 		}
-				);
+		);
 		Map sortedMap = new LinkedHashMap();
 		for (Iterator it = list.iterator(); it.hasNext();) {
 			Map.Entry entry = (Map.Entry)it.next();

@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry exported="true" kind="lib" path="F:/Softwares/lucene-3.6.1/lucene-core-3.6.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="F:/My Courses/MWDB/mysql-connector-java-5.1.21-bin.jar"/>
-	<classpathentry exported="true" kind="lib" path="F:/My Courses/MWDB/matlabcontrol-4.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-core-3.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/matlabcontrol-4.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.22-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
