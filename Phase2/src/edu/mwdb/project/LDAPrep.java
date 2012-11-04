@@ -16,6 +16,7 @@ import java.util.Scanner;
 
 
 /*
+ *  1.0 Altered index for word lookup for matlab to be +1 to match matlab's indices
  *  Class that does pre-processing  and post-processing for LDA
  *  pre-processing on data matrix to create
  *  the vectors required for the latent semantics lda toolbox
@@ -51,7 +52,7 @@ public class LDAPrep {
 
 					for (int termcount = 0; termcount < dataMatrix[i][j]; termcount++){
 
-						double wordindex = (j);
+						double wordindex = (j+1);
 						WSarray.add((double)wordindex);			//add the word index into the vocabulary index
 						DSarray.add((double)(i+1));			// document Index to show WO{j} is found in DS(i+1) document
 					}

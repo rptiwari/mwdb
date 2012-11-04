@@ -400,10 +400,10 @@ public class UserCompLDA1 {
 	
 		
 	public Object[] doLatentCompare(double[][] topicsMatrix, double[][] allUsersKeyWordMatrix, double[][] authorDataMatrix, double[] authKeywordMatrix) throws MatlabInvocationException, MatlabConnectionException, Exception{
-		//LSA - Start
+		//LDA - Start
 		DblpData db = new DblpData();
 		
-			System.out.println("Starting to compute similar users using top 5 semantics LSA");
+			System.out.println("Starting to compute similar users using top 5 semantics LDA");
 			
 			double[][] inputCorpusMatrix = allUsersKeyWordMatrix;
 			double[][] UserMatrix = authorDataMatrix;
@@ -428,19 +428,24 @@ public class UserCompLDA1 {
 			processor.setNumericArray("userMatrix", new MatlabNumericArray(UserMatrix, null));
 			processor.setNumericArray("latentsMatrix", new MatlabNumericArray(latentsMatrix,null));
 			
-			proxy.eval("[ALLUSERSLSAMatrix] = inputCorpusMatrix * transpose(latentsMatrix)");
-			proxy.eval("[AUTHORLSAMatrix] = givenAuthKWArray * transpose(latentsMatrix)");
+			proxy.eval("[ALLUSERSLDAMatrix] = inputCorpusMatrix * transpose(latentsMatrix)");
+			proxy.eval("[AUTHORLDAMatrix] = givenAuthKWArray * transpose(latentsMatrix)");
 
 
-			Object[] svdObj = proxy.returningEval("AUTHORLSAMatrix(1,:)", 1);
+			Object[] ldaObj = proxy.returningEval("AUTHORLDAMatrix(1,:)", 1);
+				
+			double[][]ldaSemUserMatrix = new double[1][authKeywordMatrix.length];
 			
-			System.out.println("Top 10 Similar Users - Comparing Users Semantics LSA");
-			System.out.println("****************************************************");
+			ldaSemUserMatrix[0] = (double[]) ldaObj[0];
 			
-			Object[] objLSA = new Object[2];
-			objLSA = proxy.returningEval("knnsearch( ALLUSERSLSAMatrix, AUTHORLSAMatrix,'k', 11,'Distance','cosine')",2);
+//			processor.setNumericArray("inputCorpusMatrixPCA", new MatlabNumericArray(ldaAKeywordTop5Matrix, null));
+			processor.setNumericArray("userMatrixPCA", new MatlabNumericArray(ldaSemUserMatrix, null));
 			
-			return  objLSA;
+						Object[] objLDA = new Object[2];
+			
+			objLDA = proxy.returningEval("knnsearch( ALLUSERSLDAMatrix, AUTHORLDAMatrix,'k', 11,'Distance','cosine')",2);
+			
+			return  objLDA;
 	
 		
 	}
@@ -497,15 +502,15 @@ public void doLatentSemantics(String authorid) throws Exception{
 
 		
 		/* Project LDA onto other data */
-		Object[] objLSA = doLatentCompare(completeTopicsMatrix, authorsDocumentMatrix, authorDataMatrix, authorKeywordVector);	
+		Object[] objLDA = doLatentCompare(completeTopicsMatrix, authorsDocumentMatrix, authorDataMatrix, authorKeywordVector);	
 
-		double[] indexLSA = (double[]) objLSA[0];
-		double[] distLSA = (double[]) objLSA[1];
-		
+		double[] indexLDA = (double[]) objLDA[0];
+		double[] distLDA = (double[]) objLDA[1];
+		display(indexLDA, distLDA);
 	}
 	
 
-	public void display(double[] indexLSA, double[] distLSA){
+	public void display(double[] indexLDA, double[] distLDA){
 		
 		DblpData db = new DblpData();	
 		
@@ -514,22 +519,22 @@ public void doLatentSemantics(String authorid) throws Exception{
 		String[] authors = authorIds.toArray(new String[authorIds.size()]);
 		System.out.println(authors.length + "AUTHOR LENGTH");
 		for (String a : authors){System.out.println(a); }
-		if (authNamePersonIdList.get(authors[(int)(indexLSA[0] - 1)]) == null) 
+		if (authNamePersonIdList.get(authors[(int)(indexLDA[0] - 1)]) == null) 
 		{
 			for (int i = 0; i < 10; i++) 
 			{
-				System.out.println("Author Name: " + authors[(int)(indexLSA[0] - 1)] + "\t\t" + "Distance from given author: " + distLSA[i]);
+				System.out.println("Author Name: " + authors[(int)(indexLDA[0] - 1)] + "\t\t" + "Distance from given author: " + distLDA[i]);
 			}
 		} 
 		else 
 		{
 			for (int j = 1; j < 11; j++) 
 			{
-				System.out.println("Author Name: " + authNamePersonIdList.get(authors[(int)(indexLSA[j] - 1)])  + "\t\t" + "Distance from given author: " + distLSA[j]);
+				System.out.println("Author Name: " + authNamePersonIdList.get(authors[(int)(indexLDA[j] - 1)])  + "\t\t" + "Distance from given author: " + distLDA[j]);
 			}
 		}
 	
-	//LSA - End
+	//LDA - End
 	
 	 
 	}

@@ -198,7 +198,8 @@ public class Task1cCompDocs {
 				double[][] authorsDocumentMatrix = utility.getAuthor_DocTermMatrix(personNum,  allterms, paperIdsFromAuthor, true);
 				MatLab matlab = new MatLab(); 
 				double[][] hiddenSemantics = matlab.pca(authorsDocumentMatrix, 5);
-			}
+				projectPCA( hiddenSemantics, documentsMatrix, authorKeyword, docIndexMap);
+						}
 			else if (divVectorType.equalsIgnoreCase("SVD"))
 			{
 				authorKeyword  = Utility.getAlignedTFIDFVector(keywordVector, wordPosMap,authorsReader);
@@ -206,7 +207,7 @@ public class Task1cCompDocs {
 				
 				MatLab matlab = new MatLab(); 
 				double[][] hiddenSemantics = matlab.svd(authorsDocumentMatrix, 5);
-				projectSVD( hiddenSemantics, documentsMatrix, authorKeyword, docIndexMap);
+				projectSVD( hiddenSemantics, documentsMatrix, authorKeyword, docIndexMap,5);
 			}
 			else 
 				{
@@ -225,7 +226,7 @@ public class Task1cCompDocs {
 				display(indexLSA, distLSA, docIndexMap);
 				}
 
-			reader2.close();
+			reader2.close(); authorsReader.close();
 	}					// end main of task1c
 
 	
@@ -245,7 +246,7 @@ public class Task1cCompDocs {
 		} 
 	}	
 	
-	
+	/*
 	public void projectSVD(double[][] hiddenSemantics, double[][] docsKeywordsArray, double[] authorKeyword, Map<Integer, String> docIndexMap) throws MatlabInvocationException, MatlabConnectionException{
 		
 		
@@ -284,6 +285,89 @@ public class Task1cCompDocs {
 
 		
 	}
+
+*/
+
+	public void projectSVD(double[][] hiddenSemantics, double[][] docsKeywordsArray, double[] authorKeyword, Map<Integer, String> docIndexMap,int numOfLatents) throws MatlabInvocationException, MatlabConnectionException{
+
+		double[][] givenAuthKWarray = new double[1][authorKeyword.length];
+		givenAuthKWarray[0] = authorKeyword;
+		double[][] svdoutput = new double[hiddenSemantics.length][hiddenSemantics[0].length];
+		double[][] svdoutput2 = new double[hiddenSemantics[0].length][hiddenSemantics.length];
+
+		MatlabProxy proxy = MatLab.getProxy();
+		MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
+
+		/* need V so transpose V' back to V*/
+		for (int j = 0; j < hiddenSemantics[0].length; j++) 
+		{
+			for (int k = 0; k < hiddenSemantics.length; k++) 
+			{
+				svdoutput2[j][k] = hiddenSemantics[k][j];
+			}
+		}
+		processor.setNumericArray("svdoutput2", new MatlabNumericArray(svdoutput2, null));
+		processor.setNumericArray("givenAuthKWArray", new MatlabNumericArray(givenAuthKWarray, null));
+		processor.setNumericArray("docsKeywordsArray", new MatlabNumericArray(docsKeywordsArray, null));
+
+
+		proxy.eval("[SVDMatrix2] =  docsKeywordsArray * svdoutput2(:,1:"+ numOfLatents + ") ");
+		proxy.eval("[SVDUserMatrix2] = givenAuthKWArray *svdoutput2(:,1:"+ numOfLatents + ") ");
+
+		System.out.println("Top 20 Similar Papers - Comparing Papers to the User's Semantics as determined by SVD");
+		System.out.println("*************************************************************************************");
+
+
+		Object[] objSVD1 = proxy.returningEval("knnsearch( SVDMatrix2, SVDUserMatrix2,'k', 21,'Distance','cosine')",2);
+
+		double[] indexSVD2 = (double[]) objSVD1[0];
+		double[] distSVD2 = (double[]) objSVD1[1];
+
+		display(indexSVD2, distSVD2,  docIndexMap);
+
+	}
+
+	public void projectPCA(double[][] hiddenSemantics, double[][] docsKeywordsArray, double[] authorKeyword, Map<Integer, String> docIndexMap) throws MatlabInvocationException, MatlabConnectionException{
+
+		double[][] allSemArray = new double[hiddenSemantics.length][hiddenSemantics[0].length];
+		double[][] givenAuthKWarray = new double[1][authorKeyword.length];
+		givenAuthKWarray[0] = authorKeyword;
+		double[][] pcaoutput = new double[hiddenSemantics[0].length][hiddenSemantics.length];
+
+
+		for (int j = 0; j < hiddenSemantics[0].length; j++) {
+			for (int k = 0; k < hiddenSemantics.length; k++) {
+				pcaoutput[j][k] = hiddenSemantics[k][j];
+			}
+		}
+
+		MatlabProxy proxy = MatLab.getProxy();
+		MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
+
+		processor.setNumericArray("P", new MatlabNumericArray(pcaoutput, null));
+		processor.setNumericArray("givenAuthKWArray", new MatlabNumericArray(givenAuthKWarray, null));
+		processor.setNumericArray("docsKeywordsArray", new MatlabNumericArray(docsKeywordsArray, null));
+
+		double[][] pcaSemUserMatrix = new double[1][hiddenSemantics.length];
+		processor.setNumericArray("PMatrix", new MatlabNumericArray(allSemArray, null));
+		proxy.eval("[PMatrix]= transpose(P)");
+		proxy.eval("[PCAMatrix] =  docsKeywordsArray * PMatrix(:,1:5) ");
+		proxy.eval("[PCAUserMatrix] = givenAuthKWArray * PMatrix(:,1:5)");
+
+
+		Object[] svdObj = proxy.returningEval("PCAUserMatrix(1,:)", 1);
+		pcaSemUserMatrix[0] = (double[]) svdObj[0];
+
+		System.out.println("Top 20 Similar Papers - Comparing Papers to the User's Semantics (PCA)");
+		System.out.println("**********************************************************************");
+		Object[] objSVD = new Object[2];
+		objSVD = proxy.returningEval("knnsearch( PCAMatrix, PCAUserMatrix,'k', 21,'Distance','cosine')",2);
+		double[] indexSVD = (double[]) objSVD[0];
+		double[] distSVD = (double[]) objSVD[1];
+
+		display(indexSVD, distSVD,  docIndexMap);
+	}
+
 	
 	public double[] getAlignedAuthorKeywordPFVector(String personNum, Directory  luceneIndex, LinkedHashMap<String, Integer> wordPosMap) throws Exception{
 			
@@ -410,7 +494,7 @@ public class Task1cCompDocs {
 
 				System.out.printf(" RANK " + "\t" +(i + 1) + " " + reader2.document(docNum).get("paperid")+ "\t" + " SCORE %10.7f",
 						rankingArray[i].howSimilar);
-				System.out.println();
+				System.out.println();//" "+ reader2.document(docNum).get("title"));
 
 			}
 		}

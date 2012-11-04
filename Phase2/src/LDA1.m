@@ -2,16 +2,17 @@ function [ WPALL,DPALL,ZALL ] = LDA1(WS,DS,T,WO)
 
 
 %Set the number of topics
-
+[w1,w2] = size(WS)
 
 %Set the hyperparameters
-
-BETA=0.01;
-ALPHA=8/T;
+ALPHA = 50 / T
+BETA = 200 / w2
+%BETA=0.01;
+%ALPHA=8/T;
 
 %The number of iterations
 
-N = 80;
+N = 180;
 
 %The random seed
 
@@ -23,7 +24,7 @@ OUTPUT = 2;
 
 [ WP,DP,Z ] = GibbsSamplerLDA( WS , DS , 5 , N , ALPHA , BETA , SEED , OUTPUT );
 
-disp('DDDD');
+
 
 
 WPALL = full(WP)
@@ -42,7 +43,7 @@ fprintf( '\n\nMost likely words in the first 5 topics:\n' );
 S( 1:5 )
 WriteTopics( WP , BETA , WO , 10 , 1.0 , 5 , 'topics.txt');
 
-[ Order ] = OrderTopics( DP , ALPHA );
+% [ Order ] = OrderTopics( DP , ALPHA );
 
-Order(1 : 5)
+% Order(1 : 5)
 end
