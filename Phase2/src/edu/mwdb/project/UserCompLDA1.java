@@ -439,7 +439,7 @@ public class UserCompLDA1 {
 			ldaSemUserMatrix[0] = (double[]) ldaObj[0];
 			
 //			processor.setNumericArray("inputCorpusMatrixPCA", new MatlabNumericArray(ldaAKeywordTop5Matrix, null));
-			processor.setNumericArray("userMatrixPCA", new MatlabNumericArray(ldaSemUserMatrix, null));
+			processor.setNumericArray("userMatrixLDA", new MatlabNumericArray(ldaSemUserMatrix, null));
 			
 						Object[] objLDA = new Object[2];
 			
