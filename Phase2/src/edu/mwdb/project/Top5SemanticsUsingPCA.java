@@ -100,7 +100,7 @@ public class Top5SemanticsUsingPCA {
 			int noOfWords = 0;
 
 			Map<String,Float> termFreq = new HashMap<String, Float>();
-			KeywordConfig config;			
+			KeywordConfig config;		
 			List<KeywordConfig> configList = new ArrayList<KeywordConfig>();
 
 			// List of Lists - where each list stores the keywords of the respective documents.
@@ -123,7 +123,7 @@ public class Top5SemanticsUsingPCA {
 				//Creating the Keywords of a given abstract
 				keywords = new StopFilter(Version.LUCENE_36, docStream ,stopWordsCharArrSet);
 
-				termFreq = utilityObj.createauthorTF(keywords, rowData.get(i));
+				termFreq = utilityObj.createNewTF(keywords, rowData.get(i));
 
 				List<String> keywordsList = new ArrayList<String>();
 				for(Map.Entry<String, Float> k : termFreq.entrySet())
@@ -200,7 +200,8 @@ public class Top5SemanticsUsingPCA {
 
 			MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
 			processor.setNumericArray("docKeywordCorpusMatrix", new MatlabNumericArray(docKeywordCorpusMatrix, null));
-			//Object[] obj = {docKeywordCoeffMatrix};
+
+			// For PCA:
 			proxy.eval("[pc,score]=princomp(docKeywordCorpusMatrix);");
 			double[][] tempMatrix = new double[columnSize][columnSize];
 
@@ -210,21 +211,48 @@ public class Top5SemanticsUsingPCA {
 				tempMatrix[k]=(double[]) obj[0];
 			}
 
-			double[][] resultSematicMatrix = new double[columnSize][5];
+			double[][] resultSematicMatrixPCA = new double[columnSize][5];
 			for(int a=0;a<columnSize;a++)
 			{
 				for(int b=0;b<5;b++)
 				{
-					resultSematicMatrix[a][b]= tempMatrix[b][a];
+					resultSematicMatrixPCA[a][b]= tempMatrix[b][a];
 				}
 			}
 			
 			// Print the Top5 Latent/Topic Matrix
-			for(int i=0;i<columnSize;i++)
+			/*for(int i=0;i<columnSize;i++)
 			{
 				for(int j=0;j<5;j++)
 				{
-					System.out.print(resultSematicMatrix[i][j] + "\t");
+					System.out.print(resultSematicMatrixPCA[i][j] + "\t");
+				}
+				System.out.println();
+			}*/
+			
+			// For SVD:
+			proxy.eval("[U,S,V]=svd(docKeywordCorpusMatrix);");
+			for(int k=0;k<columnSize;k++)
+			{
+				Object[] obj=proxy.returningEval("V(:,"+ (k+1) +")" ,1);
+				tempMatrix[k]=(double[])obj[0];
+			}
+			
+			System.out.println("***********Printing the Latent Semantics using SVD***********");
+			double[][] resultSematicMatrixSVD = new double[5][columnSize];
+			for(int a=0;a<5;a++)
+			{
+				for(int b=0;b<columnSize;b++)
+				{
+					resultSematicMatrixSVD[a][b]= tempMatrix[b][a];
+				}
+			}
+			
+			for(int i=0;i<5;i++)
+			{
+				for(int j=0;j<columnSize;j++)
+				{
+					System.out.print(resultSematicMatrixSVD[i][j] + "\t");
 				}
 				System.out.println();
 			}
