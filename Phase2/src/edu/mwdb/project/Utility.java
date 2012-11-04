@@ -120,7 +120,56 @@ public class Utility {
 		}
 		return termFreq;
 	}
-	
+
+	public Map<String,Float> createNewTF(TokenStream keywords,String rowData) throws IOException
+	{
+
+		Map<String,Float> termFreq = new HashMap<String,Float>();
+		try
+		{
+			// remove any '\n' characters that may occur  
+			String temp = rowData.replaceAll("[\\n]", " ");  
+
+			// replace any grammatical characters and split the String into an array  
+			String[] splitter = temp.replaceAll("[.,?!:;/]", "").split(" ");  
+
+			// intialize an int array to hold count of each word  
+			int[] counter= new int[splitter.length];
+
+			// loop through the sentence  
+			for(int i =0; i< splitter.length; i++)
+			{
+
+				// hold current word in the sentence in temp variable  
+				temp = splitter[i];  
+
+				// inner loop to compare current word with those in the sentence  
+				// incrementing the counter of the adjacent int array for each match  
+				for (int k=0; k< splitter.length; k++)
+				{  
+
+					if(temp.equals(splitter[k]))  
+					{  
+						counter[k]++;
+					}  
+				}
+			}  
+
+			// populate the map  
+			for (int i=0; i< splitter.length; i++)  
+			{  
+				termFreq.put(splitter[i], (float)counter[i]/splitter.length);  
+			}
+		}
+		catch (Exception e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return termFreq;
+	}
+
+
 	public Map<String,Float> countijvalue(String keyword,List<String> rowData) throws IOException
 	{
 		Map<String,Float> termFreq = new HashMap<String,Float>();
@@ -245,7 +294,7 @@ public class Utility {
 			//System.out.println("TF-IDF: " + "{" + keyword.getKey() + "," + tf*idf + "}");
 		}
 
-		termFreq = sortByComparator(termFreq);
+		//termFreq = sortByComparator(termFreq);
 		idfMap = sortByComparator(idfMap);
 
 		/*if(arg.equalsIgnoreCase("TF"))
