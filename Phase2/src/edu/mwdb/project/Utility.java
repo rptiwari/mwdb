@@ -33,7 +33,7 @@ public class Utility {
 
 	private static File stopWordsFile;
 	
-	private static File getStopWordsFile(){
+	public static File getStopWordsFile(){
 		if(stopWordsFile == null){
 			stopWordsFile = new File(".\\src\\StopWords.txt");
 		}
@@ -381,4 +381,6 @@ public class Utility {
 		}
 		return sortedMap;
 	}
+	
+	
 }

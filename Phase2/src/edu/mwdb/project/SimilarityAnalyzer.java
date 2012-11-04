@@ -6,5 +6,8 @@ public class SimilarityAnalyzer {
 		return true;
 	}
 	
+//	public double[][] getAuthorSimilarityMatrix(){
+//		
+//	}
 	
 }
