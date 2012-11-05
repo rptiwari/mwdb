@@ -52,7 +52,7 @@ public class Utility {
 		try 
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(dbUrl,"dblp_user","dblp_pass");
+			con = DriverManager.getConnection(dbUrl,"root","password");
 		}
 
 		catch(ClassNotFoundException e) {
