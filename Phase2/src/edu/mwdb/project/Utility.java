@@ -36,7 +36,8 @@ public class Utility {
 	
 	public static File getStopWordsFile(){
 		if(stopWordsFile == null){
-			stopWordsFile = new File(".\\src\\StopWords.txt");
+			
+			stopWordsFile = new File("./src/StopWords.txt");
 		}
 		return stopWordsFile;
 	}
