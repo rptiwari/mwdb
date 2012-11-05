@@ -116,8 +116,8 @@ public class UserCompDiffVector {
 					Document document = new Document();
 					document.add(new Field("doc", doc, Field.Store.YES,Field.Index.ANALYZED));
 					indexWr.addDocument(document);
-					indexWr.commit();
 				}
+				indexWr.commit();
 				TokenStream docStream;
 				TokenStream keywords;
 				
