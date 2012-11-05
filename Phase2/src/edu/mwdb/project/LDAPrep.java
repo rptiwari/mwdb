@@ -116,53 +116,6 @@ public class LDAPrep {
 	 * helper method that retrieves data from writetopics matlab function output
 	 * It assumes numImportantTopics  is not less than number of topics
 	 */
-	public ArrayList[] readLDATopics(String filename, int numImportantTopics, int numRelevantWords){
-		ArrayList<KeywordConfig> wordsProbabilities = null;
-		ArrayList[] topics = new ArrayList[numImportantTopics];
-		try {
-			Scanner sc = new Scanner(new File(filename));
-			Scanner scLine = null;
-			int i = 0;
-			int wordCount = 0;
-			int topicCount = 0;
-			while (sc.hasNext()){
-				i = topicCount;
-				scLine = new Scanner(sc.nextLine());
-				while (scLine.hasNext()){
-					KeywordConfig wordProb = new KeywordConfig();
-					wordProb.setKeyword(scLine.next());
-					wordProb.setWeightedFreq(scLine.nextFloat());
-					if (wordCount > 0){
-					if (topics[i]!= null){
-						wordsProbabilities = new ArrayList<KeywordConfig>();
-					}
-					else
-						wordsProbabilities = topics[i];
-
-					wordsProbabilities.add(wordProb);
-					topics[i] = wordsProbabilities;  // necessary?
-					}
-					i++;
-
-				}
-
-				wordCount++;
-				if (wordCount > numRelevantWords){
-					wordCount =0;
-					int k = i;
-					topicCount = i;
-					i= k+i;
-				}
-			}
-			sc.close();
-			scLine.close();
-		} catch (FileNotFoundException e) {
-
-			e.printStackTrace();
-		}
-		return topics;
-
-	}
 /*
  *  Prints topics to screen while retrieving from data file
  */
@@ -231,5 +184,71 @@ public class LDAPrep {
 
 	}
 
+
+
+	public ArrayList[] readPrintTopics2(String filename, int numImportantTopics, int numRelevantWords){
+		ArrayList<KeywordConfig> wordsProbabilities = null;
+		ArrayList[] topics = new ArrayList[numImportantTopics];
+		try {
+			Scanner sc = new Scanner(new File(filename));
+			Scanner scLine = null;
+			int i = 0;
+			int wordCount = 0;
+			int topicCount = 0;
+
+			while (sc.hasNextLine()){
+				i = topicCount;
+				String line = sc.nextLine();
+				scLine = new Scanner(line);
+				while (scLine.hasNext()){
+					if (i < numImportantTopics){
+
+						KeywordConfig wordProb = new KeywordConfig();
+						String word = scLine.next();
+
+						wordProb.setKeyword(word);
+						Float prob = scLine.nextFloat();
+						wordProb.setWeightedFreq(prob);
+
+						if (wordCount > 0){
+//							System.out.printf("%-33.20s    %-10.5f ", word, prob);
+							if (topics[i]== null){
+								wordsProbabilities = new ArrayList<KeywordConfig>();
+							}
+							else
+								wordsProbabilities = topics[i];
+
+							wordsProbabilities.add(wordProb);
+							topics[i] = wordsProbabilities;  // necessary?
+							i++;
+						}
+						else{
+//							System.out.printf("%-30.20s    ", word);
+							}
+
+
+					}
+					else break; // skip rest of topics
+
+				}
+				System.out.println();
+				wordCount++;
+				if (wordCount > numRelevantWords){
+					wordCount =0;
+					int k = i;
+					topicCount = i;
+					i= k+i;
+					System.out.println();
+				}
+			}
+			sc.close();
+			scLine.close();
+		} catch (FileNotFoundException e) {
+
+			e.printStackTrace();
+		}
+		return topics;
+
+	}
 
 }
