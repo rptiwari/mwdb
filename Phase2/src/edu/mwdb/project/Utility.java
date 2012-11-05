@@ -331,7 +331,6 @@ public class Utility {
 		return idfMap;
 	}
 
-	
 	/**
 	 * Calculate Cosine Similarity between 2 vectors. Calculated by: a*b/|a||b|
 	 * @param a
@@ -358,28 +357,6 @@ public class Utility {
 		double denominator = magnitudeA*magnitudeB;
 		
 		return numerator/denominator;
-	}
-	
-	/**
-	 * Gets the latent semantics
-	 * @param threshold - should be between 0 and 1 exclusive
-	 * @param svdMatrixTransposed - the matrix should already be transposed after obtaining it from the SVD, the rows not in the top K should already be discarded
-	 * @return an array of lists of Map.Entry<K,V>, K is an integer with the column number and V is a double with the weight
-	 */
-	public ArrayList[] topLatentSemantics(double threshold, double[][] svdMatrixTransposed) {
-		ArrayList[] retVal = new ArrayList[svdMatrixTransposed.length];
-		
-		for (int i=0; i<svdMatrixTransposed.length; i++) {
-			ArrayList<Map.Entry<Integer, Double>> temp = new ArrayList<Map.Entry<Integer, Double>>();
-			for (int j=0; j<svdMatrixTransposed[i].length; j++) {
-				if (svdMatrixTransposed[i][j] > threshold) {
-					temp.add(new AbstractMap.SimpleEntry<Integer, Double>(j, svdMatrixTransposed[i][j]));
-				}
-			}
-			retVal[i] = temp;
-		}
-		
-		return retVal;
 	}
 
 	/*
