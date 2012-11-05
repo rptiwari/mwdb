@@ -155,4 +155,46 @@ public class DblpData {
 		}
 		return indexDirectory;
 	}
+	
+	public Directory createNonAuthoredDocsIndex(String authorId) {
+		Directory indexDirectory = new RAMDirectory();
+		StopAnalyzer sa;
+		try {
+			
+			Utility util = new Utility();
+			Connection con = util.getDBConnection();
+			
+
+			sa = new StopAnalyzer(Version.LUCENE_36, Utility.getStopWordsFile());
+			IndexWriterConfig indexConfig = new IndexWriterConfig(Version.LUCENE_36, sa);
+			IndexWriter indexWriter = new IndexWriter(indexDirectory, indexConfig);
+			
+				String statement = "select paperid " +
+				"from dblp.papers " +
+						"where paperid NOT IN " +
+				"(select paperid " +
+				"from dblp.writtenby " +
+				"where personid=" + authorId + ")";
+				PreparedStatement ps = con.prepareStatement(statement);
+				
+				ResultSet rs = ps.executeQuery();
+			
+				while(rs.next()){
+					Document document = new Document();
+					document.add(new Field("paperid", rs.getString("paperid"), Field.Store.YES, Field.Index.NOT_ANALYZED));
+					document.add(new Field("doc", rs.getString("abstract"), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.YES));
+					indexWriter.addDocument(document);
+				}
+			indexWriter.commit();
+			indexWriter.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return indexDirectory;
+	}
 }
