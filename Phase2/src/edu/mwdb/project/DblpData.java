@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,8 @@ import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.index.TermEnum;
 import org.apache.lucene.index.TermFreqVector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
@@ -71,13 +74,36 @@ public class DblpData {
 		return sb.toString();
 	}
 	
+	public List<String> getAllTermsInIndex(Directory luceneIndexDir, String termName){
+		List<String> allTerms = new ArrayList<String>();
+		IndexReader reader;
+		try {
+			reader = IndexReader.open(luceneIndexDir);
+			TermEnum te = reader.terms();
+			while(te.next()){
+				if(te.term().field().equals(termName)){
+					allTerms.add(te.term().text());
+				}
+			}
+			reader.close();
+			 
+		} catch (CorruptIndexException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return allTerms;		
+	}
+	
 	
 	public Map<String, TermFreqVector> getAuthorTermFrequencies(Directory luceneIndexDir){
 		IndexReader reader;
-		Map<String, TermFreqVector> authorTermFrequencies = new HashMap<String, TermFreqVector>();
+		Map<String, TermFreqVector> authorTermFrequencies = new LinkedHashMap<String, TermFreqVector>();
 		try {
 			reader = IndexReader.open(luceneIndexDir);
-			for (int i = 0; i < reader.maxDoc(); i++) {
+			for (int i = 0; i < reader.numDocs(); i++) {
 				TermFreqVector tfv = reader.getTermFreqVector(i, "doc");
 				authorTermFrequencies.put(reader.document(i).get("authorid"), tfv);
 			}
