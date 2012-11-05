@@ -11,14 +11,26 @@ import org.apache.lucene.store.Directory;
 
 public class Task3b {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		DblpData dblpData = new DblpData();
 		Directory indexDir = dblpData.createAuthorDocumentIndex();
 		List<String> allTerms = dblpData.getAllTermsInIndex(indexDir, "doc");
 		Map<String, TermFreqVector> authorTermFreq = dblpData.getAuthorTermFrequencies(indexDir);
+		Task2 task2 = new Task2();
+		ArrayList<Map.Entry<String, Double>>[] authorGroups = Task3a.getGroupPartitions(task2.getTop3LatSemBySVD_AuthorAuthor());
+		ArrayList<Map.Entry<String, Double>>[] coauthorGroups = Task3a.getGroupPartitions(task2.getTop3LatSemBySVD_CoAuthorCoAuthor());
 		
-		HashMap<String, Double> associatedVector = getAssociationKeywVectorToLatSem(authorTermFreq, allTerms);
-		for (Map.Entry<String, Double> entry : associatedVector.entrySet()) {
+		// Author-Author
+		System.out.println("Author-Author");
+		HashMap<String, Double> authorAssociatedVector = getAssociationKeywVectorToLatSem(authorTermFreq, allTerms, authorGroups);
+		for (Map.Entry<String, Double> entry : authorAssociatedVector.entrySet()) {
+			System.out.println(entry.getKey() + " : " + entry.getValue());
+		}
+		
+		// Coauthor-Coauthor
+		System.out.println("\n\n\n\n\n\nCoauthor-Coauthor");
+		HashMap<String, Double> coauthorAssociatedVector = getAssociationKeywVectorToLatSem(authorTermFreq, allTerms, coauthorGroups);
+		for (Map.Entry<String, Double> entry : coauthorAssociatedVector.entrySet()) {
 			System.out.println(entry.getKey() + " : " + entry.getValue());
 		}
 	}
@@ -29,10 +41,10 @@ public class Task3b {
 	 * a single vector and returned.
 	 * @param authorTermFreq - author term frequency vector from Lucene
 	 * @param allTerms - a list of all terms available in all documents
+	 * @param groups - the partitions obtained from task3a
 	 * @return
 	 */
-	public static HashMap<String, Double> getAssociationKeywVectorToLatSem(Map<String, TermFreqVector> authorTermFreq, List<String> allTerms) {
-		ArrayList<Map.Entry<String, Double>>[] groups = Task3a.get3PartitionsLatSem_AuthorAuthor();
+	public static HashMap<String, Double> getAssociationKeywVectorToLatSem(Map<String, TermFreqVector> authorTermFreq, List<String> allTerms, ArrayList<Map.Entry<String, Double>>[] groups) {
 		HashMap<String, HashMap<String,Double>> processedAuthorKeywVector = new HashMap<String, HashMap<String,Double>>(); 
 		// For each author's keyword vector's tf, multiply it by the correspoinding weight from group and store it in 'processedAuthorKeywVector'
 		for (int i=0; i<groups.length; i++) {

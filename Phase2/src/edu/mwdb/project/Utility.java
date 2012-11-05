@@ -47,10 +47,13 @@ public class Utility {
 	/*
 	 * Method to get the DB Connection.
 	 */
+	private static Connection con;
 	public Connection getDBConnection()
 	{
+		if (con != null)
+			return con;
+		
 		String dbUrl = "jdbc:mysql://localhost:3306/dblp";
-		Connection con=null;
 		try 
 		{
 			Class.forName("com.mysql.jdbc.Driver");
