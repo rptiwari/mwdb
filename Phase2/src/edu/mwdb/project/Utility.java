@@ -35,7 +35,8 @@ public class Utility {
 	
 	public static File getStopWordsFile(){
 		if(stopWordsFile == null){
-			stopWordsFile = new File(".\\src\\StopWords.txt");
+			
+			stopWordsFile = new File("./src/StopWords.txt");
 		}
 		return stopWordsFile;
 	}
@@ -51,7 +52,7 @@ public class Utility {
 		try 
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(dbUrl,"root","password");
+			con = DriverManager.getConnection(dbUrl,"dblp_user","dblp_pass");
 		}
 
 		catch(ClassNotFoundException e) {
