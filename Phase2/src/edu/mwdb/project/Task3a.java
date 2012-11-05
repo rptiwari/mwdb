@@ -42,7 +42,7 @@ public class Task3a {
 	 * @param latentSemantics - the ones obtained from task2
 	 * @return
 	 */
-	public static ArrayList<Map.Entry<String, Double>>[] partitionIntoGroups(Map.Entry<String, Double>[][] latentSemantics) {
+	private static ArrayList<Map.Entry<String, Double>>[] partitionIntoGroups(Map.Entry<String, Double>[][] latentSemantics) {
 		ArrayList<Map.Entry<String, Double>>[] retVal = new ArrayList[latentSemantics.length];
 		for (int i=0; i<latentSemantics[0].length; i++) {
 			double max = Double.MIN_VALUE;
