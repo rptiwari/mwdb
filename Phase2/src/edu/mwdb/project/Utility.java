@@ -26,6 +26,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.index.TermFreqVector;
 import org.apache.lucene.search.DefaultSimilarity;
 import org.apache.lucene.search.Similarity;
 import org.apache.lucene.store.Directory;
@@ -381,6 +382,36 @@ public class Utility {
 			sortedMap.put(entry.getKey(), entry.getValue());
 		}
 		return sortedMap;
+	}
+	
+	public static double[] getAlignedTFIDFVector(TermFreqVector authorTermFreqVector, Map<String, Integer> allKeywordsPosMap, IndexReader docIndexReader) throws IOException{
+		double[] alignedTFVector = getAlignedTermFreqVector(authorTermFreqVector, allKeywordsPosMap);
+		for(String term : authorTermFreqVector.getTerms()){
+			int idx = allKeywordsPosMap.get(term);
+			alignedTFVector[idx] *= getIDF(docIndexReader, term);
+		}
+		return alignedTFVector;
+	}
+	
+	public static double getIDF(IndexReader reader, String termName) throws IOException
+	{
+	    return Math.log(reader.numDocs()/ ((double)reader.docFreq(new Term("doc", termName))));
+	}
+	
+	public static double[] getAlignedTermFreqVector(TermFreqVector authorTermFreqVector, Map<String, Integer> allKeywordsPosMap){
+		double[] alignedVector = new double[allKeywordsPosMap.keySet().size()];
+		String termTexts[] = authorTermFreqVector.getTerms();
+		int termFreqs[] = authorTermFreqVector.getTermFrequencies();
+		for(int i=0; i<termTexts.length; i++){
+			if(!allKeywordsPosMap.containsKey(termTexts[i])){
+				System.out.println(termTexts[i]);
+			}
+			int j = allKeywordsPosMap.get(termTexts[i]);
+			if(j != -1){
+				alignedVector[j] = termFreqs[i];
+			}
+		}
+		return alignedVector;
 	}
 	
 	

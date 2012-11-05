@@ -33,8 +33,8 @@ public class SimilarityAnalyzer {
 				String authorId1 = authorList.get(i);
 				String authorId2 = authorList.get(j);
 				
-				double[] a1 = alignVectors(authorKeywordVector.get(authorId1), allKeywordsPosMap);
-				double[] a2 = alignVectors(authorKeywordVector.get(authorId2), allKeywordsPosMap);
+				double[] a1 = Utility.getAlignedTermFreqVector(authorKeywordVector.get(authorId1), allKeywordsPosMap);
+				double[] a2 = Utility.getAlignedTermFreqVector(authorKeywordVector.get(authorId2), allKeywordsPosMap);
 				double cosineSim = util.cosineSimilarity(a1, a2);
 				similarityMatrix[authorIndexMap.get(authorId1)][authorIndexMap.get(authorId2)] = cosineSim;
 			}
@@ -42,22 +42,6 @@ public class SimilarityAnalyzer {
 		return similarityMatrix;
 	}
 
-	private double[] alignVectors(TermFreqVector authorTermFreqVector, Map<String, Integer> allKeywordsPosMap){
-		double[] alignedVector = new double[allKeywordsPosMap.keySet().size()];
-		String termTexts[] = authorTermFreqVector.getTerms();
-		int termFreqs[] = authorTermFreqVector.getTermFrequencies();
-		for(int i=0; i<termTexts.length; i++){
-			if(!allKeywordsPosMap.containsKey(termTexts[i])){
-				System.out.println(termTexts[i]);
-			}
-			int j = allKeywordsPosMap.get(termTexts[i]);
-			if(j != -1){
-				alignedVector[j] = termFreqs[i];
-			}
-		}
-		return alignedVector;
-	}
-	
 	public double[][] getCoAuthorSimilarityMatrix(Map<String, TermFreqVector> authorKeywordVector, List<String> completeKeywordList) throws Exception{
 		DblpData data = new DblpData();
 		Map<Integer, String> authorIndexMap = new HashMap<Integer, String>();
