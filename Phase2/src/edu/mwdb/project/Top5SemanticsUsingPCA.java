@@ -131,7 +131,7 @@ public class Top5SemanticsUsingPCA {
 				}
 				docKeywords.add(keywordsList);
 
-				Map<String,Float> idfMap = utilityObj.createTFIDF(noOfDocs,indexDirectory, termFreq);
+				Map<String,Float> idfMap = utilityObj.createTFIDF(noOfDocs,indexDirectory, termFreq, "TF-IDF");
 				docIdfMapList.add(idfMap);
 
 				for(Map.Entry<String, Float> keys : termFreq.entrySet())

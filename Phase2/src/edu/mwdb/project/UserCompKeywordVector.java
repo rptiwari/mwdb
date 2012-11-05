@@ -148,7 +148,7 @@ public class UserCompKeywordVector {
 				docKeywords.add(keywordsList);
 
 				//Calling the method createTFIDF to create TF-IDF vector output
-				Map<String,Float> idfMap = utilityObj.createTFIDF(noOfDocs,indexDirectory, termFreq);
+				Map<String,Float> idfMap = utilityObj.createTFIDF(noOfDocs,indexDirectory, termFreq, "TF-IDF");
 				listTFIDFMaps.add(idfMap);
 
 				if(userId == personId)
