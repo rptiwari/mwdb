@@ -6,15 +6,9 @@ import java.util.Map;
 
 public class Task3a {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		Task2 task2;
 		try {
-			task2 = new Task2();
-			Map.Entry<String, Double>[][] top3latentAuthor = task2.getTop3LatSemBySVD_AuthorAuthor();
-			ArrayList<Map.Entry<String, Double>>[] groups = partitionIntoGroups(top3latentAuthor);
+			ArrayList<Map.Entry<String, Double>>[] groups = get3PartitionsLatSem_AuthorAuthor();
 			
 			for (int i=0; i<groups.length; i++) {
 				System.out.println("GROUP" + (i+1));
@@ -28,6 +22,21 @@ public class Task3a {
 		}
 	}
 
+	/**
+	 * Gets the 3 partitions of the top 3 latent semantics of the author-author similarity matrix
+	 * @return an array of lists. Each list contains entries<key,value>, key=authorId, value=maxWeight 
+	 */
+	public static ArrayList<Map.Entry<String, Double>>[] get3PartitionsLatSem_AuthorAuthor() {
+		try {
+			Task2 task2 = new Task2();
+			Map.Entry<String, Double>[][] top3latentAuthor = task2.getTop3LatSemBySVD_AuthorAuthor();
+			return partitionIntoGroups(top3latentAuthor);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/**
 	 * Partitions the latent semantics into groups depending on where the weight is the highest in the semantics
 	 * @param latentSemantics - the ones obtained from task2
