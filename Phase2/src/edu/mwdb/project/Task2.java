@@ -31,8 +31,8 @@ public class Task2 {
 	public static void main(String[] args) throws Exception {
 		Task2 task = new Task2();
 
-		System.out.println("Top 3 Authors");
 		// 2a
+		System.out.println("Top 3 Authors");
 		Map.Entry<String, Double>[][] top3_author = task.getTop3LatSemBySVD_AuthorAuthor();
 		for(int i=0; i<top3_author.length; i++) {
 			for (int j=0; j<top3_author[i].length; j++) {
@@ -40,8 +40,9 @@ public class Task2 {
 			}
 			System.out.println();
 		}
+		
+		// 2b
 		System.out.println("Top 3 Coauthors");
-		// 2a
 		Map.Entry<String, Double>[][] top3_coauthors = task.getTop3LatSemBySVD_CoAuthorCoAuthor();
 		for(int i=0; i<top3_coauthors.length; i++) {
 			for (int j=0; j<top3_coauthors[i].length; j++) {
