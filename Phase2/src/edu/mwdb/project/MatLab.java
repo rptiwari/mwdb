@@ -2,6 +2,8 @@ package edu.mwdb.project;
 
 import matlabcontrol.MatlabInvocationException;
 import matlabcontrol.MatlabProxy;
+import matlabcontrol.extensions.MatlabNumericArray;
+import matlabcontrol.extensions.MatlabTypeConverter;
 
 public class MatLab {
 	
@@ -22,6 +24,9 @@ public class MatLab {
 			throw new Exception("matrix cannot be empty");
 		int columnSize = matrix[0].length;
 		double[][] tempMatrix = new double[columnSize][columnSize];
+		
+		MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
+		processor.setNumericArray("matrix", new MatlabNumericArray(matrix, null));
 		
 		proxy.eval("[U,S,V]=svd(matrix);");
 		for(int k=0;k<columnSize;k++)
