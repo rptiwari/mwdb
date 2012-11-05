@@ -141,7 +141,7 @@ public class UserCompDiffVector {
 				docKeywords.add(keywordsList);
 
 				//Calling the method createTFIDF to create TF-IDF vector output
-				Map<String,Float> idfMap = utilityObj.createTFIDF(rowData1.size(),indexDirectory, termFreq);
+				Map<String,Float> idfMap = utilityObj.createTFIDF(rowData1.size(),indexDirectory, termFreq, "TF-IDF");
 				listTFIDFMaps.add(idfMap);
 
 				if(userId == personId)

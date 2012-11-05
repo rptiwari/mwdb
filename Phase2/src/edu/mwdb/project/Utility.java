@@ -283,7 +283,7 @@ public class Utility {
 	/*
 	 * Method to generate the TF and the TF-IDF vector mapping
 	 */
-	public Map<String,Float> createTFIDF(int noOfDocs, Directory indexDir, Map<String,Float> termFreq) throws IOException
+	public Map<String,Float> createTFIDF(int noOfDocs, Directory indexDir, Map<String,Float> termFreq, String weightOption) throws IOException
 	{
 		IndexReader iReader = IndexReader.open(indexDir);
 
