@@ -49,12 +49,15 @@ public class Utility {
 	 */
 	public Connection getDBConnection()
 	{
-		String dbUrl = "jdbc:mysql://localhost:3306/dblp";
+		String dbUrl = "jdbc:mysql://localhost/dblp";
 		Connection con=null;
 		try 
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(dbUrl,"root","password");
+	//		con = DriverManager.getConnection(dbUrl,"admin","password");
+			String user = "dbadmin";
+			String pw = "password";
+			 con = DriverManager.getConnection("jdbc:mysql://localhost/dblp?user=" + user + "&password=" + pw );
 		}
 
 		catch(ClassNotFoundException e) {
