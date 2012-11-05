@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.lucene.index.TermFreqVector;
 
@@ -57,4 +58,31 @@ public class SimilarityAnalyzer {
 		return alignedVector;
 	}
 	
+	public double[][] getCoAuthorSimilarityMatrix(Map<String, TermFreqVector> authorKeywordVector, List<String> completeKeywordList) throws Exception{
+		DblpData data = new DblpData();
+		Map<Integer, String> authorIndexMap = new HashMap<Integer, String>();
+		
+		int authIdx = 0;
+		for(String authorId:authorKeywordVector.keySet()){
+			authorIndexMap.put(authIdx++, authorId);
+		}
+		
+		int numAuthors = authorKeywordVector.keySet().size();
+		double[][] coauthorssimilarityMatrix = getAuthorSimilarityMatrix(authorKeywordVector, completeKeywordList);
+		Map<String, Set<String>> coauthorsMap = data.getCoauthors();
+		
+		for(int i=0; i<numAuthors; i++){
+			for(int j=0; j<numAuthors; j++){
+				String author1 = authorIndexMap.get(i);
+				String author2 = authorIndexMap.get(j);
+				
+				if(!coauthorsMap.get(author1).contains(author2)){
+					coauthorssimilarityMatrix[i][j] = 0;
+				}
+			}
+		}
+		
+		
+		return coauthorssimilarityMatrix;
+	}
 }

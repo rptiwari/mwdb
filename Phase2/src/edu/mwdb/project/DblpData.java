@@ -6,9 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.lucene.analysis.StopAnalyzer;
 import org.apache.lucene.document.Document;
@@ -222,25 +225,29 @@ public class DblpData {
 		return indexDirectory;
 	}
 	
-	public boolean areCoauthors(String authorId1, String authorId2){
+	public Map<String,Set<String>> getCoauthors(){
 		Utility util = new Utility();
 		Connection con = util.getDBConnection();
 		
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT * FROM coauthors WHERE personid1=? AND personid2=?");
-			stmt.setInt(1, Integer.parseInt(authorId1));
-			stmt.setInt(2, Integer.parseInt(authorId2));
-			
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM coauthors");
 			ResultSet rs = stmt.executeQuery();
+			Map<String, Set<String>> result = new HashMap<String,Set<String>>();
 			
-			if(rs.first())
-				return true;
+			while(rs.next()){
+				Set<String> s = result.get(rs.getString(1));
+				if(s == null)
+					s = new HashSet<String>();
+				
+				s.add(rs.getString(2));
+				result.put(rs.getString(1), s);
+			}
 			
+			return result;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return true;
+		return null;
 	}
 }
