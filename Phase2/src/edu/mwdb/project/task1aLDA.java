@@ -3,7 +3,6 @@ package edu.mwdb.project;
 
 
 import java.io.StringReader;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -232,7 +231,8 @@ public class task1aLDA {
 
 
 			//set matlab path
-			String currentPath = Paths.get((task1aLDA.class.getProtectionDomain().getCodeSource().getLocation().toURI())).toString();
+			String currentPath = task1aLDA.class.getProtectionDomain().getCodeSource().getLocation().toURI().toString().substring(6);
+			System.out.println(currentPath);
 			proxy.eval("cd "+currentPath);
 
 			LDAPrep ldaInputs = new LDAPrep();
