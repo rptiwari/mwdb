@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -56,9 +57,9 @@ public class Task1cCompDocs {
 				
 			
 				//ArrayList<TermFrequency> termVector = getAuthorKeywordVector1(personNum,searcher, reader2, rankingMethod);
-				Directory theIndex2 = db.createAuthorDocumentIndex();
+				Directory theIndextoAuthors = db.createAuthorDocumentIndex();
 				
-				TermFreqVector keywordVector = getAuthorKeywordVector(personNum, theIndex2);
+				TermFreqVector keywordVector = getAuthorKeywordVector(personNum, theIndextoAuthors);
 				
 				List<String> allterms =	db.getAllTermsInIndex(theIndex, "doc");
 				Map<String, Integer> wordPosMap = findMap(allterms);
@@ -125,17 +126,15 @@ public class Task1cCompDocs {
 			
 				//ArrayList<TermFrequency> termVector = getAuthorKeywordVector1(personNum,searcher, reader2, rankingMethod);
 				Directory theIndex2 = db.createAuthorDocumentIndex();
-	/* Get Author's Differentiation Vector */			
-				TermFreqVector keywordVector = getAuthorKeywordVector(personNum, theIndex2);
-				
-
-//	keywordVector = getAuthorKeywordPFVector(personNum,searcher, reader2);
-
+	
 				
 				List<String> allterms =	db.getAllTermsInIndex(theIndex, "doc");
-				Map<String, Integer> wordPosMap = findMap(allterms);
+				LinkedHashMap<String, Integer> wordPosMap = (LinkedHashMap<String, Integer>) findMap(allterms);
 				
-				double[] authorKeyword = Utility.getAlignedTFIDFVector(keywordVector,wordPosMap,reader2);
+		//		double[] authorKeyword = Utility.getAlignedTFIDFVector(keywordVector,wordPosMap,reader2);
+			
+				
+				double[] pfkeywordVector = getAlignedAuthorKeywordPFVector(personNum, theIndex2, wordPosMap);
 
 				
 				
@@ -143,7 +142,7 @@ public class Task1cCompDocs {
 				
 				documentMatrix =  getDocumentMatrix(theIndex, allterms);
 				
-				Similarities =  getSimilarity(theIndex, authorKeyword, wordPosMap);
+				Similarities =  getSimilarity(theIndex, pfkeywordVector, wordPosMap);
 				
 				
 				if (!Similarities.isEmpty()){
@@ -173,7 +172,32 @@ public class Task1cCompDocs {
 		}					// end main of task1c
 
 	
-	
+	public double[] getAlignedAuthorKeywordPFVector(String personNum, Directory  luceneIndex, LinkedHashMap<String, Integer> wordPosMap) throws Exception{
+			
+
+		HashMap<String,Double> allPFs = Utility.getPF(personNum);
+		
+		/* Get Author's Differentiation Vector */			
+			TermFreqVector authorTermFreqVector = getAuthorKeywordVector(personNum, luceneIndex);
+				double[] alignedVector = new double[wordPosMap.keySet().size()];
+				
+				String termTexts[] = authorTermFreqVector.getTerms();
+				int termFreqs[] = authorTermFreqVector.getTermFrequencies();
+				
+				for(int i=0; i<termTexts.length; i++){
+					if(!wordPosMap.containsKey(termTexts[i])){
+						System.out.println(termTexts[i]);
+					}
+					int j = wordPosMap.get(termTexts[i]);
+					if(j != -1){
+						
+						Double pfFactor = allPFs.get(termTexts[i]);
+						alignedVector[j] = termFreqs[i]*pfFactor;
+					}
+				}
+				return alignedVector;
+		}
+
 	
 	public TermFreqVector getAuthorKeywordVector(String authorId,Directory luceneIndexDir) throws CorruptIndexException, IOException
 	{	DblpData db = new DblpData();
@@ -251,7 +275,7 @@ public class Task1cCompDocs {
 		System.out.printf(" \t "  + "PaperID"  + "\t" + " CosineSimilarity"); 
 		System.out.println();
 
-			final int HITS_PER_PAGE = 10;
+			final int HITS_PER_PAGE = 50;
 			; 
 			int end = Math.min(rankingArray.length, HITS_PER_PAGE);
 			for (int i = 0; i < end; i++) {
@@ -289,13 +313,21 @@ public class Task1cCompDocs {
 	
 	public Map<String, Integer> findMap(List<String> completeKeywordList){
 		int termIdx = 0;
-		Map<String, Integer> allKeywordsPosMap = new HashMap<String, Integer>();
+		Map<String, Integer> allKeywordsPosMap = new LinkedHashMap<String, Integer>();
 		for(String kw:completeKeywordList){
 			allKeywordsPosMap.put(kw, termIdx++);
 		}
 		return allKeywordsPosMap;
 	}
+	/*	
+	public double[] getAlignedTFIDF2Vector (TermFreqVector atfv, Map<String, Integer> wordPosMap, Directory LuceneIndexDir, Directory notAllAuthorsIndex, String authorID){
+		IndexReader readerNotAuthor  = IndexReader.open(notAllAuthorsIndex);
+		IndexReader readerAllAuthors = IndexReader.open(LuceneIndexDir);
+		Integer numDocs = readerAllAuthors.numDocs() - readerNotAuthor.numDocs();
 		
+	}
+	*/
+	
 	public double[][] getDocumentMatrix(Directory luceneIndexDir, List<String> completeKeywordList) throws Exception{
 		Utility util = new Utility();
 		DblpData db = new DblpData();
@@ -306,7 +338,7 @@ public class Task1cCompDocs {
 		double[][] documentMatrix = new double[reader.maxDoc()][completeKeywordList.size()];
 		
 		int termIdx = 0;
-		Map<String, Integer> allKeywordsPosMap = new HashMap<String, Integer>();
+		Map<String, Integer> allKeywordsPosMap = new LinkedHashMap<String, Integer>();
 		for(String kw:completeKeywordList){
 			allKeywordsPosMap.put(kw, termIdx++);
 		}
