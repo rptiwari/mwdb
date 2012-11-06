@@ -21,7 +21,7 @@ public class Phase2 {
 
 		//String taskName = args[0];
 		Phase2 phase2 = new Phase2();
-		String taskName = "task1a";
+		String taskName = "task1b";
 		try{
 			if(taskName.equalsIgnoreCase("task1a")){
 				/*if(args.length != 3){
@@ -56,7 +56,8 @@ public class Phase2 {
 	}
 	
 	private void doTask1b() throws Exception{
-		
+		UserCompPCASVD comp = new UserCompPCASVD();
+		comp.computePCA_SVD(1632672, "PCA");
 	}
 	
 	private void doTask1c() throws Exception{

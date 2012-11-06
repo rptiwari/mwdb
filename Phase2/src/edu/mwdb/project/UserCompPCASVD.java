@@ -33,15 +33,13 @@ public class UserCompPCASVD {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public void computePCA_SVD(int personId, String model) {
 		// TODO Auto-generated method stub
 		Utility utilityObj = new Utility();
 		try
 		{
 			Connection con = utilityObj.getDBConnection();
-			int personId = Integer.parseInt(args[0]);
-			//int personId = 1632672;
-
+			
 			// Get the Id's of all the authors in the DB.
 			System.out.println("Getting the list of all authors from the corpus.");
 			Statement stmtUserdIds = con.createStatement();
@@ -308,7 +306,7 @@ public class UserCompPCASVD {
 			processor.setNumericArray("docGivenKWarray", new MatlabNumericArray(docGivenAuthKeywordCorpusMatrix, null));
 
 			// PCA - Start
-			if(args[1].equalsIgnoreCase("PCA"))
+			if(model.equalsIgnoreCase("PCA"))
 			{
 				System.out.println("Starting to compute similar users using top 5 semantics PCA");
 				proxy.eval("[princicomp,score]=princomp(docGivenKWarray);");
@@ -359,7 +357,7 @@ public class UserCompPCASVD {
 			// PCA - End
 
 			//SVD - Start
-			if(args[1].equalsIgnoreCase("SVD"))
+			if(model.equalsIgnoreCase("SVD"))
 			{
 				System.out.println("Starting to compute similar users using top 5 semantics SVD");
 				proxy.eval("[U,S,V]=svd(docGivenKWarray);");

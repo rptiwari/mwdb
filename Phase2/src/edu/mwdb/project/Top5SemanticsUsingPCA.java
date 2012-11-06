@@ -29,11 +29,8 @@ import org.apache.lucene.util.Version;
 
 public class Top5SemanticsUsingPCA {
 
-	/**
-	 * @param args
-	 */
 	public void getSemantics(String personId, String model) {
-		// TODO Auto-generated method stub
+		
 		Utility utilityObj = new Utility();
 		try 
 		{
