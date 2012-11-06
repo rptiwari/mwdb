@@ -212,11 +212,14 @@ public class DblpData {
 			
 				while(rs.next()){
 					Document document = new Document();
-					document.add(new Field("paperid", rs.getString("paperid"), Field.Store.YES, Field.Index.NOT_ANALYZED));
-					document.add(new Field("doc", rs.getString("abstract"), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.YES));
-					indexWriter.addDocument(document);
+					String abs = rs.getString("abstract");
+					if(abs != null && !abs.equals("")){
+						document.add(new Field("paperid", rs.getString("paperid"), Field.Store.YES, Field.Index.NOT_ANALYZED));
+						document.add(new Field("doc", abs, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.YES));
+						indexWriter.addDocument(document);
+					}
+					
 				}
-			indexWriter.commit();
 			indexWriter.close();
 			
 		} catch (IOException e) {

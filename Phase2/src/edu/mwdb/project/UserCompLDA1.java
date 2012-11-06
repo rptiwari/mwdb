@@ -397,7 +397,7 @@ public class UserCompLDA1 {
 	}
 	
 		
-	public void doLatentCompare(double[][] topicsMatrix, double[][] allUsersKeyWordMatrix, double[][] authorDataMatrix, double[] authKeywordMatrix) throws Exception{
+	public Object[] doLatentCompare(double[][] topicsMatrix, double[][] allUsersKeyWordMatrix, double[][] authorDataMatrix, double[] authKeywordMatrix) throws MatlabInvocationException, MatlabConnectionException, Exception{
 		//LSA - Start
 		DblpData db = new DblpData();
 		
@@ -436,29 +436,9 @@ public class UserCompLDA1 {
 			
 			Object[] objLSA = new Object[2];
 			objLSA = proxy.returningEval("knnsearch( ALLUSERSLSAMatrix, AUTHORLSAMatrix,'k', 11,'Distance','cosine')",2);
-			double[] indexLSA = (double[]) objLSA[0];
-			double[] distLSA = (double[]) objLSA[1];
 			
-			HashMap<String, String>  authNamePersonIdList = db.getAuthNamePersonIdList();
-			List<String> authorIds = db.getAllAuthors();
-			String[] authors = authorIds.toArray(new String[authorIds.size()]);
-			System.out.println(authors.length + "AUTHOR LENGTH");
-			if (authNamePersonIdList.get(authors[(int)(indexLSA[0] - 1)]) == null) 
-			{
-				for (int i = 0; i < 10; i++) 
-				{
-					System.out.println("Author Name: " + authors[(int)(indexLSA[0] - 1)] + "\t\t" + "Distance from given author: " + distLSA[i]);
-				}
-			} 
-			else 
-			{
-				for (int j = 1; j < 11; j++) 
-				{
-					System.out.println("Author Name: " + authNamePersonIdList.get(authors[(int)(indexLSA[j] - 1)])  + "\t\t" + "Distance from given author: " + distLSA[j]);
-				}
-			}
-		
-		//LSA - End
+			return  objLSA;
+	
 		
 	}
 
@@ -514,7 +494,41 @@ public void doLatentSemantics(String authorid) throws Exception{
 
 		
 		/* Project LDA onto other data */
-		doLatentCompare(completeTopicsMatrix, authorsDocumentMatrix, authorDataMatrix, authorKeywordVector);		
+		Object[] objLSA = doLatentCompare(completeTopicsMatrix, authorsDocumentMatrix, authorDataMatrix, authorKeywordVector);	
+
+		double[] indexLSA = (double[]) objLSA[0];
+		double[] distLSA = (double[]) objLSA[1];
+		
+	}
+	
+
+	public void display(double[] indexLSA, double[] distLSA){
+		
+		DblpData db = new DblpData();	
+		
+		HashMap<String, String>  authNamePersonIdList = db.getAuthNamePersonIdList();
+		List<String> authorIds = db.getAllAuthors();
+		String[] authors = authorIds.toArray(new String[authorIds.size()]);
+		System.out.println(authors.length + "AUTHOR LENGTH");
+		for (String a : authors){System.out.println(a); }
+		if (authNamePersonIdList.get(authors[(int)(indexLSA[0] - 1)]) == null) 
+		{
+			for (int i = 0; i < 10; i++) 
+			{
+				System.out.println("Author Name: " + authors[(int)(indexLSA[0] - 1)] + "\t\t" + "Distance from given author: " + distLSA[i]);
+			}
+		} 
+		else 
+		{
+			for (int j = 1; j < 11; j++) 
+			{
+				System.out.println("Author Name: " + authNamePersonIdList.get(authors[(int)(indexLSA[j] - 1)])  + "\t\t" + "Distance from given author: " + distLSA[j]);
+			}
+		}
+	
+	//LSA - End
+	
+	 
 	}
 	
 	public Map<String, Integer> findMap(List<String> completeKeywordList){

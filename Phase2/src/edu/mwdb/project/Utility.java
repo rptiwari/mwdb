@@ -313,11 +313,16 @@ public class Utility {
 		IndexReader reader = IndexReader.open(dir);
 		
 		double[][] retVal = new double[paperIdsFromAuthor.size()][allTerms.size()];
+		int i=0;
 		for (int paperId : paperIdsFromAuthor) {
 			for (int termIdx = 0; termIdx < allTerms.size(); termIdx++) {
 				String currentTerm = allTerms.get(termIdx);
-				retVal[paperId][termIdx] = forwardIndex.get(paperId).get(currentTerm) * (applyIDF ? getIDF(reader,currentTerm) : 1);
+				if (forwardIndex.get(paperId).containsKey(currentTerm))
+					retVal[i][termIdx] = forwardIndex.get(paperId).get(currentTerm) * (applyIDF ? getIDF(reader,currentTerm) : 1);
+				else
+					retVal[i][termIdx] = 0;
 			}
+			i++;
 		}
 		return retVal;
 	}
@@ -486,9 +491,9 @@ public class Utility {
   					n_ij++;
   			}
   			
-  			retVal.put(word, doFormulaPF(R, N, r_ij, n_ij));
+  			double result = doFormulaPF(R, N, r_ij, n_ij);
+  			retVal.put(word, result);
 		}
-		
 		return retVal;
 	}
 	
