@@ -24,7 +24,12 @@ public class Phase2 {
 		String taskName = "task1a";
 		try{
 			if(taskName.equalsIgnoreCase("task1a")){
-				phase2.doTask1a();
+				/*if(args.length != 3){
+					System.err.println("Please Provide TaskName, Model and userid");
+					System.exit(1);
+				}
+				else*/
+					phase2.doTask1a(args[1],args[2]);
 			}else if(taskName.equalsIgnoreCase("task1b")){
 				phase2.doTask1b();
 			}else if(taskName.equalsIgnoreCase("task1c")){
@@ -43,10 +48,11 @@ public class Phase2 {
 		}
 	}
 
-	private void doTask1a() throws Exception{
-		String personId = "1632672";
+	private void doTask1a(String model, String personId) throws Exception{
+		personId = "1632672";
+		model = "PCA";
 		Top5SemanticsUsingPCA latentSemantics = new Top5SemanticsUsingPCA();
-		latentSemantics.getSemantics(personId);
+		latentSemantics.getSemantics(personId,model);
 	}
 	
 	private void doTask1b() throws Exception{
