@@ -32,7 +32,7 @@ public class Top5SemanticsUsingPCA {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public void getSemantics(String personId) {
 		// TODO Auto-generated method stub
 		Utility utilityObj = new Utility();
 		try 
@@ -42,12 +42,7 @@ public class Top5SemanticsUsingPCA {
 			List<String> abstracts = new ArrayList<String>();
 
 			Statement stmt = con.createStatement();
-			// use 1632672 instead of args[0]
-			String personId = args[0];
-
-			//String personId = "1632672";
-
-			// To get the list of papers written by the given author.
+						// To get the list of papers written by the given author.
 			String query_authorid = 
 					"select p.abstract from papers p join " +  
 							"(select distinct w.paperid from " + 
