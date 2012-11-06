@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.lucene.analysis.StopAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.CorruptIndexException;
@@ -23,6 +24,7 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.TermEnum;
 import org.apache.lucene.index.TermFreqVector;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
@@ -259,7 +261,7 @@ public class DblpData {
 	 * @return a map in which the keys represent the paperIds. The values are boolean but are meaningless.
 	 * @throws Exception
 	 */
-	public Map<Integer,Boolean> getPaperIdsFromCoauthorAndSelf(String authorId) throws Exception {
+	public Set<Integer> getPaperIdsFromCoauthorAndSelf(String authorId) throws Exception {
 		Utility util = new Utility();
 		Connection con = util.getDBConnection();
 		Statement stmt = con.createStatement();
@@ -277,9 +279,9 @@ public class DblpData {
 				"group by personid2) as x " +
 				"on writtenby.personid=x.personid2 " +
 				"group by paperid");	
-		Map<Integer,Boolean> coauthor_and_self_paperIds = new HashMap();
+		Set<Integer> coauthor_and_self_paperIds = new HashSet<Integer>();
 		while (coauthor_and_self_paperIds_rs.next()) {
-			coauthor_and_self_paperIds.put(coauthor_and_self_paperIds_rs.getInt("paperid"), true);
+			coauthor_and_self_paperIds.add(coauthor_and_self_paperIds_rs.getInt("paperid"));
 	  	}
 		return coauthor_and_self_paperIds;
 	}
@@ -376,5 +378,68 @@ public class DblpData {
 		}
 		
 		return new HashMap[]{paperIdIndex, invertedIndex};
+	}
+	
+	public Map<String, Double> getTFIDF2Vector(String authorId) throws Exception{
+		Map<String, Double> tfidf2Vector = new LinkedHashMap<String, Double>();	
+		Directory coAuthAndSelfIndex = createCoAuthorSelfIndex(authorId);
+		IndexReader coAuthAndSelfIndexReader = IndexReader.open(coAuthAndSelfIndex);
+		Directory authorIndex = createAuthorDocumentIndex();
+		TermFreqVector authorKwVector = getAuthorTermFrequencies(authorIndex).get(authorId);
+		String[] terms = authorKwVector.getTerms();
+		int[] termFreqs = authorKwVector.getTermFrequencies();
+		for(int i=0;i<terms.length; i++){
+			double idf = Utility.getIDF(coAuthAndSelfIndexReader, terms[i]);
+			tfidf2Vector.put(terms[i], termFreqs[i]*idf);
+		}
+		return tfidf2Vector;
+	}
+
+	private Directory createCoAuthorSelfIndex(String authorId)
+			throws IOException, CorruptIndexException,
+			LockObtainFailedException, SQLException {
+		String query_coauthor_and_self = 
+			"SELECT distinct abstract from papers join " +
+					"(select distinct(writby.paperid) from writtenby writby join coauthorswpaper coauth on writby.personid = coauth.personid2 " +
+					"where coauth.personid1 = " + authorId + " )T " +
+					" ON papers.paperid = T.paperid where abstract!=\"\"";
+		Utility util = new Utility();
+		util.getDBConnection();
+		Directory coAuthAndSelfIndex = new RAMDirectory();
+		StopAnalyzer sa = new StopAnalyzer(Version.LUCENE_36, Utility.getStopWordsFile());
+		IndexWriterConfig indexConfig = new IndexWriterConfig(Version.LUCENE_36, sa);
+		IndexWriter coAuthorSelfIdxWriter = new IndexWriter(coAuthAndSelfIndex, indexConfig);
+		ResultSet rs = util.getDBConnection().prepareStatement(query_coauthor_and_self).executeQuery();
+		while (rs.next())
+		{
+			Document document = new Document();
+			String doc = rs.getString("abstract");
+			document.add(new Field("doc", doc, Field.Store.YES,Field.Index.ANALYZED));
+			coAuthorSelfIdxWriter.addDocument(document);
+		}
+		coAuthorSelfIdxWriter.close();
+		return coAuthAndSelfIndex;
+	}
+	
+
+	public HashMap<String, String> getAuthNamePersonIdList(){
+		Utility util = new Utility();
+		Connection con = util.getDBConnection();
+
+		HashMap<String,String> authNamePersonIDList = new HashMap<String, String>();
+		try{
+			Statement statement = con.createStatement();
+			ResultSet resultSet = statement.executeQuery("select distinct(a.personid),a.name from writtenby w, papers p,authors a where a.personid = w.personid" +
+					" and w.paperid=p.paperid and p.abstract != \"\"");
+			while (resultSet.next()) 
+			{
+				authNamePersonIDList.put(resultSet.getString("personid"), resultSet.getString("name"));
+			}
+			return authNamePersonIDList;
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
