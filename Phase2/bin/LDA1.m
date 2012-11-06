@@ -2,7 +2,7 @@ function [ WPALL,DPALL,ZALL ] = LDA1(WS,DS,T,WO)
 
 
 %Set the number of topics
-[w1,w2] = size(WS)
+[w1,w2] = size(WO)
 
 %Set the hyperparameters
 ALPHA = 50 / T
@@ -12,7 +12,7 @@ BETA = 200 / w2
 
 %The number of iterations
 
-N = 180;
+N = 480;
 
 %The random seed
 
@@ -41,7 +41,7 @@ ZALL = full(Z)
 fprintf( '\n\nMost likely words in the first 5 topics:\n' );
 
 S( 1:5 )
-WriteTopics( WP , BETA , WO , 10 , 1.0 , 5 , 'topics.txt');
+WriteTopics( WP , BETA , WO , 7 , 1.0 , 5 , 'topics.txt');
 
 % [ Order ] = OrderTopics( DP , ALPHA );
 

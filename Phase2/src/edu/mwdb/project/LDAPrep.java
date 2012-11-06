@@ -148,7 +148,7 @@ public class LDAPrep {
 					wordProb.setWeightedFreq(prob);
 
 					if (wordCount > 0){
-					System.out.printf("%-33.20s    %-10.5f ", word, prob);
+					System.out.printf("%-25s  %-10.7f    ", word, prob);
 					if (topics[i]== null){
 						wordsProbabilities = new ArrayList<KeywordConfig>();
 					}
@@ -160,7 +160,7 @@ public class LDAPrep {
 					i++;
 					}
 					else{
-						System.out.printf("%-30.20s    ", word);}
+						System.out.printf("%-36s    ", word);}
 					
 					
 					}

@@ -164,13 +164,14 @@ public class DblpData {
 			IndexWriterConfig indexConfig = new IndexWriterConfig(Version.LUCENE_36, sa);
 			IndexWriter indexWriter = new IndexWriter(indexDirectory, indexConfig);
 			
-				PreparedStatement ps = con.prepareStatement("Select paperid,abstract from papers  WHERE abstract != \"\"");
+				PreparedStatement ps = con.prepareStatement("Select paperid,title,abstract from papers  WHERE abstract != \"\"");
 				
 				ResultSet rs = ps.executeQuery();
 			
 				while(rs.next()){
 					Document document = new Document();
 					document.add(new Field("paperid", rs.getString("paperid"), Field.Store.YES, Field.Index.NOT_ANALYZED));
+					document.add(new Field("title", rs.getString("title"), Field.Store.YES, Field.Index.NOT_ANALYZED));
 					document.add(new Field("doc", rs.getString("abstract"), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.YES));
 					indexWriter.addDocument(document);
 				}
@@ -467,4 +468,61 @@ public class DblpData {
 		}
 		return null;
 	}
+	
+	/**
+	 * Get single author name from unique author id  Assumes Author is represented onlyif written a paper with an abstract.
+	 * @param authorId
+	 * @return authName (String)
+	 * @throws Exception
+	 */
+	public String getAuthName(String personid){
+		Utility util = new Utility();
+		Connection con = util.getDBConnection();
+
+		String authName = new String();
+		try{
+			Statement statement = con.createStatement();
+			ResultSet resultSet = statement.executeQuery("select a.name from authors a where a.personid = " +personid );
+			while (resultSet.next()) 
+			{
+				authName = resultSet.getString("name");
+			}
+			return authName;
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+	
+	/**
+	 * Get all the authorIds that have non-empty abstracts 
+	 * quickly from Lucene index
+	 * @param lucene directory that has authorid field indexed
+	 * @return a list of Strings representing the authorIds
+	 * @throws Exception
+	 */
+	public List<String> getAllActiveAuthors(Directory luceneIndexDir){
+ 
+ 		List<String> authors = new ArrayList<String>();
+		IndexReader reader;
+
+		try {
+			reader = IndexReader.open(luceneIndexDir);
+			for (int i = 0; i < reader.numDocs(); i++) {
+				authors.add(reader.document(i).get("authorid"));
+			}
+			reader.close();
+			 
+		} catch (CorruptIndexException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return authors;
+	}
+	
 }
