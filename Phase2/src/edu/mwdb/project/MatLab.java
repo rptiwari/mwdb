@@ -2,6 +2,7 @@ package edu.mwdb.project;
 
 import matlabcontrol.MatlabInvocationException;
 import matlabcontrol.MatlabProxy;
+import matlabcontrol.MatlabProxyFactory;
 import matlabcontrol.extensions.MatlabNumericArray;
 import matlabcontrol.extensions.MatlabTypeConverter;
 
@@ -49,5 +50,47 @@ public class MatLab {
 		}
 		
 		return resultSematicMatrixSVD;
+	}
+
+	/**
+	 * Computes the PCA of a matrix
+	 * @param matrix
+	 * @param rowsReturned - the top k rows of the matrix to be returned
+	 * @return the matrix is already transposed
+	 * @throws Exception
+	 */
+	public double[][] pca(double[][] matrix, int rowsReturned) throws Exception {
+		if (matrix.length == 0)
+			throw new Exception("matrix cannot be empty");
+
+		// Connecting to the Matlab
+		MatlabProxyFactory factory = new MatlabProxyFactory();
+		MatlabProxy proxy = factory.getProxy();
+
+		MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
+		processor.setNumericArray("matrix", new MatlabNumericArray(matrix, null));
+
+		// For PCA:
+		proxy.eval("[pc,score]=princomp(matrix);");
+		int columnSize = matrix[0].length;
+		double[][] tempMatrix = new double[columnSize][columnSize];
+
+		for(int k=0;k<columnSize;k++)
+		{
+			Object[] obj=proxy.returningEval("pc(:,"+ (k+1) +")" ,1);
+			tempMatrix[k]=(double[]) obj[0];
+		}
+
+		// Transpose
+		double[][] resultSematicMatrixPCA = new double[columnSize][rowsReturned];
+		for(int a=0;a<columnSize;a++)
+		{
+			for(int b=0;b<rowsReturned;b++)
+			{
+				resultSematicMatrixPCA[a][b]= tempMatrix[b][a];
+			}
+		}
+		
+		return resultSematicMatrixPCA;
 	}
 }
