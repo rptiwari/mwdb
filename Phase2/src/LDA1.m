@@ -21,7 +21,7 @@ SEED = 3;
 % use 1 for debugging
 OUTPUT = 2;
 
-[ WP,DP,Z ] = GibbsSamplerLDA( WS , DS , 25 , N , ALPHA , BETA , SEED , OUTPUT );
+[ WP,DP,Z ] = GibbsSamplerLDA( WS , DS , 5 , N , ALPHA , BETA , SEED , OUTPUT );
 
 disp('DDDD');
 
@@ -40,7 +40,7 @@ ZALL = full(Z)
 fprintf( '\n\nMost likely words in the first 5 topics:\n' );
 
 S( 1:5 )
-%WriteTopics( WP , BETA , WO , 10 , 1.0 , 5 , 'topics.txt');
+WriteTopics( WP , BETA , WO , 10 , 1.0 , 5 , 'topics.txt');
 
 [ Order ] = OrderTopics( DP , ALPHA );
 

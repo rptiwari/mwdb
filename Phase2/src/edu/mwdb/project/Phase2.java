@@ -65,13 +65,16 @@ public class Phase2 {
 		UserCompKeywordVector1b t1bKV = new UserCompKeywordVector1b();
 		t1bKV.runTask(authorId);
 		System.out.println("\n\n");
-		UserCompPCASVD1b comp = new UserCompPCASVD1b();
-		comp.computePCA_SVD(authorId, "PCA");
+		UserCompDiffVector1b t1bTFIDF2 = new UserCompDiffVector1b();
+		t1bTFIDF2.doTask(authorId);
 		System.out.println("\n\n");
-		comp.computePCA_SVD(authorId, "SVD");
-		System.out.println("\n\n");
-		UserCompLDA1 t1b = new UserCompLDA1();
-		t1b.doLatentSemantics(Integer.toString(authorId));
+//		UserCompPCASVD1b comp = new UserCompPCASVD1b();
+//		comp.computePCA_SVD(authorId, "PCA");
+//		System.out.println("\n\n");
+//		comp.computePCA_SVD(authorId, "SVD");
+//		System.out.println("\n\n");
+//		UserCompLDA1 t1b = new UserCompLDA1();
+//		t1b.doLatentSemantics(Integer.toString(authorId));
 	}
 	
 	private void doTask1c() throws Exception{
