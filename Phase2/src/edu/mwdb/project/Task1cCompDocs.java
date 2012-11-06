@@ -133,16 +133,20 @@ public class Task1cCompDocs {
 				
 		//		double[] authorKeyword = Utility.getAlignedTFIDFVector(keywordVector,wordPosMap,reader2);
 			
-				
-				double[] pfkeywordVector = getAlignedAuthorKeywordPFVector(personNum, theIndex2, wordPosMap);
 
-				
+				double[] authorDiscriminationVector = null;
+				if (divVectorType.equalsIgnoreCase("PF")){
+							authorDiscriminationVector = getAlignedAuthorKeywordPFVector(personNum, theIndex2, wordPosMap);
+						}
+						else {
+							authorDiscriminationVector =  getAlignedAuthorTfidf2KeywordVector(personNum, wordPosMap);
+						}
 				
 				Map<Integer, TermFreqVector> allDocFreqVectors =  getDocTermFrequencies(theIndex);
 				
 				documentMatrix =  getDocumentMatrix(theIndex, allterms);
 				
-				Similarities =  getSimilarity(theIndex, pfkeywordVector, wordPosMap);
+				Similarities =  getSimilarity(theIndex, authorDiscriminationVector, wordPosMap);
 				
 				
 				if (!Similarities.isEmpty()){
@@ -198,6 +202,21 @@ public class Task1cCompDocs {
 				return alignedVector;
 		}
 
+	public double[] getAlignedAuthorTfidf2KeywordVector(String personNum,  LinkedHashMap<String, Integer> wordPosMap) throws Exception{
+		
+		double[] alignedVector = new double[wordPosMap.keySet().size()];
+		DblpData db = new DblpData();
+		
+		 Map<String, Double> authorTFIDF2 = db.getTFIDF2Vector(personNum);
+		 
+		 for (Map.Entry<String, Double> tfidf2Entry : authorTFIDF2.entrySet()){
+			 String term = tfidf2Entry.getKey();
+			 int termIndex = wordPosMap.get(term);
+			 alignedVector[termIndex] = tfidf2Entry.getValue();
+			  }
+		 return alignedVector; 
+		 
+	}
 	
 	public TermFreqVector getAuthorKeywordVector(String authorId,Directory luceneIndexDir) throws CorruptIndexException, IOException
 	{	DblpData db = new DblpData();

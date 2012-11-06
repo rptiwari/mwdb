@@ -22,6 +22,7 @@ import matlabcontrol.extensions.MatlabNumericArray;
 import matlabcontrol.extensions.MatlabTypeConverter;
 
 import org.apache.lucene.analysis.CharArraySet;
+import org.apache.lucene.analysis.StopAnalyzer;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -80,7 +81,7 @@ public class UserCompLDA1 {
 		ResultSet rs2 = stmt2.executeQuery(query_alldocs);
 
 		// Creation of a Index Directory.
-		StandardAnalyzer docAnalyzer = new StandardAnalyzer(Version.LUCENE_36);
+		StopAnalyzer docAnalyzer = new StopAnalyzer(Version.LUCENE_36,Utility.getStopWordsFile());
 		IndexWriterConfig indexConfig = new IndexWriterConfig(Version.LUCENE_36,docAnalyzer);
 		Directory indexDirectory = new RAMDirectory();
 		IndexWriter indexWr = new IndexWriter(indexDirectory, indexConfig);
@@ -124,7 +125,7 @@ public class UserCompLDA1 {
 			docStream = new StandardTokenizer(Version.LUCENE_36, new StringReader(rowData.get(i)));
 
 			//Creating the Keywords of a given abstract
-			keywords = new StopFilter(Version.LUCENE_36, docStream ,stopWordsCharArrSet);
+			keywords = new StopFilter(Version.LUCENE_36, docStream ,util.createStopWordsSet());
 
 			termFreq = util.createauthorTF(keywords, rowData.get(i));
 
@@ -164,7 +165,7 @@ public class UserCompLDA1 {
 		int columnSize = termFinalFreq.size();
 
 		task1aLDA lda = new task1aLDA();
-
+	
 
 		String[] staticVocabulary = lda.makeStaticKeywordList(termFinalFreq );
 
@@ -181,15 +182,11 @@ public class UserCompLDA1 {
 
 	public List<HashMap<String,Float>> doLDA(double[][] docKeywordCorpusMatrix,String[] staticVocabulary) throws MatlabConnectionException, IOException, MatlabInvocationException{
 
-		//Create a proxy, which we will use to control MATLAB
-		MatlabProxyFactory factory = new MatlabProxyFactory();
-		MatlabProxy proxy = factory.getProxy();
-
 
 		//set matlab path
 //		String path = "cd(\'C:\\Users\\Katherine\\Documents\\MATLAB\\')";
 //		proxy.eval(path);
-
+		MatlabProxy proxy = MatLab.getProxy();
 		LDAPrep ldaInputs = new LDAPrep();
 
 		ldaInputs.doLDAPrepFullMatrix(docKeywordCorpusMatrix);
@@ -239,13 +236,6 @@ public class UserCompLDA1 {
 			}
 			topicsList.add(topicFreq);
 		}
-
-
-		//	proxy.eval("quit");
-		//Disconnect the proxy from MATLAB
-		proxy.disconnect();
-
-
 
 		return topicsList;
 
@@ -352,20 +342,23 @@ public class UserCompLDA1 {
 		return docKeywordCorpusMatrix;
 	}
 	
-/*
- *  Similar to getAlignedTermFreqVector function in Utility but with different input parameters 
- */
-	public static double[] getAlignedWordVector(String[] termTexts, float[] termFreqs, Map<String, Integer> allKeywordsPosMap){
-		
+	/*
+	 * Similar to getAlignedTermFreqVector function in Utility but with
+	 * different input parameters
+	 */
+	public static double[] getAlignedWordVector(String[] termTexts,
+			float[] termFreqs, Map<String, Integer> allKeywordsPosMap) {
+
 		double[] alignedVector = new double[allKeywordsPosMap.keySet().size()];
-		
-		for(int i=0; i<termTexts.length; i++){
-			if(!allKeywordsPosMap.containsKey(termTexts[i])){
-				System.out.println(termTexts[i]);
-			}
-			int j = allKeywordsPosMap.get(termTexts[i]);
-			if(j != -1){
-				alignedVector[j] = termFreqs[i];
+
+		for (int i = 0; i < termTexts.length; i++) {
+			if (!allKeywordsPosMap.containsKey(termTexts[i])) {
+				// System.out.println(termTexts[i]);
+			} else {
+				int j = allKeywordsPosMap.get(termTexts[i]);
+				if (j != -1) {
+					alignedVector[j] = termFreqs[i];
+				}
 			}
 		}
 		return alignedVector;
@@ -421,8 +414,7 @@ public class UserCompLDA1 {
 
 			
 			//Create a proxy, which we will use to control MATLAB
-			MatlabProxyFactory factory = new MatlabProxyFactory();
-			MatlabProxy proxy = factory.getProxy();
+			MatlabProxy proxy = MatLab.getProxy();
 			MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
 
 			processor.setNumericArray("givenAuthKWArray", new MatlabNumericArray(givenauthKeywordMatrix, null));
@@ -430,8 +422,8 @@ public class UserCompLDA1 {
 			processor.setNumericArray("userMatrix", new MatlabNumericArray(UserMatrix, null));
 			processor.setNumericArray("latentsMatrix", new MatlabNumericArray(latentsMatrix,null));
 			
-			proxy.eval("[ALLUSERSLSAMatrix] = inputCorpusMatrix * latentsMatrix");
-			proxy.eval("[AUTHORLSAMatrix] = givenAuthKWArray * latentsMatrix");
+			proxy.eval("[ALLUSERSLSAMatrix] = inputCorpusMatrix * transpose(latentsMatrix)");
+			proxy.eval("[AUTHORLSAMatrix] = givenAuthKWArray * transpose(latentsMatrix)");
 
 
 			Object[] svdObj = proxy.returningEval("AUTHORLSAMatrix(1,:)", 1);
@@ -440,28 +432,29 @@ public class UserCompLDA1 {
 			System.out.println("****************************************************");
 			
 			Object[] objLSA = new Object[2];
-			objLSA = proxy.returningEval("knnsearch( ALLUSERSLSAMatrix, AUTHORLSAMATRIX,'k', 11,'Distance','cosine')",2);
+			objLSA = proxy.returningEval("knnsearch( ALLUSERSLSAMatrix, AUTHORLSAMatrix,'k', 11,'Distance','cosine')",2);
 			double[] indexLSA = (double[]) objLSA[0];
 			double[] distLSA = (double[]) objLSA[1];
 			
 			HashMap<String, String>  authNamePersonIdList = db.getAuthNamePersonIdList();
-			/*
-			if (authNamePersonIdList.get(userIdList.get((int) indexLSA[0] - 1)) == null) 
+			List<String> authorIds = db.getAllAuthors();
+			String[] authors = authorIds.toArray(new String[authorIds.size()]);
+			System.out.println(authors.length + "AUTHOR LENGTH");
+			if (authNamePersonIdList.get(authors[(int)(indexLSA[0] - 1)]) == null) 
 			{
 				for (int i = 0; i < 10; i++) 
 				{
-					System.out.println("Author Name: " + userIdList.get((int) indexLSA[i] - 1) + "\t\t" + "Distance from given author: " + distLSA[i]);
+					System.out.println("Author Name: " + authors[(int)(indexLSA[0] - 1)] + "\t\t" + "Distance from given author: " + distLSA[i]);
 				}
 			} 
 			else 
 			{
 				for (int j = 1; j < 11; j++) 
 				{
-					System.out.println("Author Name: " + authNamePersonIdList.get(userIdList.get((int) indexLSA[j] - 1)) + "\t\t" + "Distance from given author: " + distSVD[j]);
+					System.out.println("Author Name: " + authNamePersonIdList.get(authors[(int)(indexLSA[j] - 1)])  + "\t\t" + "Distance from given author: " + distLSA[j]);
 				}
 			}
-			*/
-	
+		
 		//LSA - End
 		
 	}
@@ -483,8 +476,7 @@ public void doLatentSemantics(String authorid) throws Exception{
 		List<String> allterms =	db.getAllTermsInIndex(dirAllPapersIndex, "doc");
 		
 		Map<String, Integer> wordPosMap = findMap(allterms);
-		System.out.println("wordPosMap " + wordPosMap.get("intuitively"));
-		/* */
+	
 		
 		String[] staticVocabulary = allterms.toArray(new String[allterms.size()]);
 		String[] staticVocabularyAlternate = makeStaticKeywordList2(wordPosMap);
@@ -498,9 +490,10 @@ public void doLatentSemantics(String authorid) throws Exception{
 		double[][] authorDataMatrix = rebuildAuthorMatrix(authorid);
 		
 		double[] authorKeywordVector  = Utility.getAlignedTermFreqVector(getAuthorKeywordVector(authorid, dirIndex), wordPosMap);
-
 		
-		List<HashMap<String,Float>> topics = doLDA(authorsDocumentMatrix, staticVocabulary );
+		List<HashMap<String,Float>> topics = doLDA(authorDataMatrix, staticVocabulary );
+		
+		System.out.println(authorDataMatrix[0].length + "dim " + authorDataMatrix.length );
 		
 		double[][] completeTopicsMatrix = buildTopicsMatrix(topics, allterms);
 

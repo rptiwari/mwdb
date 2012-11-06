@@ -138,7 +138,7 @@ public class Utility {
 						counter++;
 					}
 				}
-				termFreq.put(keyword, counter/(float)noOfWords);
+				termFreq.put(keyword.toLowerCase(), counter/(float)noOfWords);
 			}
 		}
 		catch (Exception e) 
@@ -186,7 +186,7 @@ public class Utility {
 			// populate the map  
 			for (int i=0; i< splitter.length; i++)  
 			{  
-				termFreq.put(splitter[i], (float)counter[i]/splitter.length);  
+				termFreq.put(splitter[i].toLowerCase(), (float)counter[i]/splitter.length);  
 			}
 		}
 		catch (Exception e) 
@@ -248,7 +248,7 @@ public class Utility {
 						counter++;
 					}
 				}
-				termFreq.put(keyword, counter);
+				termFreq.put(keyword.toLowerCase(), counter);
 			}
 		}
 		catch (Exception e) 
@@ -285,7 +285,7 @@ public class Utility {
 						counter++;
 					}
 				}
-				termFreq.put(keyword, counter*weight);
+				termFreq.put(keyword.toLowerCase(), counter*weight);
 			}
 		}
 		catch (Exception e) 

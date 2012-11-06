@@ -100,9 +100,11 @@ public class LDAPrep {
 		}  
 		FileWriter fw = new FileWriter(f.getAbsoluteFile());
 		BufferedWriter writer = new BufferedWriter(fw);
+		String line;
 
-		for(String line : vocab){
-
+		for(int i = 0; i < vocab.length; i++){
+			line = vocab[i].toLowerCase();
+			vocab[i] = line;
 			writer.write(line);
 
 			writer.newLine();
@@ -140,7 +142,7 @@ public class LDAPrep {
 					KeywordConfig wordProb = new KeywordConfig();
 					String word = scLine.next();
 
-					wordProb.setKeyword(word);
+					wordProb.setKeyword(word.toLowerCase());
 					Float prob = scLine.nextFloat();
 					wordProb.setWeightedFreq(prob);
 
@@ -206,7 +208,7 @@ public class LDAPrep {
 						KeywordConfig wordProb = new KeywordConfig();
 						String word = scLine.next();
 
-						wordProb.setKeyword(word);
+						wordProb.setKeyword(word.toLowerCase());
 						Float prob = scLine.nextFloat();
 						wordProb.setWeightedFreq(prob);
 
