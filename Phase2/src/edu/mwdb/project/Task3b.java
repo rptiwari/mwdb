@@ -27,6 +27,8 @@ public class Task3b {
 			System.out.println(entry.getKey() + " : " + entry.getValue());
 		}
 		
+		Thread.sleep(5000);
+		
 		// Coauthor-Coauthor
 		System.out.println("\n\n\n\n\n\nCoauthor-Coauthor");
 		HashMap<String, Double> coauthorAssociatedVector = getAssociationKeywVectorToLatSem(authorTermFreq, allTerms, coauthorGroups);

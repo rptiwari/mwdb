@@ -26,6 +26,8 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
+import java.sql.Statement;
+
 
 public class DblpData {
 
@@ -196,12 +198,12 @@ public class DblpData {
 			IndexWriterConfig indexConfig = new IndexWriterConfig(Version.LUCENE_36, sa);
 			IndexWriter indexWriter = new IndexWriter(indexDirectory, indexConfig);
 			
-				String statement = "select paperid " +
-				"from dblp.papers " +
-						"where paperid NOT IN " +
-				"(select paperid " +
-				"from dblp.writtenby " +
-				"where personid=" + authorId + ")";
+				String statement = "select paperid, abstract " +
+					"from dblp.papers " +
+					"where paperid NOT IN " +
+					"(select paperid " +
+					"from dblp.writtenby " +
+					"where personid=" + authorId + ")";
 				PreparedStatement ps = con.prepareStatement(statement);
 				
 				ResultSet rs = ps.executeQuery();
@@ -251,5 +253,128 @@ public class DblpData {
 		return null;
 	}
 	
+	/**
+	 * Get all the paper Ids written by the author and his coauthors. (OR)
+	 * @param authorId - Author's ID in which to get his paper Ids, as well as his coauthors' paper Ids.
+	 * @return a map in which the keys represent the paperIds. The values are boolean but are meaningless.
+	 * @throws Exception
+	 */
+	public Map<Integer,Boolean> getPaperIdsFromCoauthorAndSelf(String authorId) throws Exception {
+		Utility util = new Utility();
+		Connection con = util.getDBConnection();
+		Statement stmt = con.createStatement();
+		
+		ResultSet coauthor_and_self_paperIds_rs = stmt.executeQuery("select paperid " +
+				"from writtenby inner join " + 
+				"(select personid2 " + 
+				"from coauthorswpaper " +
+				"where personid1=" + authorId + " " +
+				"group by personid2 " +
+				"UNION " +
+				"select personid2 " +
+				"from coauthorswpaper " +
+				"where personid2=" + authorId + " " +
+				"group by personid2) as x " +
+				"on writtenby.personid=x.personid2 " +
+				"group by paperid");	
+		Map<Integer,Boolean> coauthor_and_self_paperIds = new HashMap();
+		while (coauthor_and_self_paperIds_rs.next()) {
+			coauthor_and_self_paperIds.put(coauthor_and_self_paperIds_rs.getInt("paperid"), true);
+	  	}
+		return coauthor_and_self_paperIds;
+	}
 	
+	/**
+	 * Get all the paper Ids written by the author's coauthors excluding the ones written by the author himself
+	 * @param authorId
+	 * @return
+	 * @throws Exception
+	 */
+	public HashSet<Integer> getPaperIdsFromCoauthorExcludingSelf(String authorId) throws Exception {
+		Utility util = new Utility();
+		Connection con = util.getDBConnection();
+		Statement stmt = con.createStatement();
+		
+	  	stmt = con.createStatement();
+		ResultSet coauthor_paperIds_rs = stmt.executeQuery("select paperid " +
+				"from writtenby inner join " + 
+				"(select personid2 " +  
+				"from coauthorswpaper " + 
+				"where personid1=" + authorId + " " +
+				"group by personid2) as x " + 
+				"on writtenby.personid=x.personid2 " +
+				"where paperid NOT IN " +
+				"(select paperid " +
+				"from writtenby " +
+				"where personid=" + authorId + ") " +
+				"group by paperid");
+		HashSet<Integer> coauthor_paperIds = new HashSet();
+	  	while (coauthor_paperIds_rs.next()) {
+	  		coauthor_paperIds.add(coauthor_paperIds_rs.getInt("paperid"));
+	  	}
+	  	return coauthor_paperIds;
+	}
+	
+	/**
+	 * Builds a forward and an inverse index based on the papers and their keywords.
+	 * The forward index is a HashMap<Integer,HashMap> where Integer represents the paperId, 
+	 * and the inner Hashmap is <String,Double> where String is the keyword and Double is the TF
+	 * The inverse index is a HashMap<String,HashMap> where String represents the keyword,
+	 * and the inner HashMap is <Integer,Boolean> where Integer is the paperId and boolean is just a dummy value.
+	 * @return a hashmap array containing the forward index in slot 0 and backward index in slot 1.
+	 * @throws Exception
+	 */
+	public HashMap[] getForwardAndInversePaperKeywIndex() throws Exception {
+		Utility util = new Utility();
+		Connection con = util.getDBConnection();
+		Statement stmt = con.createStatement();
+		Set<char[]> stopWords = util.createStopWordsSet();
+		
+		ResultSet allPapersRs = stmt.executeQuery("SELECT paperid,abstract FROM papers");
+		
+		HashMap<Integer,HashMap> paperIdIndex = new HashMap();
+		HashMap<String,HashMap> invertedIndex = new HashMap();
+		
+		int numberOfPapers = 0;
+		while (allPapersRs.next()) {
+			numberOfPapers++;
+			int paperId = allPapersRs.getInt("paperId");
+			String abst = allPapersRs.getString("abstract");
+			HashMap<String,Double> abstractIndex = new HashMap();
+			
+			// Creating the words vector per paperId (forward index)
+			String[] wordsInAbstract = abst.split("[ .,?!()]+");
+			for (int i=0; i<wordsInAbstract.length; i++) {
+				String word = wordsInAbstract[i].toLowerCase();
+				if (word.length() == 0) // empty
+					continue;
+				if (!stopWords.contains(word.toCharArray())) {
+					if (abstractIndex.containsKey(word)) {
+						double tf = abstractIndex.get(word);
+						tf++;
+						abstractIndex.put(word, tf);
+					} else {
+						abstractIndex.put(word, 1.0);
+					}
+				}
+			}
+			
+			// Creating the inverted index
+			for (String key : abstractIndex.keySet()) { 
+				HashMap papersHavingWord;
+				if (invertedIndex.containsKey(key)) {
+					papersHavingWord = invertedIndex.get(key);
+					papersHavingWord.put(paperId, true);
+				} else {
+					papersHavingWord = new HashMap();
+					papersHavingWord.put(paperId, true);
+				}
+				invertedIndex.put(key, papersHavingWord);
+			}
+			
+			paperIdIndex.put(paperId, abstractIndex);
+		}
+		
+		return new HashMap[]{paperIdIndex, invertedIndex};
+	}
 }

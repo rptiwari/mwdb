@@ -47,10 +47,14 @@ public class Utility {
 	/*
 	 * Method to get the DB Connection.
 	 */
+	private static Connection con;
 	public Connection getDBConnection()
 	{
+		if (con != null)
+			return con;
+		
 		String dbUrl = "jdbc:mysql://localhost:3306/dblp";
-		Connection con=null;
+		
 		try 
 		{
 			Class.forName("com.mysql.jdbc.Driver");
@@ -414,5 +418,56 @@ public class Utility {
 		return alignedVector;
 	}
 	
+	/**
+	 * Given an authorId, computes the PF for all the keywords
+	 * @param authorId
+	 * @return a HashMap that contains the terms as the key and the pf as the value.
+	 * @throws Exception
+	 */
+	public static HashMap<String,Double> getPF(String authorId) throws Exception {
+		DblpData dblp = new DblpData();
+		List<String> allWords = dblp.getAllTermsInIndex(dblp.createAllDocumentIndex(), "doc");
+		HashMap<Integer,HashMap> forwardIndex = dblp.getForwardAndInversePaperKeywIndex()[0];
+		HashSet<Integer> paperIdsByCoauthors = dblp.getPaperIdsFromCoauthorExcludingSelf(authorId);
+		Map<Integer,Boolean> paperIdsByCoauthorsAndSelf = dblp.getPaperIdsFromCoauthorAndSelf(authorId);
+		
+		double R = paperIdsByCoauthors.size();
+		double N = paperIdsByCoauthorsAndSelf.size();
+		
+		HashMap<String,Double> retVal = new HashMap<String,Double>(allWords.size());
+		for (String word : allWords) {
+  			// Calculate the number of coauthor papers not containing the keyword
+  			double r_ij = 0;
+  			for (int paperId : paperIdsByCoauthors) {
+  				if (!forwardIndex.get(paperId).containsKey(word))
+  					r_ij++;
+  			}
+  			
+  			// Calculate number of papers in coauthor_and_self(ai) not containing the keyword
+  			double n_ij = 0;
+  			for (int paperId : paperIdsByCoauthorsAndSelf.keySet()) {
+  				if (!forwardIndex.get(paperId).containsKey(word))
+  					n_ij++;
+  			}
+  			
+  			retVal.put(word, doFormulaPF(R, N, r_ij, n_ij));
+		}
+		
+		return retVal;
+	}
 	
+	/**
+	 * Calculates the PF value
+	 * @param R - ||coauthor_papers_of_author||
+	 * @param N - ||coauthor_and_self_of_author||
+	 * @param r - number of coauthor_papers_of_author not containing keyword
+	 * @param n - number of coauthor_and_self_of_author not containing keyword
+	 * @return
+	 */
+	private static double doFormulaPF(Double R, Double N, Double r, Double n) {
+		/* compute the formula for PF Model for this term tempTerm */
+		Double leftPart = Math.log((r / (R - r)) / ((n - r) / (N - n - R + r)));
+		Double rightPart = Math.abs((r / R) - ((n - r) / (N - R)));				// can be negative so need abs
+		return (leftPart * rightPart);
+	}
 }
