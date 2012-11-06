@@ -24,6 +24,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.TermFreqVector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
@@ -267,5 +268,19 @@ public class UserCompDiffVector1b {
 		}
 
 	}
+/*	
+	public double[][] performPF(String AuthorID, Directory LuceneIndexDir){
+		DblpData db = new DblpData();
+		Utility.getDBConnection();
+	
+		public Map<String, TermFreqVector> getAuthorTermFrequencies(Directory luceneIndexDir){
+		public Map<String, TermFreqVector> authorFreqs = getAuthorTermFrequencies(luceneIndexDir){
+			Utility.getPF(authorId)
+		for(Map.Entry<String, TermFreqVector> entry  : authorFreqs.entrySet()){
+			TermFreqVector  tfv = entry.getValue();			
+			double[] doc1 = Utility.getAlignedTermFreqVector(tfv,allKeywordsPosMap);
+			documentMatrix[i] = doc1;
+	}*/
+	}
 
-}
+//}

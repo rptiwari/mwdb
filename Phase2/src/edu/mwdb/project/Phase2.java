@@ -21,7 +21,7 @@ public class Phase2 {
 
 		//String taskName = args[0];
 		Phase2 phase2 = new Phase2();
-		String taskName = "task1a";
+		String taskName = "task1b";
 		try{
 			if(taskName.equalsIgnoreCase("task1a")){
 				/*if(args.length != 3){
@@ -51,11 +51,11 @@ public class Phase2 {
 
 	private void doTask1a(String model, String personId) throws Exception{
 		personId = "1632672";
-		Top5Semantics1a latentSemantics = new Top5Semantics1a();
-		latentSemantics.getSemantics(personId, "PCA");
-		System.out.println("\n\n");
-		latentSemantics.getSemantics(personId, "SVD");
-		System.out.println("\n\n");
+//		Top5Semantics1a latentSemantics = new Top5Semantics1a();
+//		latentSemantics.getSemantics(personId, "PCA");
+//		System.out.println("\n\n");
+//		latentSemantics.getSemantics(personId, "SVD");
+//		System.out.println("\n\n");
 		task1aLDA t1Lda = new task1aLDA();
 		t1Lda.doTask(personId);
 	}
