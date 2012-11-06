@@ -421,4 +421,25 @@ public class DblpData {
 		return coAuthAndSelfIndex;
 	}
 	
+
+	public HashMap<String, String> getAuthNamePersonIdList(){
+		Utility util = new Utility();
+		Connection con = util.getDBConnection();
+
+		HashMap<String,String> authNamePersonIDList = new HashMap<String, String>();
+		try{
+			Statement statement = con.createStatement();
+			ResultSet resultSet = statement.executeQuery("select distinct(a.personid),a.name from writtenby w, papers p,authors a where a.personid = w.personid" +
+					" and w.paperid=p.paperid and p.abstract != \"\"");
+			while (resultSet.next()) 
+			{
+				authNamePersonIDList.put(resultSet.getString("personid"), resultSet.getString("name"));
+			}
+			return authNamePersonIDList;
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
