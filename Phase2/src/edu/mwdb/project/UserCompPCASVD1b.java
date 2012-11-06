@@ -41,7 +41,6 @@ public class UserCompPCASVD1b {
 			Connection con = utilityObj.getDBConnection();
 			
 			// Get the Id's of all the authors in the DB.
-			System.out.println("Getting the list of all authors from the corpus.");
 			Statement stmtUserdIds = con.createStatement();
 			String query_authorid = "select distinct a.personid from authors a join writtenby w join papers p ON a.personid = w.personid and w.paperid = p.paperid and p.abstract !=\"\"";
 			ResultSet authorsIdsFromDB = stmtUserdIds.executeQuery(query_authorid);
@@ -50,8 +49,6 @@ public class UserCompPCASVD1b {
 			{
 				userIdList.add(authorsIdsFromDB.getInt("personid"));
 			}
-			System.out.println("All authors list completed. Number of Authors: " + userIdList.size());
-
 			// To know the count of abstracts in the DB and store it in noOfDocs.
 			Statement stmt1 = con.createStatement();
 			int noOfDocs = 0;
@@ -169,7 +166,6 @@ public class UserCompPCASVD1b {
 			double docKeywordCorpusMatrix[][] = new double[rowSize][columnSize];
 			double[][] givenauthKeywordTfIdfMatrix = new double[1][columnSize];
 
-			System.out.println("Building givenauthKeywordTfIdfMatrix");
 			// Build the givenauthKeywordTfIdfMatrix i/p matrix
 			for(int j=0;j<columnSize;j++)
 			{
@@ -180,7 +176,6 @@ public class UserCompPCASVD1b {
 				}
 			}
 
-			System.out.println("BUilding docKeywordCorpusMatrix");
 			// Build the input Corpus matrix - docKeywordCorpusMatrix
 			for(int row=0;row<rowSize;row++)
 			{
@@ -204,7 +199,6 @@ public class UserCompPCASVD1b {
 				}
 			}
 
-			System.out.println("Building docGivenAuthKeywordCorpusMatrix");
 			// Build the docGivenAuthKeywordCorpusMatrix
 			// List to store the author abstracts
 			List<String> givenAuthorPapersList = new ArrayList<String>();
@@ -278,7 +272,6 @@ public class UserCompPCASVD1b {
 				}
 			}
 
-			System.out.println("All Matrices completeted..!!");
 			HashMap<Integer, String> authNamePersonIdList = new HashMap<Integer, String>();
 
 			Statement statement = con.createStatement();
@@ -297,8 +290,7 @@ public class UserCompPCASVD1b {
 				}
 			}
 
-			MatlabProxyFactory factory = new MatlabProxyFactory();
-			MatlabProxy proxy = factory.getProxy();
+			MatlabProxy proxy = MatLab.getProxy();
 			MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
 			
 			processor.setNumericArray("docKeywordArray", new MatlabNumericArray(docKeywordCorpusMatrix, null));
@@ -308,7 +300,6 @@ public class UserCompPCASVD1b {
 			// PCA - Start
 			if(model.equalsIgnoreCase("PCA"))
 			{
-				System.out.println("Starting to compute similar users using top 5 semantics PCA");
 				proxy.eval("[princicomp,score]=princomp(docGivenKWarray);");
 				double[][] pCAKeywordTop5Matrix = new double[userIdList.size()][5];
 				double[][] pCASemUserMatrix = new double[1][5];
@@ -406,10 +397,6 @@ public class UserCompPCASVD1b {
 					}
 				}
 			}
-			//SVD - End
-
-			proxy.disconnect();
-			con.close();
 		}
 		catch (Exception e)
 		{

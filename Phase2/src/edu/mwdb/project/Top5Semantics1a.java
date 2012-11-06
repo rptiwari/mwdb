@@ -175,8 +175,7 @@ public class Top5Semantics1a {
 			double[][] docKeywordCoeffMatrix = new double[columnSize][columnSize];
 
 			// Connecting to the Matlab
-			MatlabProxyFactory factory = new MatlabProxyFactory();
-			MatlabProxy proxy = factory.getProxy();
+			MatlabProxy proxy = MatLab.getProxy();
 
 			MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
 			processor.setNumericArray("docKeywordCorpusMatrix", new MatlabNumericArray(docKeywordCorpusMatrix, null));
@@ -241,10 +240,6 @@ public class Top5Semantics1a {
 					System.out.println();
 				}
 			}
-
-			proxy.disconnect();
-
-			con.close();
 		}
 		catch (Exception e) 
 		{

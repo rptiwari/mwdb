@@ -21,7 +21,7 @@ public class Phase2 {
 
 		//String taskName = args[0];
 		Phase2 phase2 = new Phase2();
-		String taskName = "task1b";
+		String taskName = "task1a";
 		try{
 			if(taskName.equalsIgnoreCase("task1a")){
 				/*if(args.length != 3){
@@ -29,7 +29,8 @@ public class Phase2 {
 					System.exit(1);
 				}
 				else*/
-					phase2.doTask1a(args[1],args[2]);
+					//phase2.doTask1a(args[1],args[2]);
+				phase2.doTask1a("","");
 			}else if(taskName.equalsIgnoreCase("task1b")){
 				phase2.doTask1b();
 			}else if(taskName.equalsIgnoreCase("task1c")){
@@ -50,14 +51,27 @@ public class Phase2 {
 
 	private void doTask1a(String model, String personId) throws Exception{
 		personId = "1632672";
-		model = "PCA";
 		Top5Semantics1a latentSemantics = new Top5Semantics1a();
-		latentSemantics.getSemantics(personId,model);
+		latentSemantics.getSemantics(personId, "PCA");
+		System.out.println("\n\n");
+		latentSemantics.getSemantics(personId, "SVD");
+		System.out.println("\n\n");
+		task1aLDA t1Lda = new task1aLDA();
+		t1Lda.doTask(personId);
 	}
 	
 	private void doTask1b() throws Exception{
+		int authorId = 1632672;
+		UserCompKeywordVector1b t1bKV = new UserCompKeywordVector1b();
+		t1bKV.runTask(authorId);
+		System.out.println("\n\n");
 		UserCompPCASVD1b comp = new UserCompPCASVD1b();
-		comp.computePCA_SVD(1632672, "PCA");
+		comp.computePCA_SVD(authorId, "PCA");
+		System.out.println("\n\n");
+		comp.computePCA_SVD(authorId, "SVD");
+		System.out.println("\n\n");
+		UserCompLDA1 t1b = new UserCompLDA1();
+		t1b.doLatentSemantics(Integer.toString(authorId));
 	}
 	
 	private void doTask1c() throws Exception{

@@ -35,14 +35,12 @@ public class UserCompKeywordVector1b {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public void runTask(int personId) {
 		// TODO Auto-generated method stub
 		Utility utilityObj = new Utility();
 		try
 		{
 			Connection con = utilityObj.getDBConnection();
-			int personId = 1632672;
-
 			// Get the Id's of all the authors in the DB.
 			Statement stmtUserdIds = con.createStatement();
 			String query_authorid = "select distinct a.personid from authors a join writtenby w join papers p ON a.personid = w.personid and w.paperid = p.paperid and p.abstract !=\"\"";
@@ -272,8 +270,6 @@ public class UserCompKeywordVector1b {
 					System.out.println(authNamePersonIdList.get(userIdList.get((int) iDistX[j] - 1)) + "\t" + distance[j]);
 				}
 			}
-
-			con.close();
 		}
 		catch (Exception e)
 		{
