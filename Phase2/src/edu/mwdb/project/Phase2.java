@@ -21,7 +21,7 @@ public class Phase2 {
 
 		//String taskName = args[0];
 		Phase2 phase2 = new Phase2();
-		String taskName = "task1a";
+		String taskName = "task1c";
 		try{
 			if(taskName.equalsIgnoreCase("task1a")){
 				/*if(args.length != 3){
@@ -62,17 +62,17 @@ public class Phase2 {
 	
 	private void doTask1b() throws Exception{
 		int authorId = 1632672;
-		UserCompKeywordVector1b t1bKV = new UserCompKeywordVector1b();
-		t1bKV.runTask(authorId);
-		System.out.println("\n\n");
-		UserCompDiffVector1b t1bTFIDF2 = new UserCompDiffVector1b();
-		t1bTFIDF2.doTask(authorId);
-		System.out.println("\n\n");
-//		UserCompPCASVD1b comp = new UserCompPCASVD1b();
-//		comp.computePCA_SVD(authorId, "PCA");
+//		UserCompKeywordVector1b t1bKV = new UserCompKeywordVector1b();
+//		t1bKV.runTask(authorId);
 //		System.out.println("\n\n");
-//		comp.computePCA_SVD(authorId, "SVD");
+//		UserCompDiffVector1b t1bTFIDF2 = new UserCompDiffVector1b();
+//		t1bTFIDF2.doTask(authorId);
 //		System.out.println("\n\n");
+		UserCompPCASVD1b comp = new UserCompPCASVD1b();
+		comp.computePCA_SVD(authorId, "PCA");
+		System.out.println("\n\n");
+		comp.computePCA_SVD(authorId, "SVD");
+		System.out.println("\n\n");
 //		UserCompLDA1 t1b = new UserCompLDA1();
 //		t1b.doLatentSemantics(Integer.toString(authorId));
 	}
@@ -81,6 +81,11 @@ public class Phase2 {
 		Task1cCompDocs t1c = new Task1cCompDocs();
 		String personNum = "1632672";
 		t1c.findKWSimilarDocs(personNum);
+		System.out.println("\n\n");
+		t1c.findDifferentiationSimilarDocs(personNum, "TF-IDF2");
+		System.out.println("\n\n");
+		t1c.findDifferentiationSimilarDocs(personNum, "PF");
+
 	}
 	
 	private void doTask2a() throws Exception{

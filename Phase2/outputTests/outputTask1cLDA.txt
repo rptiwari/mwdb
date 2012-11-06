@@ -1,0 +1,24 @@
+Similar Documents- Comparing Users LDA
+****************************************************
+
+Paper ID: 298253		Distance from given author: 0.10426718763117715
+
+Paper ID: 27228			Distance from given author: 0.12303445210321395
+
+Paper ID: 140737		Distance from given author: 0.12303445210321395
+
+Paper ID: 151519		Distance from given author: 0.12303445210321395
+
+Paper ID: 176687		Distance from given author: 0.12303445210321395
+
+Paper ID: 298017		Distance from given author: 0.12303445210321395
+
+Paper ID: 298088		Distance from given author: 0.12303445210321395
+
+Paper ID: 300906		Distance from given author: 0.12303445210321395
+
+Paper ID: 302434		Distance from given author: 0.12303445210321395
+
+Paper ID: 509167		Distance from given author: 0.12303445210321395
+
+Paper ID: 522666		Distance from given author: 0.12303445210321395

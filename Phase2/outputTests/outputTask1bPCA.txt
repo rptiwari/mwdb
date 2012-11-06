@@ -1,0 +1,12 @@
+Top 10 Similar Users - Comparing Users Semantics PCA
+*****************************************************
+Author Name: V. S. Subrahmanian   Distance from given author: 0.016543455808229246
+Author Name: Luigi Di Caro   	 	Distance from given author: 0.26064862053118654
+Author Name: Lina Peng   	 	Distance from given author: 0.27891811817716183
+Author Name: Maria Luisa Sapino   	Distance from given author: 0.2795714111232823
+Author Name: Claudio Schifanella   	Distance from given author: 0.30149717012600663
+Author Name: Lakshmi Priya Mahalingam   	 Distance from given author: 0.31182511781456146
+Author Name: Ping Lin   	 		 Distance from given author: 0.3134148259279338
+Author Name: Murat Kantarcioglu   	 	 Distance from given author: 0.5140176652348101
+Author Name: Yinpeng Chen   	 	 Distance from given author: 0.5245248372089384
+Author Name: Pamela Jennings   	 	 Distance from given author: 0.5324025775638435

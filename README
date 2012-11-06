@@ -1,0 +1,65 @@
+Project Phase 2
+
+Please set up the DBLP corpus in  a MySQL DB with username 'root' and password as 'password'
+Install Matlab 2012a if it is not present in your computer
+
+To run the program, you need to enter the command line arguments in the following way :
+
+For Task1a - PCA
+java phase2 task1a authorid pca
+
+For Task1a - SVD
+java phase2 task1a authorid svd
+
+For Task1a - LDA
+java phase2 task1a authorid lda
+
+For Task1b - Keyword vector
+java phase2 task1b authorid kw
+
+For Task1b - Differentiation vector TFIDF2
+java phase2 task1b authorid tfidf2
+
+For Task1b - Differentiation vector PF
+java phase2 task1b authorid pf
+
+For Task1b - top 5 latent semantics PCA
+java phase2 task1b authorid pca
+
+For Task1b - top 5 latent semantics SVD
+java phase2 task1b authorid svd
+
+For Task1b - top 5 latent semantics LDA
+java phase2 task1b authorid lda
+
+For Task1c - keyword vector 
+java phase2 task1c authorid kw
+
+For Task1c - Differentiation vector TFIDF2
+java phase2 task1c authorid tfidf2
+
+For Task1c - Differentiation vector PF
+java phase2 task1c authorid pf
+
+For Task1c - top 5 latent semantics PCA
+java phase2 task1c authorid pca
+
+For Task1c - top 5 latent semantics SVD
+java phase2 task1c authorid svd
+
+For Task1c - top c latent semantics LDA
+java phase2 task1b authorid lda
+
+For Task 2a 
+java phase2 task2a
+
+For Task 2b
+java phase2 task2b
+
+For Task 3a
+java phase2 task3a
+
+For Task 3b
+java phase2 task3b
+
+ 

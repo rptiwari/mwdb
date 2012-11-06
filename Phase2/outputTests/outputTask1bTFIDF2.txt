@@ -1,0 +1,12 @@
+Top 10 Similar Users - Comparing Users Differentiation Vectors -> TF-IDF2
+*************************************************************************
+V. S. Subrahmanian    		0.060382322372974806
+Inderpal Narang    		0.08934870820945462
+Vijayshankar Raman    	0.09361722590801569
+Wang-Pin Hsiung    		0.10452453054997823
+Munmun De Choudhury    	0.10621074414120402
+Eenjun Hwang    		0.10654379680846315
+B. Prabhakaran   		0.1075082326654655
+Sibel Adali    			0.1126599537966535
+Maria Luisa Sapino    		0.11353543206698358
+Wen-Syan Li    		0.11534356703240001

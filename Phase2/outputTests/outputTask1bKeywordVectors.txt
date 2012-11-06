@@ -1,0 +1,13 @@
+*****************************************************
+Top 10 Similar Users - Comparing Users Keyword Vectors
+*****************************************************
+V. S. Subrahmanian   	 0.11938336952087403
+Maria Luisa Sapino   	 0.49753304273639753
+K. Selcuk Candan   	 0.6339277983041898
+Hari Sundaram   	 0.6939714341233403
+Qing Li   		 0.7079747788688024
+Jun'ichi Tatemura   	 0.7094951494254846
+John Grant    		0.7173595057287427
+Sibel Adali    		0.7231260050062818
+Divyakant Agrawal    	0.7242147854545541
+Yoshinori Hara    	0.7252319001180618

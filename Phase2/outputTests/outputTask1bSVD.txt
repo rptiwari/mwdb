@@ -1,0 +1,11 @@
+Top 10 Similar Users - Comparing Users Semantics SVD
+****************************************************
+Author Name: V. S. Subrahmanian   	Distance from given author: 0.008743895034613
+Author Name: Lina Peng   	 		Distance from given author: 0.02926630551008269
+Author Name: Xiao Zhang   	 		Distance from given author: 0.04056745416461183
+Author Name: Luigi Di Caro   	 		Distance from given author: 0.04488008022316092
+Author Name: Lakshmi Priya Mahalingam   	Distance from given author: 0.04665396127338972
+Author Name: Maria Luisa Sapino   	 	Distance from given author: 0.05469620642981077
+Author Name: Ping Lin   	 	Distance from given author: 0.055405265812853655
+Author Name: Shan Wang   	 	Distance from given author: 0.05695315228669884
+Author Name: Terri Hedgpeth   	Distance from given author: 0.06692066809483221
