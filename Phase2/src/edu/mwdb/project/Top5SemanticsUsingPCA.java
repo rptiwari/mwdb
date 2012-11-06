@@ -29,11 +29,8 @@ import org.apache.lucene.util.Version;
 
 public class Top5SemanticsUsingPCA {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public void getSemantics(String personId, String model) {
+		
 		Utility utilityObj = new Utility();
 		try 
 		{
@@ -42,12 +39,7 @@ public class Top5SemanticsUsingPCA {
 			List<String> abstracts = new ArrayList<String>();
 
 			Statement stmt = con.createStatement();
-			// use 1632672 instead of args[0]
-			String personId = args[0];
-
-			//String personId = "1632672";
-
-			// To get the list of papers written by the given author.
+						// To get the list of papers written by the given author.
 			String query_authorid = 
 					"select p.abstract from papers p join " +  
 							"(select distinct w.paperid from " + 
@@ -174,16 +166,6 @@ public class Top5SemanticsUsingPCA {
 				}
 			}
 
-			// Print the i/p Corpus matrix.
-			/*for(int row=0;row<rowSize;row++)
-			{
-				for(int column=0;column<columnSize;column++)
-				{
-					System.out.print(docKeywordCorpusMatrix[row][column] + "\t");
-				}
-				System.out.println();
-			}*/
-
 			double[][] docKeywordCoeffMatrix = new double[columnSize][columnSize];
 
 			// Connecting to the Matlab
@@ -193,64 +175,66 @@ public class Top5SemanticsUsingPCA {
 			MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
 			processor.setNumericArray("docKeywordCorpusMatrix", new MatlabNumericArray(docKeywordCorpusMatrix, null));
 
-			// For PCA:
-			proxy.eval("[pc,score]=princomp(docKeywordCorpusMatrix);");
 			double[][] tempMatrix = new double[columnSize][columnSize];
+			
+			if(model.equalsIgnoreCase("PCA")){
+				// For PCA:
+				proxy.eval("[pc,score]=princomp(docKeywordCorpusMatrix);");
+				
 
-			for(int k=0;k<columnSize;k++)
-			{
-				Object[] obj=proxy.returningEval("pc(:,"+ (k+1) +")" ,1);
-				tempMatrix[k]=(double[]) obj[0];
-			}
+				for(int k=0;k<columnSize;k++)
+				{
+					Object[] obj=proxy.returningEval("pc(:,"+ (k+1) +")" ,1);
+					tempMatrix[k]=(double[]) obj[0];
+				}
 
-			double[][] resultSematicMatrixPCA = new double[columnSize][5];
-			for(int a=0;a<columnSize;a++)
-			{
-				for(int b=0;b<5;b++)
+				double[][] resultSematicMatrixPCA = new double[columnSize][5];
+				for(int a=0;a<columnSize;a++)
 				{
-					resultSematicMatrixPCA[a][b]= tempMatrix[b][a];
+					for(int b=0;b<5;b++)
+					{
+						resultSematicMatrixPCA[a][b]= tempMatrix[b][a];
+					}
+				}
+				for(int i=0;i<5;i++)
+				{
+					for(int j=0;j<columnSize;j++)
+					{
+						System.out.print(resultSematicMatrixPCA[i][j] + "\t");
+					}
+					System.out.println();
+				}
+				
+			}else if(model.equalsIgnoreCase("SVD")){
+				// For SVD:
+				proxy.eval("[U,S,V]=svd(docKeywordCorpusMatrix);");
+				for(int k=0;k<columnSize;k++)
+				{
+					Object[] obj=proxy.returningEval("V(:,"+ (k+1) +")" ,1);
+					tempMatrix[k]=(double[])obj[0];
+				}
+				
+				System.out.println("***********Printing the Latent Semantics using SVD***********");
+				double[][] resultSematicMatrixSVD = new double[5][columnSize];
+				for(int a=0;a<5;a++)
+				{
+					for(int b=0;b<columnSize;b++)
+					{
+						resultSematicMatrixSVD[a][b]= tempMatrix[b][a];
+					}
+				}
+				
+				for(int i=0;i<5;i++)
+				{
+					for(int j=0;j<columnSize;j++)
+					{
+						System.out.print(resultSematicMatrixSVD[i][j] + "\t");
+					}
+					System.out.println();
 				}
 			}
 			
-			// Print the Top5 Latent/Topic Matrix
-			/*for(int i=0;i<columnSize;i++)
-			{
-				for(int j=0;j<5;j++)
-				{
-					System.out.print(resultSematicMatrixPCA[i][j] + "\t");
-				}
-				System.out.println();
-			}*/
-			
-			// For SVD:
-			proxy.eval("[U,S,V]=svd(docKeywordCorpusMatrix);");
-			for(int k=0;k<columnSize;k++)
-			{
-				Object[] obj=proxy.returningEval("V(:,"+ (k+1) +")" ,1);
-				tempMatrix[k]=(double[])obj[0];
-			}
-			
-			System.out.println("***********Printing the Latent Semantics using SVD***********");
-			double[][] resultSematicMatrixSVD = new double[5][columnSize];
-			for(int a=0;a<5;a++)
-			{
-				for(int b=0;b<columnSize;b++)
-				{
-					resultSematicMatrixSVD[a][b]= tempMatrix[b][a];
-				}
-			}
-			
-			for(int i=0;i<5;i++)
-			{
-				for(int j=0;j<columnSize;j++)
-				{
-					System.out.print(resultSematicMatrixSVD[i][j] + "\t");
-				}
-				System.out.println();
-			}
-
 			proxy.disconnect();
-
 			con.close();
 		}
 		catch (Exception e) 
