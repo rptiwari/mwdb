@@ -40,7 +40,7 @@ public class UserCompDiffVector {
 		try
 		{
 			Connection con = utilityObj.getDBConnection();
-			int personId = 1636579;
+			int personId = 1632672;
 			
 			// Get the Id's of all the authors in the DB.
 			Statement stmtUserdIds = con.createStatement();
@@ -91,7 +91,7 @@ public class UserCompDiffVector {
 				String query_authorid = 
 						"select p.abstract from papers p join " +  
 								"(select distinct w.paperid from " + 
-								"authors a join writtenby w where a.personid = w.personid and a.personid = " + personId  + 
+								"authors a join writtenby w where a.personid = w.personid and a.personid = " + userId  + 
 								" order by paperid) T1 on p.paperid = T1.paperid where p.abstract != \"\"";
 
 				ResultSet rs = stmt1.executeQuery(query_authorid);
@@ -103,7 +103,7 @@ public class UserCompDiffVector {
 				String query_coauthor_and_self = 
 						"SELECT distinct abstract from papers join " +
 								"(select distinct(writby.paperid) from writtenby writby join coauthorswpaper coauth on writby.personid = coauth.personid2 " +
-								"where coauth.personid1 = " + personId + " )T " +
+								"where coauth.personid1 = " + userId + " )T " +
 								" ON papers.paperid = T.paperid where abstract!=\"\"";
 
 				ResultSet rs1 = stmt2.executeQuery(query_coauthor_and_self);
@@ -141,7 +141,7 @@ public class UserCompDiffVector {
 				docKeywords.add(keywordsList);
 
 				//Calling the method createTFIDF to create TF-IDF vector output
-				Map<String,Float> idfMap = utilityObj.createTFIDF(rowData1.size(),indexDirectory, termFreq, "TF-IDF");
+				Map<String,Float> idfMap = utilityObj.createTFIDF(rowData1.size(),indexDirectory, termFreq,"TF-IDF2");
 				listTFIDFMaps.add(idfMap);
 
 				if(userId == personId)
@@ -158,14 +158,14 @@ public class UserCompDiffVector {
 			int rowSize = userIdList.size();
 			int columnSize = termFinalFreq.size();
 
-			double[][] docDVCorpusMatrix = new double[rowSize][columnSize];
-			double[][] givenAuthMatrix = new double[1][columnSize];
+			double[][] docDVCorpusMatrixTFIDF = new double[rowSize][columnSize];
+			double[][] givenAuthMatrixTFIDF = new double[1][columnSize];
 
 			for(int j=0;j<columnSize;j++)
 			{
 				for(Map.Entry<String, Float> k: termFinalFreq.entrySet())
 				{
-					givenAuthMatrix[0][j] = idfGivenAuthMap.get(k.getKey());
+					givenAuthMatrixTFIDF[0][j] = idfGivenAuthMap.get(k.getKey());
 					j++;
 				}
 			}
@@ -192,10 +192,10 @@ public class UserCompDiffVector {
 						{
 							if(k.getKey().equals(tempList.get(i)))
 							{
-								docDVCorpusMatrix[row][column] = listTFIDFMaps.get(row).get(k.getKey());
+								docDVCorpusMatrixTFIDF[row][column] = listTFIDFMaps.get(row).get(k.getKey());
 								break;
 							}
-							docDVCorpusMatrix[row][column] = 0;
+							docDVCorpusMatrixTFIDF[row][column] = 0;
 						}
 						if (column<columnSize-1)
 							column++;
@@ -214,9 +214,8 @@ public class UserCompDiffVector {
 			}
 			out.close();*/
 			
-			System.out.println("**************************************************************");
-			System.out.println("Top 10 Similar Users - Comparing Users Differentiation Vectors");
-			System.out.println("**************************************************************");
+			System.out.println("Top 10 Similar Users - Comparing Users Differentiation Vectors -> TF-IDF2");
+			System.out.println("*************************************************************************");
 
 			HashMap<Integer, String> authNamePersonIdList = new HashMap<Integer, String>();
 
@@ -240,8 +239,8 @@ public class UserCompDiffVector {
 			MatlabProxy proxy = factory.getProxy();
 
 			MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
-			processor.setNumericArray("inputCorpusMatrix", new MatlabNumericArray(docDVCorpusMatrix, null));
-			processor.setNumericArray("userMatrix", new MatlabNumericArray(givenAuthMatrix, null));
+			processor.setNumericArray("inputCorpusMatrix", new MatlabNumericArray(docDVCorpusMatrixTFIDF, null));
+			processor.setNumericArray("userMatrix", new MatlabNumericArray(givenAuthMatrixTFIDF, null));
 			Object[] obj = new Object[2];
 			obj = proxy.returningEval("knnsearch( inputCorpusMatrix, userMatrix,'k', 11,'Distance','cosine')",2);
 			proxy.disconnect();
