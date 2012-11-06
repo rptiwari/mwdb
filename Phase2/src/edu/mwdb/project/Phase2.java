@@ -51,12 +51,12 @@ public class Phase2 {
 	private void doTask1a(String model, String personId) throws Exception{
 		personId = "1632672";
 		model = "PCA";
-		Top5SemanticsUsingPCA latentSemantics = new Top5SemanticsUsingPCA();
+		Top5Semantics1a latentSemantics = new Top5Semantics1a();
 		latentSemantics.getSemantics(personId,model);
 	}
 	
 	private void doTask1b() throws Exception{
-		UserCompPCASVD comp = new UserCompPCASVD();
+		UserCompPCASVD1b comp = new UserCompPCASVD1b();
 		comp.computePCA_SVD(1632672, "PCA");
 	}
 	
