@@ -297,8 +297,30 @@ public class Utility {
 	}
 
 	
-
-	
+	/**
+	 * Retrieves a PaperId-Term vector for all the author's paperIds
+	 * @param authorId
+	 * @param allTerms - all the terms in the entire document corpus.
+	 * @param paperIdsFromAuthor - obtained by "dblp.getPaperIdsFromAuthor(authorId)"
+	 * @param applyIDF - flag to apply idf values if wanted (PCA,SVD) or not (LDA)
+	 * @return a 2d array of doubles where the first index represents the paperId and the second one represents the term
+	 * @throws Exception
+	 */
+	public double[][] getAuthor_DocTermMatrix(String authorId, List<String> allTerms, List<Integer> paperIdsFromAuthor, boolean applyIDF) throws Exception {
+		DblpData dblp = new DblpData();
+		HashMap<Integer,HashMap<String,Double>> forwardIndex = dblp.getForwardAndInversePaperKeywIndex()[0];
+		Directory dir = dblp.createAllDocumentIndex();
+		IndexReader reader = IndexReader.open(dir);
+		
+		double[][] retVal = new double[paperIdsFromAuthor.size()][allTerms.size()];
+		for (int paperId : paperIdsFromAuthor) {
+			for (int termIdx = 0; termIdx < allTerms.size(); termIdx++) {
+				String currentTerm = allTerms.get(termIdx);
+				retVal[paperId][termIdx] = forwardIndex.get(paperId).get(currentTerm) * (applyIDF ? getIDF(reader,currentTerm) : 1);
+			}
+		}
+		return retVal;
+	}
 	
 	/*
 	 * Method to generate the TF and the TF-IDF vector mapping

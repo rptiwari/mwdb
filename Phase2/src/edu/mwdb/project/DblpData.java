@@ -318,6 +318,28 @@ public class DblpData {
 	}
 	
 	/**
+	 * Get all the paperIds that are written from authorId
+	 * @param authorId
+	 * @return a list of Integers representing the paperIds
+	 * @throws Exception
+	 */
+	public List<Integer> getPaperIdsFromAuthor(String authorId) throws Exception {
+		Utility util = new Utility();
+		Connection con = util.getDBConnection();
+		Statement stmt = con.createStatement();
+		
+	  	stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery("select paperid " +
+				"from writtenby " +  
+				"where personid=" + authorId);
+		List<Integer> retVal = new ArrayList<Integer>();
+	  	while (rs.next()) {
+	  		retVal.add(rs.getInt("paperid"));
+	  	}
+	  	return retVal;
+	}
+	
+	/**
 	 * Builds a forward and an inverse index based on the papers and their keywords.
 	 * The forward index is a HashMap<Integer,HashMap> where Integer represents the paperId, 
 	 * and the inner Hashmap is <String,Double> where String is the keyword and Double is the TF
