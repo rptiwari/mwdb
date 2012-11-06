@@ -1,16 +1,27 @@
 package edu.mwdb.project;
 
+import matlabcontrol.MatlabConnectionException;
 import matlabcontrol.MatlabInvocationException;
 import matlabcontrol.MatlabProxy;
 import matlabcontrol.MatlabProxyFactory;
+import matlabcontrol.MatlabProxyFactoryOptions;
 import matlabcontrol.extensions.MatlabNumericArray;
 import matlabcontrol.extensions.MatlabTypeConverter;
 
 public class MatLab {
 	
-	MatlabProxy proxy;
-	public MatLab(MatlabProxy proxy) {
-		this.proxy = proxy;
+	private static MatlabProxy proxy;
+	public MatLab() {
+
+	}
+	
+	public static MatlabProxy getProxy() throws MatlabConnectionException{
+		if(proxy == null){
+			MatlabProxyFactoryOptions options = new MatlabProxyFactoryOptions.Builder().setUsePreviouslyControlledSession(true).build();
+			MatlabProxyFactory factory = new MatlabProxyFactory(options);
+			proxy = factory.getProxy();
+		}
+		return proxy;
 	}
 	
 	/**
@@ -26,13 +37,13 @@ public class MatLab {
 		int columnSize = matrix[0].length;
 		double[][] tempMatrix = new double[columnSize][columnSize];
 		
-		MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
+		MatlabTypeConverter processor = new MatlabTypeConverter(getProxy());
 		processor.setNumericArray("matrix", new MatlabNumericArray(matrix, null));
 		
-		proxy.eval("[U,S,V]=svd(matrix);");
+		getProxy().eval("[U,S,V]=svd(matrix);");
 		for(int k=0;k<columnSize;k++)
 		{
-			Object[] obj=proxy.returningEval("V(:,"+ (k+1) +")" ,1);
+			Object[] obj=getProxy().returningEval("V(:,"+ (k+1) +")" ,1);
 			tempMatrix[k]=(double[])obj[0];
 		}
 		

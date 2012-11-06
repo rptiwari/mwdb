@@ -13,17 +13,13 @@ import org.apache.lucene.store.Directory;
 public class Task2 {
 
 	DblpData dblpData;
-	MatlabProxyFactory factory;
-	MatlabProxy proxy;
-	MatLab matlab;
 	Utility utils;
+	MatLab matlab;
 	
 	public Task2() throws Exception {
 		dblpData = new DblpData();
-		factory = new MatlabProxyFactory();
-		proxy = factory.getProxy();
-		matlab = new MatLab(proxy);
 		utils = new Utility();
+		matlab = new MatLab();
 	}
 	
 	public static void main(String[] args) throws Exception {
