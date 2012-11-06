@@ -22,7 +22,7 @@ public class Phase2 {
 			System.out.println("\nEnter Command (task args1, args2....)   ");
 			Scanner sc = new Scanner(System.in);
 			String command = sc.nextLine();
-			String[] tokens = command.split(" ");	
+			String[] tokens = command.split(" ");
 
 			Phase2 phase2 = new Phase2();
 			String taskName = tokens[0];

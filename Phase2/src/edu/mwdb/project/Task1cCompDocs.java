@@ -57,7 +57,7 @@ public class Task1cCompDocs {
 			DblpData db = new DblpData();
 			Directory theIndex = db.createAllDocumentIndex();
 			
-			IndexReader reader2 = IndexReader.open(theIndex);
+			IndexReader papersReader = IndexReader.open(theIndex);
 
 				Directory theIndextoAuthors = db.createAuthorDocumentIndex();
 				
@@ -66,26 +66,26 @@ public class Task1cCompDocs {
 				List<String> allterms =	db.getAllTermsInIndex(theIndex, "doc");
 				LinkedHashMap<String, Integer> wordPosMap = (LinkedHashMap<String, Integer>) findMap(allterms);
 				
-				double[] authorKeyword = Utility.getAlignedTFIDFVector(keywordVector,wordPosMap,reader2);
+				double[] authorKeyword = Utility.getAlignedTFIDFVector(keywordVector,wordPosMap,papersReader);
 
 				
 				Directory nonAuthorIndex = db.createNonAuthoredDocsIndex(personNum);
 			
-				Similarities =  getSimilarity(nonAuthorIndex, authorKeyword, wordPosMap);
+				Similarities =  getSimilarity(theIndex,nonAuthorIndex, authorKeyword, wordPosMap);
 				
 				
 				if (!Similarities.isEmpty()){
 					// Create an array containing the elements from hashtable Similarities
 					VectorRanking[] rankingArray =	doRanking(Similarities);	
 
-					displayRanking(rankingArray, reader2);
+					displayRanking(rankingArray, papersReader);
 
 					Similarities.clear();
 
 
 				}						// end if similarities is non-empty
 				else { System.out.println("0 total matching documents");}
-				reader2.close();
+				papersReader.close();
 				
 			
 			} catch (Exception e) {
@@ -98,7 +98,6 @@ public class Task1cCompDocs {
 	
 	
 	public void findDifferentiationSimilarDocs(String personNum, String divVectorType) throws Exception {
-		String fileName = null;
 		String rankingMethod = divVectorType;
 		double[][] documentMatrix = null;
 		Hashtable<Integer, VectorRanking> Similarities = new Hashtable<Integer, VectorRanking>();
@@ -106,7 +105,7 @@ public class Task1cCompDocs {
 		
 			DblpData db = new DblpData();
 			Directory theIndex = db.createAllDocumentIndex();
-			IndexReader reader2 = IndexReader.open(theIndex);
+			IndexReader papersReader = IndexReader.open(theIndex);
 
 			Directory theIndex2 = db.createAuthorDocumentIndex();
 
@@ -114,7 +113,7 @@ public class Task1cCompDocs {
 			List<String> allterms =	db.getAllTermsInIndex(theIndex, "doc");
 			LinkedHashMap<String, Integer> wordPosMap = (LinkedHashMap<String, Integer>) findMap(allterms);
 
-			//		double[] authorKeyword = Utility.getAlignedTFIDFVector(keywordVector,wordPosMap,reader2);
+			//		double[] authorKeyword = Utility.getAlignedTFIDFVector(keywordVector,wordPosMap,papersReader);
 
 			Directory nonAuthorIndex = db.createNonAuthoredDocsIndex(personNum);
 			
@@ -127,14 +126,14 @@ public class Task1cCompDocs {
 			}
 
 
-			Similarities =  getSimilarity(nonAuthorIndex, authorDiscriminationVector, wordPosMap);
+			Similarities =  getSimilarity(theIndex,nonAuthorIndex, authorDiscriminationVector, wordPosMap);
 
 
 			if (!Similarities.isEmpty()){
 				// Create an array containing the elements from hashtable Similarities
 				VectorRanking[] rankingArray =	doRanking(Similarities);	
 
-				displayRanking(rankingArray, reader2);
+				displayRanking(rankingArray, papersReader);
 
 				Similarities.clear();
 
@@ -142,12 +141,7 @@ public class Task1cCompDocs {
 			}						// end if similarities is non-empty
 			else { System.out.println("0 total matching documents");}
 
-
-
-
-
-
-			reader2.close();
+			papersReader.close();
 
 
 	}					// end main of task1c
@@ -158,14 +152,12 @@ public class Task1cCompDocs {
 		String rankingMethod = divVectorType;
 		double[][] documentMatrix = null;
 		
-		Hashtable<Integer, VectorRanking> Similarities = new Hashtable<Integer, VectorRanking>();
-
-		
+				
 			Utility utility = new Utility();
 			DblpData db = new DblpData();
 			
 
-			//ArrayList<TermFrequency> termVector = getAuthorKeywordVector1(personNum,searcher, reader2, rankingMethod);
+			//ArrayList<TermFrequency> termVector = getAuthorKeywordVector1(personNum,searcher, papersReader, rankingMethod);
 			Directory theIndextoAuthors = db.createAuthorDocumentIndex();
 			IndexReader authorsReader = IndexReader.open(theIndextoAuthors);
 			
@@ -174,17 +166,15 @@ public class Task1cCompDocs {
 			
 
 			Directory theIndex = db.createAllDocumentIndex();
-			IndexReader reader2 = IndexReader.open(theIndex);
+			IndexReader papersReader = IndexReader.open(theIndex);
 			List<String> allterms =	db.getAllTermsInIndex(theIndex, "doc");
 			Map<String, Integer> wordMap =  findMap(allterms);
 			LinkedHashMap<String, Integer> wordPosMap = (LinkedHashMap<String, Integer>)(wordMap);
 		
 			
 			String[] staticVocabulary = allterms.toArray(new String[allterms.size()]);
-			
-			
-			
-			//		double[] authorKeyword = Utility.getAlignedTFIDFVector(keywordVector,wordPosMap,reader2);
+						
+			//		double[] authorKeyword = Utility.getAlignedTFIDFVector(keywordVector,wordPosMap,papersReader);
 			
 			Map<Integer, String> docIndexMap  = new HashMap<Integer, String>();
 			double[][] documentsMatrix =  getDocumentMatrix(nonAuthorIndex, allterms, docIndexMap);
@@ -198,7 +188,7 @@ public class Task1cCompDocs {
 				double[][] authorsDocumentMatrix = utility.getAuthor_DocTermMatrix(personNum,  allterms, paperIdsFromAuthor, true);
 				MatLab matlab = new MatLab(); 
 				double[][] hiddenSemantics = matlab.pca(authorsDocumentMatrix, 5);
-				projectPCA( hiddenSemantics, documentsMatrix, authorKeyword, docIndexMap);
+				projectPCA( hiddenSemantics, documentsMatrix, authorKeyword, docIndexMap, papersReader);
 						}
 			else if (divVectorType.equalsIgnoreCase("SVD"))
 			{
@@ -207,41 +197,51 @@ public class Task1cCompDocs {
 				
 				MatLab matlab = new MatLab(); 
 				double[][] hiddenSemantics = matlab.svd(authorsDocumentMatrix, 5);
-				projectSVD( hiddenSemantics, documentsMatrix, authorKeyword, docIndexMap,5);
+				projectSVD( hiddenSemantics, documentsMatrix, authorKeyword, docIndexMap, papersReader,5);
 			}
 			else 
 				{
 				authorKeyword = Utility.getAlignedTermFreqVector(keywordVector, wordPosMap);
 				/* do LDA */
-				double[][] authorsDocumentMatrix = utility.getAuthor_DocTermMatrix(personNum,  allterms, paperIdsFromAuthor, false);
+				double[][] authorsDocumentMatrix = utility.getAuthor_DocTermMatrix(personNum,  makeVocabularyList(keywordVector), paperIdsFromAuthor, false);
 				UserCompLDA1 lda = new UserCompLDA1(); 
-				List<HashMap<String,Float>> topicsList =  lda.doLDA(authorsDocumentMatrix,staticVocabulary);
+				List<HashMap<String,Float>> topicsList =  lda.doLDA(authorsDocumentMatrix,keywordVector.getTerms());//staticVocabulary
+				
 				double[][] completeTopicsMatrix = lda.buildTopicsMatrix(topicsList, allterms);
 				
 				/* Project LDA onto other data */
 				Object[] objLSA = lda.doLatentCompare(completeTopicsMatrix, documentsMatrix, authorsDocumentMatrix, authorKeyword);	
-
-				double[] indexLSA = (double[]) objLSA[0];
+				System.out.println("\nLatent Semantics for " + db.getAuthName(personNum)+ "\n");
+		        double[] indexLSA = (double[]) objLSA[0];
 				double[] distLSA = (double[]) objLSA[1];
-				display(indexLSA, distLSA, docIndexMap);
+				display(indexLSA, distLSA, docIndexMap, papersReader);
+	
 				}
 
-			reader2.close(); authorsReader.close();
-	}					// end main of task1c
+			papersReader.close(); authorsReader.close();
+	}					
 
 	
-	
+	public List<String> makeVocabularyList(TermFreqVector tfVector){
+		String[] smallVocab = tfVector.getTerms();
+		List<String> vMap = new ArrayList<String>(smallVocab.length);
+		for(String word : smallVocab){
+			vMap.add(word);
+		}
+		return vMap;
+	}
 	
 
 
-	public void display(double[] indexLSA, double[] distLSA, Map<Integer, String> docIndexMap){
+	public void display(double[] indexLSA, double[] distLSA, Map<Integer, String> docIndexMap, IndexReader allPapersReader) throws CorruptIndexException, IOException{
 		
 		DblpData db = new DblpData();	
 		
 		for (int i = 0; i < indexLSA.length; i++) {
 			{System.out.println();
-		
-			 System.out.println("Paper ID: "  + docIndexMap.get((int)indexLSA[i]) + "\t\t" + "Distance from given author: " + distLSA[i]);
+			System.out.printf("Paper ID: %-12s" ,docIndexMap.get((int)indexLSA[i]) ); 
+ 			System.out.printf("  Distance from given author: %-10.7f   %-50s" , distLSA[i], allPapersReader.document((int)indexLSA[i]).get("title"));
+ 			System.out.println();
 			}
 		} 
 	}	
@@ -288,7 +288,7 @@ public class Task1cCompDocs {
 
 */
 
-	public void projectSVD(double[][] hiddenSemantics, double[][] docsKeywordsArray, double[] authorKeyword, Map<Integer, String> docIndexMap,int numOfLatents) throws MatlabInvocationException, MatlabConnectionException{
+	public void projectSVD(double[][] hiddenSemantics, double[][] docsKeywordsArray, double[] authorKeyword, Map<Integer, String> docIndexMap, IndexReader allPapersReader,int numOfLatents) throws MatlabInvocationException, MatlabConnectionException, CorruptIndexException, IOException{
 
 		double[][] givenAuthKWarray = new double[1][authorKeyword.length];
 		givenAuthKWarray[0] = authorKeyword;
@@ -323,11 +323,11 @@ public class Task1cCompDocs {
 		double[] indexSVD2 = (double[]) objSVD1[0];
 		double[] distSVD2 = (double[]) objSVD1[1];
 
-		display(indexSVD2, distSVD2,  docIndexMap);
+		display(indexSVD2, distSVD2,  docIndexMap,  allPapersReader);
 
 	}
 
-	public void projectPCA(double[][] hiddenSemantics, double[][] docsKeywordsArray, double[] authorKeyword, Map<Integer, String> docIndexMap) throws MatlabInvocationException, MatlabConnectionException{
+	public void projectPCA(double[][] hiddenSemantics, double[][] docsKeywordsArray, double[] authorKeyword, Map<Integer, String> docIndexMap,  IndexReader allPapersReader) throws MatlabInvocationException, MatlabConnectionException, CorruptIndexException, IOException{
 
 		double[][] allSemArray = new double[hiddenSemantics.length][hiddenSemantics[0].length];
 		double[][] givenAuthKWarray = new double[1][authorKeyword.length];
@@ -365,7 +365,7 @@ public class Task1cCompDocs {
 		double[] indexSVD = (double[]) objSVD[0];
 		double[] distSVD = (double[]) objSVD[1];
 
-		display(indexSVD, distSVD,  docIndexMap);
+		display(indexSVD, distSVD,  docIndexMap , allPapersReader);
 	}
 
 	
@@ -459,11 +459,11 @@ public class Task1cCompDocs {
 			 
 			}
 		
-		private HashMap<String, Double> getTopLatentSemantics(String personNum){
-			HashMap<String, Double> top5 = null;
-			//top5 = Task1a.latentSemantics(personNum);
-			return top5;
-		}
+	// placeholder	
+	
+	
+	
+	
 
 		
 		private VectorRanking[] doRanking(Hashtable<Integer,VectorRanking> Similarities){
@@ -480,21 +480,21 @@ public class Task1cCompDocs {
 		/*
 		 * Helper method displays ranking of observations/documents
 		 */
-		private  void displayRanking(VectorRanking[] rankingArray, IndexReader reader2) throws IOException{
+		private  void displayRanking(VectorRanking[] rankingArray, IndexReader papersReader) throws IOException{
 		System.out.println("Similar documents");
 		System.out.println();
 		System.out.printf(" \t "  + "PaperID"  + "\t" + " CosineSimilarity"); 
 		System.out.println();
 
-			final int HITS_PER_PAGE = 50;
+			final int HITS_PER_PAGE = 20;
 			; 
 			int end = Math.min(rankingArray.length, HITS_PER_PAGE);
 			for (int i = 0; i < end; i++) {
 				int docNum = rankingArray[i].documentID;
 
-				System.out.printf(" RANK " + "\t" +(i + 1) + " " + reader2.document(docNum).get("paperid")+ "\t" + " SCORE %10.7f",
+				System.out.printf(" RANK " + "\t" +(i + 1) + " " + papersReader.document(docNum).get("paperid")+ "\t" + " SCORE %10.7f",
 						rankingArray[i].howSimilar);
-				System.out.println();//" "+ reader2.document(docNum).get("title"));
+				System.out.println(" "+ papersReader.document(docNum).get("title"));
 
 			}
 		}
@@ -574,47 +574,102 @@ public class Task1cCompDocs {
 		return documentMatrix;
 	}
 			
-			public Hashtable<Integer, VectorRanking> getSimilarity(Directory luceneIndexDir, double[] authorskeywords, Map<String, Integer> allKeywordsPosMap) throws Exception{
-				Utility util = new Utility();
-				DblpData db = new DblpData();
-				SimilarityAnalyzer sv = new SimilarityAnalyzer();
-				IndexReader reader = IndexReader.open(luceneIndexDir);
-				Hashtable<Integer, VectorRanking> Similarities = new Hashtable<Integer, VectorRanking>();
-				//double[] docSimilarities = new double[reader.maxDoc()];
+	public Hashtable<Integer, VectorRanking> getSimilarity(	Directory luceneIndexDir, Directory nonAuthorIndexDir,double[] authorskeywords,
+															Map<String, Integer> allKeywordsPosMap)throws Exception {
+		Utility util = new Utility();
+		DblpData db = new DblpData();
+		IndexReader nonAuthorReader = IndexReader.open(nonAuthorIndexDir);
+		IndexReader allReader = IndexReader.open(luceneIndexDir);
+		Hashtable<Integer, VectorRanking> Similarities = new Hashtable<Integer, VectorRanking>();
+		
+		try {
 
-//				double[][] documentMatrix = new double[reader.maxDoc()][completeKeywordList.size()];
+			for (int i = 0; i < nonAuthorReader.numDocs(); i++) {
+				TermFreqVector tfv = nonAuthorReader.getTermFreqVector(i, "doc");
+				// double[] doc1 = util.getAlignedTermFreqVector(tfv,allKeywordsPosMap);
+				double[] doc1 = util.getAlignedTFIDFVector(tfv,	allKeywordsPosMap, allReader);
+				double cosineSim = util.cosineSimilarity(authorskeywords, doc1);
 				
-				
-					try {
-							
-					for (int i = 0; i < reader.numDocs(); i++) {
-						TermFreqVector tfv = reader.getTermFreqVector(i, "doc");
-						double[] doc1 = util.getAlignedTermFreqVector(tfv, allKeywordsPosMap);
-						
-						double cosineSim = util.cosineSimilarity(authorskeywords, doc1);
-						//documentMatrix[i] = a1;
-						//docSimilarities[i] = cosineSim;
-						VectorRanking vr = new VectorRanking();
-						vr.howSimilar = cosineSim;
-						vr.documentID = i;
-						Similarities.put(i,vr);
-												
-					}
-					reader.close();
-					 
-				} catch (CorruptIndexException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				return Similarities;
+				VectorRanking vr = new VectorRanking();
+				vr.howSimilar = cosineSim;
+				vr.documentID = i;
+				Similarities.put(i, vr);
 			}
+			allReader.close();
+
+		} catch (CorruptIndexException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return Similarities;
+	}
+
+			public List<HashMap<String,Float>> doLDAAuthor(TermFreqVector authorKW, double[][] docKeywordCorpusMatrix,String[] staticVocabulary) throws Exception{
+
+				MatlabProxy proxy = MatLab.getProxy();
+				LDAPrep ldaInputs = new LDAPrep();
+
+				ldaInputs.doLDAPrepFullMatrix(docKeywordCorpusMatrix);
+				//ldaInputs.makeDictionaryFile(staticVocabulary);
+
+				double[][] WS = new double[1][ldaInputs.WS.length];
+				WS[0] = ldaInputs.WS;
+				double[][] DS = new double[1][ldaInputs.DS.length];
+				DS[0] = ldaInputs.DS;
+
+				double[] WS3 = ldaInputs.WS;
+				/* lose precision this way */    
+				//	proxy.setVariable("WS3",WS3);
+				// proxy.setVariable("DS",DS);
+				String currentPath = task1aLDA.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		                currentPath = currentPath.replaceFirst("Phase2.jar", "");
+		                currentPath = currentPath.replaceFirst("/", "");
+				proxy.eval("cd "+currentPath);
 
 
-	
-	
+				MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
+
+				processor.setNumericArray("WS", new MatlabNumericArray(WS, null));
+				processor.setNumericArray("DS", new MatlabNumericArray(DS, null));
+
+				/* set the number of latent semantics to retrieve */
+				double T = 5.0;
+				proxy.setVariable("T", 5);
+				proxy.setVariable("WO", staticVocabulary);
+				proxy.eval("[WPALL,DPALL,ZALL] = LDA1(WS,DS,T,WO)");
+
+				double[][] WP = processor.getNumericArray("WPALL").getRealArray2D();
+				double[][] DP = processor.getNumericArray("DPALL").getRealArray2D();
+				double[][] Z = processor.getNumericArray("ZALL").getRealArray2D();
+
+				//Do processing of Topics probability Matrix generated by matlab in text file to display top k topics
+
+				/* numImportantTopics = T,  numRelevantWords = 7 + 1 for header */
+				String filename = currentPath + "/" + "topics.txt";
+				//				 List<KeywordConfig>[] topicsconfigList = ldaInputs.readLDATopics( filename,  5, 8);
+				List<KeywordConfig>[] topicsconfigList = ldaInputs.readPrintTopics(filename, 5,10);
+				
+				/* for consistency convert to list of HashMap */
+				List<HashMap<String,Float>> topicsList = new ArrayList<HashMap<String,Float>>();
+				for(List<KeywordConfig> aTopic : topicsconfigList){
+					HashMap<String,Float> topicFreq = new HashMap<String,Float>(aTopic.size());
+						for(KeywordConfig term : aTopic){
+							String item = term.getKeyword();
+							Float  freq = term.getWeightedFreq();
+							if (authorKW.indexOf(item)!= -1)
+								topicFreq.put(item,freq);
+					}
+					topicsList.add(topicFreq);
+				}
+
+				return topicsList;
+
+			}
+			
+		
 }
 
 

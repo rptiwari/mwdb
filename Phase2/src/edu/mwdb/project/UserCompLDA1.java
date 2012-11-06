@@ -40,7 +40,7 @@ import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
 public class UserCompLDA1 {
-	
+	String[] authorsStaticVocabulary = null;
 	public double[][]  rebuildAuthorMatrix(String personId) throws IOException {
 
 		Utility util = new Utility();
@@ -126,7 +126,7 @@ public class UserCompLDA1 {
 			docStream = new StandardTokenizer(Version.LUCENE_36, new StringReader(rowData.get(i)));
 
 			//Creating the Keywords of a given abstract
-			keywords = new StopFilter(Version.LUCENE_36, docStream ,util.createStopWordsSet());
+			keywords = new StopFilter(Version.LUCENE_36, docStream ,stopWordsCharArrSet );
 
 			termFreq = util.createauthorTF(keywords, rowData.get(i));
 
@@ -165,12 +165,12 @@ public class UserCompLDA1 {
 		int rowSize = rowData.size();
 		int columnSize = termFinalFreq.size();
 
-		task1aLDA lda = new task1aLDA();
+//		task1aLDA lda = new task1aLDA();
 	
 
-		String[] staticVocabulary = lda.makeStaticKeywordList(termFinalFreq );
+		authorsStaticVocabulary = makeStaticKeywordList(termFinalFreq );
 
-		return  lda.makeDocumentMatrix(rowSize, columnSize,  docKeywords,  termFinalFreq, docIdfMapList);
+		return  makeDocumentMatrix(rowSize, columnSize,  docKeywords,  termFinalFreq, docIdfMapList);
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -401,7 +401,7 @@ public class UserCompLDA1 {
 		//LDA - Start
 		DblpData db = new DblpData();
 		
-			System.out.println("Starting to compute similar users using top 5 semantics LDA");
+			System.out.println("Starting to compute similarity using top 5 semantics LDA");
 			
 			double[][] inputCorpusMatrix = allUsersKeyWordMatrix;
 			double[][] UserMatrix = authorDataMatrix;
@@ -410,8 +410,7 @@ public class UserCompLDA1 {
 			
 			givenauthKeywordMatrix[0] = authKeywordMatrix;
 			
-
-			
+		
 			//Create a proxy, which we will use to control MATLAB
 			MatlabProxy proxy = MatLab.getProxy();
 			MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
@@ -423,23 +422,25 @@ public class UserCompLDA1 {
 			processor.setNumericArray("inputCorpusMatrix", new MatlabNumericArray(inputCorpusMatrix, null));
 			processor.setNumericArray("userMatrix", new MatlabNumericArray(UserMatrix, null));
 			processor.setNumericArray("latentsMatrix", new MatlabNumericArray(latentsMatrix,null));
-			
+
+            	
 			proxy.eval("[ALLUSERSLDAMatrix] = inputCorpusMatrix * transpose(latentsMatrix)");
 			proxy.eval("[AUTHORLDAMatrix] = givenAuthKWArray * transpose(latentsMatrix)");
 
-
+			
+		
 			Object[] ldaObj = proxy.returningEval("AUTHORLDAMatrix(1,:)", 1);
 				
 			double[][]ldaSemUserMatrix = new double[1][authKeywordMatrix.length];
 			
 			ldaSemUserMatrix[0] = (double[]) ldaObj[0];
 			
-//			processor.setNumericArray("inputCorpusMatrixPCA", new MatlabNumericArray(ldaAKeywordTop5Matrix, null));
+		
 			processor.setNumericArray("userMatrixLDA", new MatlabNumericArray(ldaSemUserMatrix, null));
 			
-						Object[] objLDA = new Object[2];
-			
-			objLDA = proxy.returningEval("knnsearch( ALLUSERSLDAMatrix, AUTHORLDAMatrix,'k', 11,'Distance','cosine')",2);
+			Object[] objLDA = new Object[2];
+
+			objLDA = proxy.returningEval("knnsearch( ALLUSERSLDAMatrix, userMatrixLDA,'k', 11,'Distance','cosine')",2);
 			
 			return  objLDA;
 	
@@ -469,7 +470,7 @@ public void doLatentSemantics(String authorid) throws Exception{
 		String[] staticVocabularyAlternate = makeStaticKeywordList2(wordPosMap);
 		
 		
-		double[][] authorsDocumentMatrix = getDocumentMatrix(dirIndex,  allterms);	
+		double[][] authorsKWDocumentMatrix = getDocumentMatrix(dirIndex,  allterms);	
 		
 		
 		// place holder
@@ -477,62 +478,47 @@ public void doLatentSemantics(String authorid) throws Exception{
 		double[][] authorDataMatrix = rebuildAuthorMatrix(authorid);
 		
 		double[] authorKeywordVector  = Utility.getAlignedTermFreqVector(getAuthorKeywordVector(authorid, dirIndex), wordPosMap);
+	
+		List<HashMap<String,Float>> topics = doLDA(authorDataMatrix, authorsStaticVocabulary );
 		
-		List<HashMap<String,Float>> topics = doLDA(authorDataMatrix, staticVocabulary );
-		
-		System.out.println(authorDataMatrix[0].length + "dim " + authorDataMatrix.length );
+//
 		
 		double[][] completeTopicsMatrix = buildTopicsMatrix(topics, allterms);
 
-		// Print the givenauthKeyword i/p matrix.
-		int columnSize = completeTopicsMatrix[0].length;
-		int rowSize = completeTopicsMatrix.length;
-					for(int row=0;row<rowSize;row++)
-					{
-						for(int column=0;column<columnSize;column++)
-						{
-							System.out.print(completeTopicsMatrix[row][column] + "\t");
-						}
-						System.out.println();
-					}
+			/* Project LDA onto other data */
+		Object[] objLDA = doLatentCompare(completeTopicsMatrix, authorsKWDocumentMatrix, authorDataMatrix, authorKeywordVector);	
 
-		
-		/* Project LDA onto other data */
-		Object[] objLDA = doLatentCompare(completeTopicsMatrix, authorsDocumentMatrix, authorDataMatrix, authorKeywordVector);	
-
-		double[] indexLDA = (double[]) objLDA[0];
+		double[] indexLDA = (double[]) objLDA[0]; 
 		double[] distLDA = (double[]) objLDA[1];
-		display(indexLDA, distLDA);
+		display(indexLDA, distLDA, authorid, dirIndex);
 	}
 	
 
-	public void display(double[] indexLDA, double[] distLDA){
-		
-		DblpData db = new DblpData();	
-		
-		HashMap<String, String>  authNamePersonIdList = db.getAuthNamePersonIdList();
-		List<String> authorIds = db.getAllAuthors();
+	public void display(double[] indexLDA, double[] distLDA, String authorid,Directory AuthorIndex) {
+
+		DblpData db = new DblpData();
+
+		HashMap<String, String> authNamePersonIdList = db.getAuthNamePersonIdList();
+		List<String> authorIds = db.getAllActiveAuthors(AuthorIndex);
 		String[] authors = authorIds.toArray(new String[authorIds.size()]);
-		System.out.println(authors.length + "AUTHOR LENGTH");
-		for (String a : authors){System.out.println(a); }
-		if (authNamePersonIdList.get(authors[(int)(indexLDA[0] - 1)]) == null) 
-		{
-			for (int i = 0; i < 10; i++) 
-			{
-				System.out.println("Author Name: " + authors[(int)(indexLDA[0] - 1)] + "\t\t" + "Distance from given author: " + distLDA[i]);
+		System.out.println("For Author: " + authNamePersonIdList.get(authorid));
+		if (authNamePersonIdList.get(authors[(int) (indexLDA[0] - 1)]) == null) {
+			for (int i = 0; i < 10; i++) {
+				System.out.println("Author Name: "
+						+ authors[(int) (indexLDA[0] - 1)] + " "
+						+ "Distance from given author: " + distLDA[i]);
 			}
-		} 
-		else 
-		{
-			for (int j = 1; j < 11; j++) 
-			{
-				System.out.println("Author Name: " + authNamePersonIdList.get(authors[(int)(indexLDA[j] - 1)])  + "\t\t" + "Distance from given author: " + distLDA[j]);
+		} else {
+			for (int j = 0; j < indexLDA.length; j++) {
+				if (!authorid.equals(authors[(int) (indexLDA[j] - 1)])) {
+					System.out.printf("Author Name: %-25s Distance from given author: %10.9f",
+									authNamePersonIdList.get(authors[(int) (indexLDA[j] - 1)]),	distLDA[j]);
+					System.out.println();
+				}
 			}
 		}
-	
-	//LDA - End
-	
-	 
+
+		// LDA - End
 	}
 	
 	public Map<String, Integer> findMap(List<String> completeKeywordList){
