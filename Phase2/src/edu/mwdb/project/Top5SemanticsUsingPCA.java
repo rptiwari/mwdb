@@ -43,9 +43,9 @@ public class Top5SemanticsUsingPCA {
 
 			Statement stmt = con.createStatement();
 			// use 1632672 instead of args[0]
-			//String personId = args[0];
+			String personId = args[0];
 
-			String personId = "1632672";
+			//String personId = "1632672";
 
 			// To get the list of papers written by the given author.
 			String query_authorid = 
@@ -111,9 +111,6 @@ public class Top5SemanticsUsingPCA {
 
 			for (int i=0;i<abstracts.size();i++)
 			{
-				String[] rowDataArr = abstracts.get(i).split("[ ]+");
-				noOfWords += rowDataArr.length;
-
 				//Creating the Character Array Set from the list of stop words
 
 				//Creating a token stream from the abstract got from the DB for the given paperId
@@ -147,10 +144,6 @@ public class Top5SemanticsUsingPCA {
 			for (KeywordConfig itr: configList){
 				Float val = termFinalFreq.get(itr.getKeyword());
 				termFinalFreq.put(itr.getKeyword(), (val == null) ? itr.getWeightedFreq() : (val + itr.getWeightedFreq()));
-			}		
-			for(Map.Entry<String, Float> k: termFinalFreq.entrySet())
-			{
-				termFinalFreq.put(k.getKey(), k.getValue()/noOfWords);
 			}
 
 			int rowSize = abstracts.size();

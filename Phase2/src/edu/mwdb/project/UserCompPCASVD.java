@@ -338,10 +338,10 @@ public class UserCompPCASVD {
 				processor.setNumericArray("inputCorpusMatrixPCA", new MatlabNumericArray(pCAKeywordTop5Matrix, null));
 				processor.setNumericArray("userMatrixPCA", new MatlabNumericArray(pCASemUserMatrix, null));
 				Object[] objPCA = new Object[2];
-				objPCA = proxy.returningEval("knnsearch( inputCorpusMatrixPCA, userMatrixPCA,'k', 11,'Distance','cosine')",2);
+				objPCA = proxy.returningEval("knnsearch( inputCorpusMatrixPCA, userMatrixPCA,'k', 11,'Distance','cosine')",2);	
 				double[] indexPCA = (double[]) objPCA[0];
 				double[] distPCA = (double[]) objPCA[1];
-				if (authNamePersonIdList.get(userIdList.get((int) indexPCA[0] - 1)) == null) 
+				if (authNamePersonIdList.get(userIdList.get((int) indexPCA[0] - 1)) == null)
 				{
 					for (int i = 0; i < 10; i++) 
 					{

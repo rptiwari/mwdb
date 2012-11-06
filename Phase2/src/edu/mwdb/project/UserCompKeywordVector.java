@@ -1,5 +1,7 @@
 package edu.mwdb.project;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -39,7 +41,7 @@ public class UserCompKeywordVector {
 		try
 		{
 			Connection con = utilityObj.getDBConnection();
-			int personId = 1636579;
+			int personId = 1632672;
 
 			// Get the Id's of all the authors in the DB.
 			Statement stmtUserdIds = con.createStatement();
@@ -148,7 +150,7 @@ public class UserCompKeywordVector {
 				docKeywords.add(keywordsList);
 
 				//Calling the method createTFIDF to create TF-IDF vector output
-				Map<String,Float> idfMap = utilityObj.createTFIDF(noOfDocs,indexDirectory, termFreq, "TF-IDF");
+				Map<String,Float> idfMap = utilityObj.createTFIDF(noOfDocs,indexDirectory, termFreq,"TF-IDF");
 				listTFIDFMaps.add(idfMap);
 
 				if(userId == personId)
