@@ -41,7 +41,7 @@ public class Task3a {
 	public static ArrayList<Map.Entry<String, Double>>[] getGroupPartitions(Map.Entry<String, Double>[][] latentSemanticsAuthorOrCoauthor) {
 		ArrayList<Map.Entry<String, Double>>[] retVal = new ArrayList[latentSemanticsAuthorOrCoauthor.length];
 		for (int i=0; i<latentSemanticsAuthorOrCoauthor[0].length; i++) {
-			double max = Double.MIN_VALUE;
+			double max = Double.NEGATIVE_INFINITY;
 			int maxIndex = 0;
 
 			// Find the max value for that column/key/authorId
