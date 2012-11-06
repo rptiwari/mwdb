@@ -1,0 +1,23 @@
+
+Enter Command (task args1, args2....)   
+task1a 1632672 LDA
+
+
+
+********   Top 5 Latent Symantics using LDA   *******
+
+Latent Semantics for Sushil Jajodia
+
+TOPIC_1                                 TOPIC_2                                 TOPIC_3                                 TOPIC_4                                 TOPIC_5                                 
+
+access                     0.0482700     existing                   0.0156900     control                    0.0173900     temporal                   0.0294400     flexible                   0.0134000     
+language                   0.0299800     users                      0.0156900     system                     0.0137900     control                    0.0261100     module                     0.0134000     
+policy                     0.0269300     fam                        0.0124500     policies                   0.0101900     information                0.0227800     systems                    0.0134000     
+policies                   0.0238800     access                     0.0124500     enforce                    0.0101900     policy                     0.0227800     modules                    0.0134000     
+security                   0.0177800     paper                      0.0124500     calculus                   0.0101900     system                     0.0161100     developed                  0.0099100     
+time                       0.0116900     objects                    0.0092000     proposed                   0.0101900     single                     0.0161100     system                     0.0099100     
+models                     0.0116900     mechanisms                 0.0092000     mismatch                   0.0101900     specific                   0.0161100     mediated                   0.0099100     
+
+
+
+
