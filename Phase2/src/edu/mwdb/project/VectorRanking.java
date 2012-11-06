@@ -1,35 +1,21 @@
 package edu.mwdb.project;
-	public class VectorRanking implements Comparable<VectorRanking>{
-		
-
-	 
-		public Integer documentID;
-		public double  howSimilar;
+public class VectorRanking implements Comparable<VectorRanking>{
+	public Integer documentID;
+	public double  howSimilar;
 	//	public termFreqVectors vectorTermFreq = new termFreqVectors();
-		
-						//hash table with keys docid and values termFreqVectors;
-		
-		
-		public void documentVector() {
-		
-		}
 
-						@Override
-						public int compareTo(VectorRanking anyDocVector) {
-							
-							    double difference  =  this.howSimilar - ( anyDocVector.howSimilar); 
-							    if (difference > 0){ difference = 1;}
-							    else if (difference < 0) {difference = -1;}
-							    return (int) difference; 
-							    
-							
-						}
+	//hash table with keys docid and values termFreqVectors;
 
-		
-
-
-
+	@Override
+	public int compareTo(VectorRanking anyDocVector) {
+		return Double.compare(howSimilar, anyDocVector.howSimilar);
 	}
+
+
+
+
+
+}
 
 
 

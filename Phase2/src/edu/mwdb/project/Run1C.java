@@ -9,8 +9,7 @@ public class Run1C {
 		// TODO Auto-generated method stub
 		Task1cCompDocs t1c = new Task1cCompDocs();
 		String personNum = "1632506";
-		t1c.findDifferentiationSimilarDocs(personNum, "TFIF2");
-
+		t1c.findDifferentiationSimilarDocs(personNum, "PF");
 	}
 
 }

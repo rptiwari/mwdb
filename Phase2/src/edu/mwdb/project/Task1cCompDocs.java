@@ -122,58 +122,58 @@ public class Task1cCompDocs {
 
 			IndexSearcher searcher = new IndexSearcher(reader2);
 
-				
-			
-				//ArrayList<TermFrequency> termVector = getAuthorKeywordVector1(personNum,searcher, reader2, rankingMethod);
-				Directory theIndex2 = db.createAuthorDocumentIndex();
-	
-				
-				List<String> allterms =	db.getAllTermsInIndex(theIndex, "doc");
-				LinkedHashMap<String, Integer> wordPosMap = (LinkedHashMap<String, Integer>) findMap(allterms);
-				
-		//		double[] authorKeyword = Utility.getAlignedTFIDFVector(keywordVector,wordPosMap,reader2);
-			
-
-				double[] authorDiscriminationVector = null;
-				if (divVectorType.equalsIgnoreCase("PF")){
-							authorDiscriminationVector = getAlignedAuthorKeywordPFVector(personNum, theIndex2, wordPosMap);
-						}
-						else {
-							authorDiscriminationVector =  getAlignedAuthorTfidf2KeywordVector(personNum, wordPosMap);
-						}
-				
-				Map<Integer, TermFreqVector> allDocFreqVectors =  getDocTermFrequencies(theIndex);
-				
-				documentMatrix =  getDocumentMatrix(theIndex, allterms);
-				
-				Similarities =  getSimilarity(theIndex, authorDiscriminationVector, wordPosMap);
-				
-				
-				if (!Similarities.isEmpty()){
-					// Create an array containing the elements from hashtable Similarities
-					VectorRanking[] rankingArray =	doRanking(Similarities);	
-
-					displayRanking(rankingArray, reader2);
-
-					Similarities.clear();
 
 
-				}						// end if similarities is non-empty
-				else { System.out.println("0 total matching documents");}
-
-					
-				
-				
+			//ArrayList<TermFrequency> termVector = getAuthorKeywordVector1(personNum,searcher, reader2, rankingMethod);
+			Directory theIndex2 = db.createAuthorDocumentIndex();
 
 
-				reader2.close();
-				
-			
-			} catch (Exception e) {
-				System.out.println(" caught a " + e.getClass()
-						+ "\n with message: " + e.getMessage());
+			List<String> allterms =	db.getAllTermsInIndex(theIndex, "doc");
+			LinkedHashMap<String, Integer> wordPosMap = (LinkedHashMap<String, Integer>) findMap(allterms);
+
+			//		double[] authorKeyword = Utility.getAlignedTFIDFVector(keywordVector,wordPosMap,reader2);
+
+
+			double[] authorDiscriminationVector = null;
+			if (divVectorType.equalsIgnoreCase("PF")){
+				authorDiscriminationVector = getAlignedAuthorKeywordPFVector(personNum, theIndex2, wordPosMap);
 			}
-		}					// end main of task1c
+			else {
+				authorDiscriminationVector =  getAlignedAuthorTfidf2KeywordVector(personNum, wordPosMap);
+			}
+
+			Map<Integer, TermFreqVector> allDocFreqVectors =  getDocTermFrequencies(theIndex);
+
+			documentMatrix =  getDocumentMatrix(theIndex, allterms);
+
+			Similarities =  getSimilarity(theIndex, authorDiscriminationVector, wordPosMap);
+
+
+			if (!Similarities.isEmpty()){
+				// Create an array containing the elements from hashtable Similarities
+				VectorRanking[] rankingArray =	doRanking(Similarities);	
+
+				displayRanking(rankingArray, reader2);
+
+				Similarities.clear();
+
+
+			}						// end if similarities is non-empty
+			else { System.out.println("0 total matching documents");}
+
+
+
+
+
+
+			reader2.close();
+
+
+		} catch (Exception e) {
+			System.out.println(" caught a " + e.getClass()
+					+ "\n with message: " + e.getMessage());
+		}
+	}					// end main of task1c
 
 	
 	public double[] getAlignedAuthorKeywordPFVector(String personNum, Directory  luceneIndex, LinkedHashMap<String, Integer> wordPosMap) throws Exception{
@@ -194,7 +194,6 @@ public class Task1cCompDocs {
 					}
 					int j = wordPosMap.get(termTexts[i]);
 					if(j != -1){
-						
 						Double pfFactor = allPFs.get(termTexts[i]);
 						alignedVector[j] = termFreqs[i]*pfFactor;
 					}
