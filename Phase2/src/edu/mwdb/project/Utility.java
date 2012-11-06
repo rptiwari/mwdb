@@ -480,7 +480,7 @@ public class Utility {
 	 */
 	private static double doFormulaPF(Double R, Double N, Double r, Double n) {
 		/* compute the formula for PF Model for this term tempTerm */
-		Double leftPart = Math.log((r / (R - r)) / ((n - r) / (N - n - R + r)));
+		Double leftPart = Math.log(((r + 0.5) / ((R - r) + 1)) / (((n - r) + 0.5) / ((N - n - R + r) + 1)));
 		Double rightPart = Math.abs((r / R) - ((n - r) / (N - R)));				// can be negative so need abs
 		return (leftPart * rightPart);
 	}

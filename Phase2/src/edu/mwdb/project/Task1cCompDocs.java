@@ -120,10 +120,6 @@ public class Task1cCompDocs {
 			Directory theIndex = db.createAllDocumentIndex();
 			IndexReader reader2 = IndexReader.open(theIndex);
 
-			IndexSearcher searcher = new IndexSearcher(reader2);
-
-
-
 			//ArrayList<TermFrequency> termVector = getAuthorKeywordVector1(personNum,searcher, reader2, rankingMethod);
 			Directory theIndex2 = db.createAuthorDocumentIndex();
 
