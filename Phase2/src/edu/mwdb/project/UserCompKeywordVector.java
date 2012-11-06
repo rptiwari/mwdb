@@ -128,7 +128,7 @@ public class UserCompKeywordVector {
 				ResultSet rs = stmtauthorPapers.executeQuery(query_authoridPapers);
 				while (rs.next())
 				{
-					rowData += rs.getString("abstract");
+					rowData = rowData + " " + rs.getString("abstract");
 				}
 
 				//Creating the Character Array Set from the list of stop words

@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -24,12 +26,15 @@ import java.util.Set;
 
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermFreqVector;
 import org.apache.lucene.search.DefaultSimilarity;
 import org.apache.lucene.search.Similarity;
 import org.apache.lucene.store.Directory;
+
 
 public class Utility {
 
@@ -286,6 +291,10 @@ public class Utility {
 		return termFreq;
 	}
 
+	
+
+	
+	
 	/*
 	 * Method to generate the TF and the TF-IDF vector mapping
 	 */
@@ -399,7 +408,7 @@ public class Utility {
 	
 	public static double getIDF(IndexReader reader, String termName) throws IOException
 	{
-	    return Math.log(reader.numDocs()/ ((double)reader.docFreq(new Term("doc", termName))));
+		return Math.log(reader.numDocs()/ ((double)reader.docFreq(new Term("doc", termName))));
 	}
 	
 	public static double[] getAlignedTermFreqVector(TermFreqVector authorTermFreqVector, Map<String, Integer> allKeywordsPosMap){
@@ -429,7 +438,7 @@ public class Utility {
 		List<String> allWords = dblp.getAllTermsInIndex(dblp.createAllDocumentIndex(), "doc");
 		HashMap<Integer,HashMap> forwardIndex = dblp.getForwardAndInversePaperKeywIndex()[0];
 		HashSet<Integer> paperIdsByCoauthors = dblp.getPaperIdsFromCoauthorExcludingSelf(authorId);
-		Map<Integer,Boolean> paperIdsByCoauthorsAndSelf = dblp.getPaperIdsFromCoauthorAndSelf(authorId);
+		Set<Integer> paperIdsByCoauthorsAndSelf = dblp.getPaperIdsFromCoauthorAndSelf(authorId);
 		
 		double R = paperIdsByCoauthors.size();
 		double N = paperIdsByCoauthorsAndSelf.size();
@@ -445,7 +454,7 @@ public class Utility {
   			
   			// Calculate number of papers in coauthor_and_self(ai) not containing the keyword
   			double n_ij = 0;
-  			for (int paperId : paperIdsByCoauthorsAndSelf.keySet()) {
+  			for (int paperId : paperIdsByCoauthorsAndSelf) {
   				if (!forwardIndex.get(paperId).containsKey(word))
   					n_ij++;
   			}
