@@ -1,12 +1,14 @@
+
+*******   Differentiation Vector with tfidf2   *******
 Top 10 Similar Users - Comparing Users Differentiation Vectors -> TF-IDF2
 *************************************************************************
-V. S. Subrahmanian    		0.060382322372974806
-Inderpal Narang    		0.08934870820945462
-Vijayshankar Raman    	0.09361722590801569
-Wang-Pin Hsiung    		0.10452453054997823
-Munmun De Choudhury    	0.10621074414120402
-Eenjun Hwang    		0.10654379680846315
-B. Prabhakaran   		0.1075082326654655
-Sibel Adali    			0.1126599537966535
-Maria Luisa Sapino    		0.11353543206698358
-Wen-Syan Li    		0.11534356703240001
+V. S. Subrahmanian	0.12496491183848257
+Maria Luisa Sapino	0.49672403186047986
+K. Selcuk Candan	0.6543270962468096
+Hari Sundaram	0.6770069318845657
+Jun'ichi Tatemura	0.6978648406945808
+Sibel Adali	0.713698336611066
+Qing Li	0.7148940779190798
+Divyakant Agrawal	0.7214922353165272
+Yu-Ru Lin	0.721905787251969
+Amr El Abbadi	0.7288714846914663
