@@ -525,7 +525,15 @@ public class Utility {
 	}
 	
 	
-	
+	/**
+	 * Finds word mapped to index into Matrix and Prints matrix value
+	 * X is values, Y is latents
+	 * prints 10 words
+	 * @param finalKeywordsList  String of terms that map to index in matrix
+	 * @param resultMatrix
+	 * @param howManyLatents - number of latents to print
+	 * @return
+	 */
 	
 	public void	printSortedList(List<String> finalKeywordsList, double[][] resultMatrix, int howManyLatents){
 		Map<String,Float> latentcy = new HashMap<String,Float>(resultMatrix.length);
@@ -540,10 +548,12 @@ public class Utility {
 			}
 			sorted = ut.sortByComparator(latentcy);
 			Iterator it = sorted.entrySet().iterator();
-			for(int wordcount=0;wordcount<25;wordcount++){
+			int numToPrint = Math.min(10,sorted.size());
+			for(int wordcount=0;wordcount<numToPrint;wordcount++){
 				if  (it.hasNext()) {
 					Map.Entry pairs = (Map.Entry)it.next();
-					System.out.println(pairs.getKey() + " = " + pairs.getValue());
+					System.out.printf("%-22s  =  %10.8f",pairs.getKey(), pairs.getValue());
+					System.out.println();
 				}
 			}
 			System.out.println();

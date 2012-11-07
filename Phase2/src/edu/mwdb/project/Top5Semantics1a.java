@@ -210,7 +210,9 @@ public class Top5Semantics1a {
 					}
 					System.out.println();
 				}
-			  ut.printSortedList(finalKeywordsList, resultSematicMatrixPCA, 5);
+				System.out.println();
+				System.out.println("***********Printing 10 Most Significant Words of Each Latent Semantic***********");
+				ut.printSortedList(finalKeywordsList, resultSematicMatrixPCA, 5);
 			}
 			// For SVD:
 			proxy.eval("[U,S,V]=svd(docKeywordCorpusMatrix);");
@@ -239,7 +241,9 @@ public class Top5Semantics1a {
 					}
 					System.out.println();
 				}
-				ut.printSortedList(finalKeywordsList, resultSematicMatrixSVD,5);
+				System.out.println();
+				System.out.println("***********Printing 10 Most Significant Words of Each Latent Semantic***********");
+				ut.printSortedList(finalKeywordsList, tempMatrix,5);
 			}
 		}
 		catch (Exception e) 
