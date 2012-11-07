@@ -129,7 +129,7 @@ public class UserCompDiffVector1b {
 				//Creating the Keywords of a given abstract
 				keywords = new StopFilter(Version.LUCENE_36, docStream ,stopWordsCharArrSet);
 				
-				termFreq = utilityObj.createNewTF(keywords, rowData);
+				termFreq = utilityObj.createTF(keywords, rowData);
 				listFreqMaps.add(termFreq);
 
 				List<String> keywordsList = new ArrayList<String>();

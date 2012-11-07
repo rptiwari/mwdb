@@ -67,7 +67,6 @@ public class Task1cCompDocs {
 				LinkedHashMap<String, Integer> wordPosMap = (LinkedHashMap<String, Integer>) findMap(allterms);
 				
 				double[] authorKeyword = Utility.getAlignedTFIDFVector(keywordVector,wordPosMap,papersReader);
-
 				
 				Directory nonAuthorIndex = db.createNonAuthoredDocsIndex(personNum);
 			
@@ -668,6 +667,7 @@ public class Task1cCompDocs {
 				return topicsList;
 
 			}
+
 			
 		
 }

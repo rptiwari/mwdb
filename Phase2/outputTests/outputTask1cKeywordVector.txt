@@ -1,26 +1,29 @@
-	 PaperID	 Similarity
- RANK 	1 598954	 SCORE  0.8007409
- RANK 	2 1118430	 SCORE  0.7502449
- RANK 	3 613631	 SCORE  0.6945053
- RANK 	4 599903	 SCORE  0.4152806
- RANK 	5 299606	 SCORE  0.3399963
- RANK 	6 212288	 SCORE  0.1675751
- RANK 	7 1016745	 SCORE  0.1397766
- RANK 	8 1577376	 SCORE  0.1312463
- RANK 	9 509133	 SCORE  0.1209993
- RANK 	10 152064	 SCORE  0.1183484
- RANK 	11 1571222	 SCORE  0.1112411
- RANK 	12 708878	 SCORE  0.1100632
- RANK 	13 628228	 SCORE  0.1013691
- RANK 	14 846415	 SCORE  0.1006434
- RANK 	15 597965	 SCORE  0.0997388
- RANK 	16 502770	 SCORE  0.0964332
- RANK 	17 300490	 SCORE  0.0948900
- RANK 	18 503138	 SCORE  0.0931934
- RANK 	19 856114	 SCORE  0.0907383
- RANK 	20 856149	 SCORE  0.0881277
- RANK 	21 1167899	 SCORE  0.0864142
- RANK 	22 300518	 SCORE  0.0859374
- RANK 	23 518647	 SCORE  0.0855226
- RANK 	24 159366	 SCORE  0.0854835
- RANK 	25 544850	 SCORE  0.0853760
+
+ 	
+ 	
+ 	
+ 	*******   Keyword Vector  *******
+ 	Similar documents
+ 	
+ 	 	 PaperID	 CosineSimilarity
+ 	 RANK 	1 802786	 SCORE  0.1359784 Demand-scalable geographic multicasting in wireless sensor networks.
+ 	 RANK 	2 144383	 SCORE  0.1190305 On the Importance of Tuning in Incremental View Maintenance: An Experience Case Study.
+ 	 RANK 	3 1185925	 SCORE  0.0974083 SLEUTH: Single-pubLisher attack dEtection Using correlaTion Hunting.
+ 	 RANK 	4 159366	 SCORE  0.0919937 Attribute-Based Access to Distributed Data over P2P Networks.
+ 	 RANK 	5 224503	 SCORE  0.0893221 Speeding Up Similarity Queries over Large Chinese Calligraphic Character Databases Using Data Grid.
+ 	 RANK 	6 370803	 SCORE  0.0856993 Dynamic Stochastic Models for Workflow Response Optimization.
+ 	 RANK 	7 212363	 SCORE  0.0846927 Augmented Hypermedia: System Integration and Usability.
+ 	 RANK 	8 473571	 SCORE  0.0764099 Leveraging Structural Knowledge for Hierarchically-Informed Keyword Weight Propagation in the Web.
+ 	 RANK 	9 846412	 SCORE  0.0758147 Progressive ranking of range aggregates.
+ 	 RANK 	10 499859	 SCORE  0.0747763 ABACUS: A Distributed Middleware for Privacy Preserving Data Sharing Across Private Data Warehouses.
+ 	 RANK 	11 856114	 SCORE  0.0735298 Exploiting sequential access when declustering data over disks and MEMS-based storage.
+ 	 RANK 	12 1211160	 SCORE  0.0706863 MetaFac: community discovery via relational hypergraph factorization.
+ 	 RANK 	13 96684	 SCORE  0.0702155 Creating tag hierarchies for effective navigation in social media.
+ 	 RANK 	14 144425	 SCORE  0.0696792 Space-Efficient Data Cubes for Dynamic Environments.
+ 	 RANK 	15 845905	 SCORE  0.0678365 Freshness-driven adaptive caching for dynamic content Web sites.
+ 	 RANK 	16 96141	 SCORE  0.0654873 Towards interactive indexing for large Chinese calligraphic character databases.
+ 	 RANK 	17 1112575	 SCORE  0.0651326 A Compensation-Based Approach for View Maintenance in Distributed Environments.
+ 	 RANK 	18 330558	 SCORE  0.0621340 IFQ: A Visual Query Interface and Query Generator for Object-Based Media Retrieval.
+ 	 RANK 	19 95355	 SCORE  0.0611782 Browsing Large Digital Library Collections Using Classification Hierarchies.
+ 	 RANK 	20 675590	 SCORE  0.0611293 Extracting community structure through relational hypergraphs.
+	

@@ -111,7 +111,7 @@ public class Top5Semantics1a {
 				//Creating the Keywords of a given abstract
 				keywords = new StopFilter(Version.LUCENE_36, docStream ,stopWordsCharArrSet);
 
-				termFreq = utilityObj.createNewTF(keywords, rowData.get(i));
+				termFreq = utilityObj.createTF(keywords, rowData.get(i));
 
 				List<String> keywordsList = new ArrayList<String>();
 				for(Map.Entry<String, Float> k : termFreq.entrySet())
@@ -198,7 +198,7 @@ public class Top5Semantics1a {
 					resultSematicMatrixPCA[a][b]= tempMatrix[b][a];
 				}
 			}
-
+			Utility ut = new Utility();
 			// Print the Top5 Latent/Topic Matrix
 			if(model.equalsIgnoreCase("PCA")){
 				System.out.println("***********Printing the Latent Semantics using PCA***********");
@@ -210,8 +210,8 @@ public class Top5Semantics1a {
 					}
 					System.out.println();
 				}
+			  ut.printSortedList(finalKeywordsList, resultSematicMatrixPCA, 5);
 			}
-
 			// For SVD:
 			proxy.eval("[U,S,V]=svd(docKeywordCorpusMatrix);");
 			for(int k=0;k<columnSize;k++)
@@ -239,6 +239,7 @@ public class Top5Semantics1a {
 					}
 					System.out.println();
 				}
+				ut.printSortedList(finalKeywordsList, resultSematicMatrixSVD,5);
 			}
 		}
 		catch (Exception e) 

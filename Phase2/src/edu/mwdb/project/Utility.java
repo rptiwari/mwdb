@@ -523,4 +523,32 @@ public class Utility {
 		}
 		return currentPath;
 	}
+	
+	
+	
+	
+	public void	printSortedList(List<String> finalKeywordsList, double[][] resultMatrix, int howManyLatents){
+		Map<String,Float> latentcy = new HashMap<String,Float>(resultMatrix.length);
+		Map<String,Float> sorted	= new HashMap<String,Float>(resultMatrix.length);
+		Utility ut = new Utility();
+		int columnSize = resultMatrix.length;  //actually its  number of rows
+		for(int j=0;j<howManyLatents;j++)
+		{
+			for(int i=0;i<columnSize;i++)
+			{
+				latentcy.put(finalKeywordsList.get(i), (float)resultMatrix[i][j]);
+			}
+			sorted = ut.sortByComparator(latentcy);
+			Iterator it = sorted.entrySet().iterator();
+			for(int wordcount=0;wordcount<25;wordcount++){
+				if  (it.hasNext()) {
+					Map.Entry pairs = (Map.Entry)it.next();
+					System.out.println(pairs.getKey() + " = " + pairs.getValue());
+				}
+			}
+			System.out.println();
+			latentcy.clear();
+			sorted.clear();
+		}
+	}
 }

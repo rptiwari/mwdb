@@ -214,7 +214,7 @@ public class UserCompPCASVD1b {
                 //Creating the Keywords of a given abstract
                 keywords = new StopFilter(Version.LUCENE_36, docStream, stopWordsCharArrSet);
 
-                termFreq = utilityObj.createNewTF(keywords, givenAuthorPapersList.get(i));
+                termFreq = utilityObj.createTF(keywords, givenAuthorPapersList.get(i));
 
                 List<String> keywordsList = new ArrayList<String>();
                 for (Map.Entry<String, Float> k : termFreq.entrySet()) {
