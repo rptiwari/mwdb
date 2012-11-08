@@ -1,0 +1,14 @@
+Top 10 Similar Users - Comparing Users Differentiation Vectors -> PF
+*************************************************************************
+For Author: Sushil Jajodia
+Author Name: V. S. Subrahmanian        Distance from given author: 0.584732357
+Author Name: Mario Cataldi             Distance from given author: 0.907819379
+Author Name: Yannis Papakonstantinou   Distance from given author: 0.926708108
+Author Name: Maria Luisa Sapino        Distance from given author: 0.928153454
+Author Name: Qi Yan                    Distance from given author: 0.932506828
+Author Name: Jong Wook Kim             Distance from given author: 0.937208080
+Author Name: Carsten Griwodz           Distance from given author: 0.937392818
+Author Name: Abdulmotaleb El-Saddik    Distance from given author: 0.942710042
+Author Name: Xiao Zhang                Distance from given author: 0.944526341
+Author Name: Arsany Sawires            Distance from given author: 0.945574556
+Author Name: Terri Hedgpeth            Distance from given author: 0.945698405
