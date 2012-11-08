@@ -1,71 +1,35 @@
-Similar Documents- Comparing Users LDA
-****************************************************
 
-Paper ID: 298253		Distance from given author: 0.10426718763117715
+Starting to compute similarity using top 5 semantics LDA
 
-Paper ID: 27228			Distance from given author: 0.12303445210321395
+Latent Semantics for Sushil Jajodia
 
-Paper ID: 140737		Distance from given author: 0.12303445210321395
 
-Paper ID: 151519		Distance from given author: 0.12303445210321395
+Paper ID: 1591939       Distance from given author: 0.0223003    Hierarchical result views for keyword queries over relational databases.
 
-Paper ID: 176687		Distance from given author: 0.12303445210321395
+Paper ID: 525114        Distance from given author: 0.0248035    Monitoring Moving Objects Using Low Frequency Snapshots in Sensor Networks.
 
-Paper ID: 298017		Distance from given author: 0.12303445210321395
+Paper ID: 95927         Distance from given author: 0.0281755    Autonomic query parallelization using non-dedicated computers: an evaluation of adaptivity options.
 
-Paper ID: 298088		Distance from given author: 0.12303445210321395
+Paper ID: 1112342       Distance from given author: 0.0286245    Data space mapping for efficient I/O in large multi-dimensional databases.
 
-Paper ID: 300906		Distance from given author: 0.12303445210321395
+Paper ID: 856147        Distance from given author: 0.0296110    Privacy preserving decision tree learning over multiple parties.
 
-Paper ID: 302434		Distance from given author: 0.12303445210321395
+Paper ID: 1016842       Distance from given author: 0.0323163    Enabling access-privacy for random walk based data analysis applications.
 
-Paper ID: 509167		Distance from given author: 0.12303445210321395
+Paper ID: 990383        Distance from given author: 0.0366807    CDIP: Collection-Driven, yet Individuality-Preserving Automated Blog Tagging.
 
-Paper ID: 522666		Distance from given author: 0.12303445210321395
+Paper ID: 1511973       Distance from given author: 0.0368102    Parallel Querying with Non-Dedicated Computers.   
 
-	
-	*******   Top 5 Latent Symantics. Model - LDA   *******
-	TOPIC_1                                 TOPIC_2                                 TOPIC_3                                 TOPIC_4                                 TOPIC_5                                 
-	
-	policy                     0.0392200     temporal                   0.0515300     notions                    0.0233000     policy                     0.0547700     hermes                     0.0295300     
-	authorizations             0.0352700     federation                 0.0305000     existing                   0.0193200     policies                   0.0503800     mediated                   0.0272300     
-	control                    0.0352700     constituents               0.0272600     amount                     0.0113500     control                    0.0350000     security                   0.0272300     
-	enforce                    0.0253900     module                     0.0272600     occur                      0.0113500     access                     0.0317000     constraints                0.0180400     
-	protection                 0.0253900     modules                    0.0256400     participating              0.0113500     specific                   0.0262100     software                   0.0180400     
-	requirements               0.0253900     language                   0.0240300     queries                    0.0113500     authorization              0.0240100     access                     0.0157400     
-	language                   0.0234100     mismatch                   0.0207900     result                     0.0113500     security                   0.0229100     implemented                0.0157400     
-	
-	
-	
-	Starting to compute similarity using top 5 semantics LDA
-	
-	Latent Semantics for Sushil Jajodia
-	
-	
-	Paper ID: 1299816       Distance from given author: 0.0442865    Web service decomposition: Edge computing architecture for cache-friendly e-commerce applications.
-	
-	Paper ID: 220333        Distance from given author: 0.0550461    StratOSphere: Unification of Code, Data, Location, Scope, and Mobility.
-	
-	Paper ID: 525114        Distance from given author: 0.0635676    Monitoring Moving Objects Using Low Frequency Snapshots in Sensor Networks.
-	
-	Paper ID: 246170        Distance from given author: 0.0652409    E-ADOME: Enacting Composite E-services in an Advanced Workflow Environment.
-	
-	Paper ID: 503471        Distance from given author: 0.0695525    Can blog communication dynamics be correlated with stock market activity?
-	
-	Paper ID: 1167789       Distance from given author: 0.0695525    What makes conversations interesting?: themes, participants and consequences of conversations in online social media.
-	
-	Paper ID: 559780        Distance from given author: 0.0713031    Semantic Locking in Object-Oriented Database Systems.
-	
-	Paper ID: 1112874       Distance from given author: 0.0763672    Range and kNN Query Processing for Moving Objects in Grid Model.
-	
-	Paper ID: 15951         Distance from given author: 0.0766397    GPIVOT: Efficient Incremental Maintenance of Complex ROLAP Views.
-	
-	Paper ID: 176720        Distance from given author: 0.0775226    Planned Disconnections for Mobile Databases.      
-	
-	Paper ID: 302429        Distance from given author: 0.0775226    CUTS: rvature-based development pattern analysis and segmentation for blogs and other ext treams.
-	
-	
-	
-	Enter Command (task args1, args2....)   
+Paper ID: 597967        Distance from given author: 0.0381350    Multiversion-based view maintenance over distributed data sources.
 
-    
+Paper ID: 300861        Distance from given author: 0.0445464    AlphaSum: size-constrained table summarization using value lattices.
+
+Paper ID: 300502        Distance from given author: 0.0480461    Approximate Constrained Bipartite Edge Coloring.  
+
+Paper ID: 1262335       Distance from given author: 0.0492828    Resource Description Framework: Metadata and Its Applications.
+
+Paper ID: 628228        Distance from given author: 0.0508452    Augmented Hypermedia: System Integration and Usability.
+
+Paper ID: 1118145       Distance from given author: 0.0512150    The Performance of Protocols Based on Locks with Ordered Sharing.
+
+Paper ID: 1112818       Distance from given author: 0.0512150    Aggregate operators in probabilistic databases.   

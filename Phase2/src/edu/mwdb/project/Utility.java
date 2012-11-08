@@ -527,7 +527,7 @@ public class Utility {
 	
 	/**
 	 * Finds word mapped to index into Matrix and Prints matrix value
-	 * X is values, Y is latents
+	 *  M is values, N is latents in a MxN matrix
 	 * prints 10 words
 	 * @param finalKeywordsList  String of terms that map to index in matrix
 	 * @param resultMatrix

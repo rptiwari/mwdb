@@ -1,43 +1,5 @@
 
 
-Enter Command (task args1, args2....)   
-task1b 1632672 tfidf2 LDA
-
-
-
-*******   Keyword Vector  *******
-*****************************************************
-Top 10 Similar Users - Comparing Users Keyword Vectors
-*****************************************************
-V. S. Subrahmanian	0.13064001836660533
-Maria Luisa Sapino	0.48467341188414903
-K. Selcuk Candan	0.6370440795025774
-Hari Sundaram	0.6872108105396129
-Jun'ichi Tatemura	0.7000049758915611
-Qing Li	0.7095009418364561
-Divyakant Agrawal	0.7177638299528811
-Sibel Adali	0.7190542190931055
-Mario Cataldi	0.7208567433084323
-Dickson K. W. Chiu	0.7254202281631127
-
-
-
-*******   Differentiation Vector with tfidf2   *******
-Top 10 Similar Users - Comparing Users Differentiation Vectors -> TF-IDF2
-*************************************************************************
-V. S. Subrahmanian	0.058785953913104816
-Wang-Pin Hsiung	0.10398240671670167
-Eenjun Hwang	0.11007006159376687
-Sibel Adali	0.11198374400972311
-Maria Luisa Sapino	0.11239967331687228
-B. Prabhakaran	0.11329507623971868
-Qing Li	0.11371686870718067
-Thomas Phan	0.11606856452372272
-Dirceu Cavendish	0.11761048898232751
-Munmun De Choudhury	0.12032967904191194
-
-
-
 *******   Top 5 Latent Symantics. Model - LDA   *******
 TOPIC_1                                 TOPIC_2                                 TOPIC_3                                 TOPIC_4                                 TOPIC_5                                 
 

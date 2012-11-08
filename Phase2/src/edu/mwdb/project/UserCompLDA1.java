@@ -440,7 +440,7 @@ public class UserCompLDA1 {
 			
 			Object[] objLDA = new Object[2];
 
-			objLDA = proxy.returningEval("knnsearch( ALLUSERSLDAMatrix, userMatrixLDA,'k', 11,'Distance','cosine')",2);
+			objLDA = proxy.returningEval("knnsearch( ALLUSERSLDAMatrix, userMatrixLDA,'k', 21,'Distance','cosine')",2);
 			
 			return  objLDA;
 	

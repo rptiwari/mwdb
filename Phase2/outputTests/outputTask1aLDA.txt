@@ -1,70 +1,23 @@
-                  TOPIC_1	0.03662	                  TOPIC_2	0.04560	                  TOPIC_3	0.03662	                  TOPIC_4	0.04920	                  TOPIC_5	0.02585	
-
-                  allowed	0.29475	                 exposing	0.15794	                   models	0.19667	               impossible	0.40197	             dramatically	0.13968	
-              consequence	0.19667	                 complete	0.11855	                   simple	0.09858	                integrity	0.14640	              conflicting	0.13968	
-                    roles	0.09858	                    ldquo	0.11855	                  control	0.09858	           implementation	0.14640	                  satisfy	0.07019	
-                  studied	0.09858	               mismatches	0.11855	                   system	0.04953	                evolution	0.03687	                  ability	0.07019	
-                    hides	0.09858	                 existing	0.07917	               mechanisms	0.04953	                  queries	0.03687	                  enforce	0.07019	
-             applications	0.04953	                 describe	0.07917	                  complex	0.04953	                 extended	0.03687	                 temporal	0.07019	
-                 negative	0.04953	                   number	0.03978	                execution	0.04953	                  express	0.03687	                    month	0.07019	
-              controlling	0.00049	                 packages	0.03978	                 software	0.04953	                augmented	0.03687	                 language	0.07019	
-                 external	0.00049	                     mind	0.03978	                     form	0.04953	                 database	0.03687	                    point	0.07019	
-                developed	0.00049	             constituents	0.03978	                 powerful	0.04953	              controlling	0.00037	          representations	0.07019	
+  
+task1a 1632672 LDA
 
 
-                  TOPIC_6	0.06536	                  TOPIC_7	0.04201	                  TOPIC_8	0.03483	                  TOPIC_9	0.04201	                 TOPIC_10	0.05997	
 
-                 platform	0.27508	               resolution	0.25695	                  systems	0.25838	                 security	0.25695	                    links	0.62923	
-                 specific	0.16516	                    cases	0.08593	                 mediated	0.15523	                    users	0.17144	           authorizations	0.09015	
-                   result	0.11020	                  allowed	0.08593	               illustrate	0.10366	                   seldom	0.08593	                   amount	0.06020	
-                   module	0.05523	                  immense	0.04318	                     show	0.10366	                 relation	0.08593	               resolution	0.06020	
-                    rules	0.05523	                 formally	0.04318	                   relies	0.05209	                      day	0.08593	              constraints	0.03025	
-                     user	0.05523	                    style	0.04318	              differences	0.05209	                   simply	0.04318	                  trivial	0.03025	
-                 enforced	0.02775	                 multiple	0.04318	                     unit	0.05209	                 checking	0.04318	               techniques	0.03025	
-                    model	0.02775	                 proposed	0.04318	              information	0.05209	                    terms	0.04318	              controlling	0.00030	
-                    style	0.02775	                 accesses	0.04318	              conversions	0.05209	                 multiple	0.04318	                 external	0.00030	
-                    units	0.02775	           simultaneously	0.04318	              controlling	0.00052	                    means	0.04318	                developed	0.00030	
+********   Top 5 Latent Symantics using LDA   *******
 
+Latent Semantics for Sushil Jajodia
 
-                 TOPIC_11	0.05279	                 TOPIC_12	0.02764	                 TOPIC_13	0.02764	                 TOPIC_14	0.04022	                 TOPIC_15	0.03483	
-
-                  concept	0.27254	               protection	0.19558	                  data.in	0.13060	                 required	0.22376	               authorized	0.15523	
-                      set	0.17047	                  applied	0.19558	           specifications	0.13060	                     hold	0.13444	               controlled	0.10366	
-                databases	0.17047	            participating	0.13060	                developed	0.06563	                  provide	0.08977	                   hermes	0.10366	
-                 relation	0.06839	                sensitive	0.06563	                     data	0.06563	                    sound	0.08977	                 conflict	0.05209	
-                advantage	0.06839	                federated	0.06563	                    world	0.06563	                      day	0.08977	                  actions	0.05209	
-                supported	0.06839	               guaranteed	0.06563	                     vary	0.06563	                  logical	0.08977	                functions	0.05209	
-            organizations	0.03437	                    based	0.06563	                 mismatch	0.06563	                  capture	0.04511	                 calculus	0.05209	
-                 programs	0.03437	                 solution	0.06563	                mechanism	0.06563	              enforcement	0.04511	                   reason	0.05209	
-            specification	0.03437	              controlling	0.00065	                 suitable	0.06563	                  devised	0.04511	                  sources	0.05209	
-              controlling	0.00034	                 external	0.00065	             superhighway	0.06563	                framework	0.04511	                 positive	0.05209	
+TOPIC_1                                  TOPIC_2                                 TOPIC_3                                 TOPIC_4                                 TOPIC_5                                 
+ 
+access                     0.0482700     existing                   0.0156900     control                    0.0173900     temporal                   0.0294400     flexible                   0.0134000     
+language                   0.0299800     users                      0.0156900     system                     0.0137900     control                    0.0261100     module                     0.0134000     
+policy                     0.0269300     fam                        0.0124500     policies                   0.0101900     information                0.0227800     systems                    0.0134000     
+policies                   0.0238800     access                     0.0124500     enforce                    0.0101900     policy                     0.0227800     modules                    0.0134000     
+security                   0.0177800     paper                      0.0124500     calculus                   0.0101900     system                     0.0161100     developed                  0.0099100     
+time                       0.0116900     objects                    0.0092000     proposed                   0.0101900     single                     0.0161100     system                     0.0099100     
+models                     0.0116900     mechanisms                 0.0092000     mismatch                   0.0101900     specific                   0.0161100     mediated                   0.0099100     
 
 
-                 TOPIC_16	0.07614	                 TOPIC_17	0.02225	                 TOPIC_18	0.03842	                 TOPIC_19	0.06177	                 TOPIC_20	0.02405	
 
-              consequence	0.25973	              controlling	0.08152	                 designed	0.09397	                involving	0.43646	                   define	0.15011	
-                 mediator	0.18896	                      i.e	0.08152	               introduces	0.09397	                   models	0.17476	              policies.we	0.15011	
-                 external	0.07101	                  objects	0.08152	                 physical	0.09397	                      e.g	0.08753	               extensible	0.07543	
-               federation	0.07101	                  choices	0.08152	                mediators	0.09397	                   groups	0.05845	                   select	0.07543	
-               strategies	0.07101	                  variety	0.08152	                   server	0.09397	                extension	0.05845	                  require	0.07543	
-                   points	0.04742	              intuitively	0.08152	                  windows	0.04722	                  support	0.02937	                  manager	0.07543	
-              traditional	0.04742	                   denied	0.08152	                     wide	0.04722	                  notions	0.02937	                  unified	0.07543	
-                     time	0.02383	                 maryland	0.08152	              implemented	0.04722	                based.the	0.02937	                  details	0.07543	
-                 drawback	0.02383	               underlying	0.08152	              enforcement	0.04722	                     step	0.02937	              application	0.07543	
-               facilitate	0.02383	               properties	0.08152	                customize	0.04722	              controlling	0.00029	              controlling	0.00075	
-
-
-                 TOPIC_21	0.02225	                 TOPIC_22	0.02046	                 TOPIC_23	0.02405	                 TOPIC_24	0.03662	                 TOPIC_25	0.05279	
-
-               associates	0.08152	                 provided	0.17647	                addressed	0.15011	                   access	0.14762	                   source	0.37462	
-                      fam	0.08152	                expressed	0.17647	                 exposing	0.07543	                evolution	0.09858	                 mediator	0.13644	
-                  package	0.08152	            organizations	0.08867	                    prove	0.07543	                   tuples	0.09858	                   legacy	0.10242	
-               guaranteed	0.08152	                 policies	0.08867	                   number	0.07543	            heterogeneous	0.09858	                windowing	0.06839	
-                    query	0.08152	               underlying	0.08867	            made.policies	0.07543	                      cam	0.09858	                 approach	0.06839	
-             incorporates	0.08152	                  develop	0.08867	                   easily	0.07543	              environment	0.09858	                  defined	0.03437	
-                  coexist	0.08152	                    exist	0.08867	                   closed	0.07543	                 practice	0.04953	                     week	0.03437	
-                   called	0.08152	              controlling	0.00088	                  coexist	0.07543	                  variety	0.04953	               constraint	0.03437	
-                   policy	0.08152	                 external	0.00088	                  sources	0.07543	             specifically	0.04953	                    order	0.03437	
-                    major	0.08152	                developed	0.00088	                    rdquo	0.07543	                 flexible	0.04953	               consistent	0.03437	
 
 
