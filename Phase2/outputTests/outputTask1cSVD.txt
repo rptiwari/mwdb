@@ -1,0 +1,48 @@
+
+*******   Top 5 Latent Symantics. Model - SVD   *******
+Top 20 Similar Papers - Comparing Papers to the User's Semantics as determined by SVD
+*************************************************************************************
+
+Paper ID: 503471        Distance from given author: 0.0059686    Can blog communication dynamics be correlated with stock market activity?
+
+Paper ID: 1167789       Distance from given author: 0.0063233    What makes conversations interesting?: themes, participants and consequences of conversations in online social media.
+
+Paper ID: 617027        Distance from given author: 0.0075390    Mashup Feeds: : continuous queries over web services.
+
+Paper ID: 95927         Distance from given author: 0.0101914    Autonomic query parallelization using non-dedicated computers: an evaluation of adaptivity options.
+
+Paper ID: 246170        Distance from given author: 0.0173777    E-ADOME: Enacting Composite E-services in an Advanced Workflow Environment.
+
+Paper ID: 300992        Distance from given author: 0.0194286    Relative Prefix Sums: An Efficient Approach for Querying Dynamic OLAP Data Cubes.
+
+Paper ID: 1305468       Distance from given author: 0.0197672    System support for exploration and expert feedback in resolving conflicts during integration of metadata.
+
+Paper ID: 1016842       Distance from given author: 0.0267511    Enabling access-privacy for random walk based data analysis applications.
+
+Paper ID: 559780        Distance from given author: 0.0336221    Semantic Locking in Object-Oriented Database Systems.
+
+Paper ID: 597965        Distance from given author: 0.0394570    A Compensation-Based Approach for View Maintenance in Distributed Environments.
+
+Paper ID: 990383        Distance from given author: 0.0415710    CDIP: Collection-Driven, yet Individuality-Preserving Automated Blog Tagging.
+
+Paper ID: 176720        Distance from given author: 0.0462190    Planned Disconnections for Mobile Databases.      
+
+Paper ID: 300502        Distance from given author: 0.0488762    Approximate Constrained Bipartite Edge Coloring.  
+
+Paper ID: 674403        Distance from given author: 0.0528189    Using Association Rules for Fraud Detection in Web Advertising Networks.
+
+Paper ID: 518647        Distance from given author: 0.0551278    A request-routing framework for SOA-based enterprise computing.
+
+Paper ID: 856147        Distance from given author: 0.0558197    Privacy preserving decision tree learning over multiple parties.
+
+Paper ID: 302429        Distance from given author: 0.0558918    CUTS: rvature-based development pattern analysis and segmentation for blogs and other ext treams.
+
+Paper ID: 1112346       Distance from given author: 0.0574453    Scalable Access Within the Context of Digital Libraries.
+
+Paper ID: 256190        Distance from given author: 0.0575631    CP/CV: concept similarity mining without frequency information from domain describing taxonomies.
+
+Paper ID: 300861        Distance from given author: 0.0599095    AlphaSum: size-constrained table summarization using value lattices.
+
+Paper ID: 144383        Distance from given author: 0.0604247    Analysis of Quorum-Based Protocols for Distributed (k+1)-Exclusion.
+
+

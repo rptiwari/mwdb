@@ -1,27 +1,24 @@
-	PaperID		 Similarity
- RANK 	1 598954	 SCORE  0.8517741
- RANK 	2 1118430	 SCORE  0.8106917
- RANK 	3 613631	 SCORE  0.7937467
- RANK 	4 299606	 SCORE  0.2746110
- RANK 	5 212288	 SCORE  0.2110139
- RANK 	6 1577376	 SCORE  0.1827222
- RANK 	7 599903	 SCORE  0.1615849
- RANK 	8 509133	 SCORE  0.1543010
- RANK 	9 1571222	 SCORE  0.1359929
- RANK 	10 518647	 SCORE  0.1144222
- RANK 	11 152064	 SCORE  0.1109032
- RANK 	12 846415	 SCORE  0.1042992
- RANK 	13 856114	 SCORE  0.1039678
- RANK 	14 708878	 SCORE  0.0955795
- RANK 	15 597965	 SCORE  0.0945446
- RANK 	16 159366	 SCORE  0.0937325
- RANK 	17 856149	 SCORE  0.0926410
- RANK 	18 330214	 SCORE  0.0915530
- RANK 	19 86364	 SCORE  0.0911336
- RANK 	20 1511973	 SCORE  0.0890128
- RANK 	21 1242179	 SCORE  0.0889999
- RANK 	22 1120459	 SCORE  0.0856585
- RANK 	23 502770	 SCORE  0.0816731
- RANK 	24 544850	 SCORE  0.0804540
- RANK 	25 300518	 SCORE  0.0785587
- RANK 	26 1234960	 SCORE  0.0747952
+*******   Differentiation Vector  with pf   *******
+Similar documents
+
+ 	 PaperID	 CosineSimilarity
+ RANK 	1 1185925	 SCORE  0.1334175 SLEUTH: Single-pubLisher attack dEtection Using correlaTion Hunting.
+ RANK 	2 159366	 SCORE  0.1151916 Attribute-Based Access to Distributed Data over P2P Networks.
+ RANK 	3 144383	 SCORE  0.1148155 On the Importance of Tuning in Incremental View Maintenance: An Experience Case Study.
+ RANK 	4 370803	 SCORE  0.1036219 Dynamic Stochastic Models for Workflow Response Optimization.
+ RANK 	5 499859	 SCORE  0.0919668 ABACUS: A Distributed Middleware for Privacy Preserving Data Sharing Across Private Data Warehouses.
+ RANK 	6 224503	 SCORE  0.0822589 Speeding Up Similarity Queries over Large Chinese Calligraphic Character Databases Using Data Grid.
+ RANK 	7 846412	 SCORE  0.0795648 Progressive ranking of range aggregates.
+ RANK 	8 144425	 SCORE  0.0789295 Space-Efficient Data Cubes for Dynamic Environments.
+ RANK 	9 845905	 SCORE  0.0771770 Freshness-driven adaptive caching for dynamic content Web sites.
+ RANK 	10 1114115	 SCORE  0.0684143 SPOT Databases: Efficient Consistency Checking and Optimistic Selection in Probabilistic Spatial Databases.
+ RANK 	11 643554	 SCORE  0.0672400 Parallel Querying with Non-Dedicated Computers.
+ RANK 	12 675677	 SCORE  0.0644017 Extracting data records from the web using tag path clustering.
+ RANK 	13 1185942	 SCORE  0.0627473 A request-routing framework for SOA-based enterprise computing.
+ RANK 	14 1112575	 SCORE  0.0611632 A Compensation-Based Approach for View Maintenance in Distributed Environments.
+ RANK 	15 1124650	 SCORE  0.0582254 Optimal Information Dissemination in Star and Pancake Networks.
+ RANK 	16 712831	 SCORE  0.0569716 Confidence-driven early object elimination in quality-aware sensor workflows.
+ RANK 	17 96141	 SCORE  0.0561406 Towards interactive indexing for large Chinese calligraphic character databases.
+ RANK 	18 1113938	 SCORE  0.0553342 A Logical Formulation of Probabilistic Spatial Databases.
+ RANK 	19 509167	 SCORE  0.0546728 Towards Optimal I/O Scheduling for MEMS-Based Storag.
+ RANK 	20 299311	 SCORE  0.0532229 On Querying and Exploring Activities on a User's Desktop.

@@ -1,0 +1,47 @@
+
+*******   Top 5 Latent Symantics. Model - PCA   *******
+Top 20 Similar Papers - Comparing Papers to the User's Semantics (PCA)
+**********************************************************************
+
+Paper ID: 1016842       Distance from given author: 0.0291715    Enabling access-privacy for random walk based data analysis applications.
+
+Paper ID: 246170        Distance from given author: 0.0359382    E-ADOME: Enacting Composite E-services in an Advanced Workflow Environment.
+
+Paper ID: 990383        Distance from given author: 0.0402430    CDIP: Collection-Driven, yet Individuality-Preserving Automated Blog Tagging.
+
+Paper ID: 95927         Distance from given author: 0.0434642    Autonomic query parallelization using non-dedicated computers: an evaluation of adaptivity options.
+
+Paper ID: 518647        Distance from given author: 0.0578394    A request-routing framework for SOA-based enterprise computing.
+
+Paper ID: 256190        Distance from given author: 0.0606232    CP/CV: concept similarity mining without frequency information from domain describing taxonomies.
+
+Paper ID: 300861        Distance from given author: 0.0689712    AlphaSum: size-constrained table summarization using value lattices.
+
+Paper ID: 1112874       Distance from given author: 0.0701427    Range and kNN Query Processing for Moving Objects in Grid Model.
+
+Paper ID: 300502        Distance from given author: 0.0759765    Approximate Constrained Bipartite Edge Coloring.  
+
+Paper ID: 96141         Distance from given author: 0.0786587    View Management in Multimedia Databases.          
+
+Paper ID: 559780        Distance from given author: 0.0807998    Semantic Locking in Object-Oriented Database Systems.
+
+Paper ID: 1299816       Distance from given author: 0.0827372    Web service decomposition: Edge computing architecture for cache-friendly e-commerce applications.
+
+Paper ID: 144383        Distance from given author: 0.0843587    Analysis of Quorum-Based Protocols for Distributed (k+1)-Exclusion.
+
+Paper ID: 1279177       Distance from given author: 0.0886194    Supporting efficient multimedia database exploration.
+
+Paper ID: 302429        Distance from given author: 0.0996261    CUTS: rvature-based development pattern analysis and segmentation for blogs and other ext treams.
+
+Paper ID: 220333        Distance from given author: 0.1008338    StratOSphere: Unification of Code, Data, Location, Scope, and Mobility.
+
+Paper ID: 525114        Distance from given author: 0.1029568    Monitoring Moving Objects Using Low Frequency Snapshots in Sensor Networks.
+
+Paper ID: 95219         Distance from given author: 0.1052264    Thread Cooperation in Multicore Architectures for Frequency Counting over Multiple Data Streams.
+
+Paper ID: 503471        Distance from given author: 0.1055950    Can blog communication dynamics be correlated with stock market activity?
+
+Paper ID: 617027        Distance from given author: 0.1059234    Mashup Feeds: : continuous queries over web services.
+
+Paper ID: 1167789       Distance from given author: 0.1062165    What makes conversations interesting?: themes, participants and consequences of conversations in online social media.
+
