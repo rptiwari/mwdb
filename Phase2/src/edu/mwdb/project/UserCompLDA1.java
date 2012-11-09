@@ -200,6 +200,7 @@ public class UserCompLDA1 {
 		// proxy.setVariable("DS",DS);
 		String currentPath = task1aLDA.class.getProtectionDomain().getCodeSource().getLocation().getPath();
                 currentPath = currentPath.replaceFirst("Phase2.jar", "");
+                currentPath = currentPath.replaceFirst("/", "");
 		proxy.eval("cd "+currentPath);
 
 
@@ -419,6 +420,7 @@ public class UserCompLDA1 {
 
 			String currentPath = task1aLDA.class.getProtectionDomain().getCodeSource().getLocation().getPath();
                         currentPath = currentPath.replaceFirst("Phase2.jar", "");
+                        currentPath = currentPath.replaceFirst("/", "");
 			proxy.eval("cd "+currentPath);
 			
 			processor.setNumericArray("givenAuthKWArray", new MatlabNumericArray(givenauthKeywordMatrix, null));
