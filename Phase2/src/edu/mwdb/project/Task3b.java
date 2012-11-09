@@ -11,32 +11,6 @@ import org.apache.lucene.store.Directory;
 
 public class Task3b {
 
-	public static void main(String[] args) throws Exception {
-		DblpData dblpData = new DblpData();
-		Directory indexDir = dblpData.createAuthorDocumentIndex();
-		List<String> allTerms = dblpData.getAllTermsInIndex(indexDir, "doc");
-		Map<String, TermFreqVector> authorTermFreq = dblpData.getAuthorTermFrequencies(indexDir);
-		Task2 task2 = new Task2();
-		ArrayList<Map.Entry<String, Double>>[] authorGroups = Task3a.getGroupPartitions(task2.getTop3LatSemBySVD_AuthorAuthor());
-		ArrayList<Map.Entry<String, Double>>[] coauthorGroups = Task3a.getGroupPartitions(task2.getTop3LatSemBySVD_CoAuthorCoAuthor());
-		
-		// Author-Author
-		System.out.println("Author-Author");
-		HashMap<String, Double> authorAssociatedVector = getAssociationKeywVectorToLatSem(authorTermFreq, allTerms, authorGroups);
-		for (Map.Entry<String, Double> entry : authorAssociatedVector.entrySet()) {
-			System.out.println(entry.getKey() + " : " + entry.getValue());
-		}
-		
-		Thread.sleep(5000);
-		
-		// Coauthor-Coauthor
-		System.out.println("\n\n\n\n\n\nCoauthor-Coauthor");
-		HashMap<String, Double> coauthorAssociatedVector = getAssociationKeywVectorToLatSem(authorTermFreq, allTerms, coauthorGroups);
-		for (Map.Entry<String, Double> entry : coauthorAssociatedVector.entrySet()) {
-			System.out.println(entry.getKey() + " : " + entry.getValue());
-		}
-	}
-	
 	/**
 	 * Get the weights from the 3 partitioned groups and multiplies those authors' weights to their respective 
 	 * tf's in the authorTermFreq vector. This modified vector is then averaged in terms of keyword values into

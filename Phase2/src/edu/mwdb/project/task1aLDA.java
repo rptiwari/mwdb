@@ -195,7 +195,7 @@ public class task1aLDA {
 
             //set matlab path
             String currentPath = task1aLDA.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-
+            currentPath = currentPath.replaceFirst("Phase2.jar", "");
             proxy.eval("cd " + currentPath);
 
             LDAPrep ldaInputs = new LDAPrep();

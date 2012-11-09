@@ -19,29 +19,6 @@ public class Task2 {
 		matlab = new MatLab();
 	}
 	
-	public static void main(String[] args) throws Exception {
-		Task2 task = new Task2();
-
-		System.out.println("Top 3 Latent Semantics in Author-Author similarity matrix");
-
-		Map.Entry<String, Double>[][] top3_author = task.getTop3LatSemBySVD_AuthorAuthor();
-		for(int i=0; i<top3_author.length; i++) {
-			for (int j=0; j<top3_author[i].length; j++) {
-				System.out.print(top3_author[i][j].getKey() + ":" + top3_author[i][j].getValue() + "\t");
-			}
-			System.out.println();
-		}
-
-		System.out.println("Top 3 Latent Semantics in Coauthor-Coauthor similarity matrix");
-		// 2a
-		Map.Entry<String, Double>[][] top3_coauthors = task.getTop3LatSemBySVD_CoAuthorCoAuthor();
-		for(int i=0; i<top3_coauthors.length; i++) {
-			for (int j=0; j<top3_coauthors[i].length; j++) {
-				System.out.print(top3_coauthors[i][j].getKey() + ":" + top3_coauthors[i][j].getValue() + "\t");
-			}
-			System.out.println();
-		}
-	}
 	
 	/**
 	 * It creates an author-author similarity matrix using keyword vectors, performs SVD on this matrix, and gets the top-3 latent semantics

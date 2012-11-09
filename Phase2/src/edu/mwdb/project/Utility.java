@@ -47,8 +47,9 @@ public class Utility {
 	
 	public static File getStopWordsFile(){
 		if(stopWordsFile == null){
-			
-			stopWordsFile = new File("./src/StopWords.txt");
+			//String currentPath = Utility.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+                        //System.out.println("PATH: "+currentPath);
+			stopWordsFile = new File("StopWords.txt");
 		}
 		return stopWordsFile;
 	}

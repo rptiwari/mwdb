@@ -234,8 +234,7 @@ public class UserCompDiffVector1b {
 				}
 			}
 
-			MatlabProxyFactory factory = new MatlabProxyFactory();
-			MatlabProxy proxy = factory.getProxy();
+			MatlabProxy proxy = MatLab.getProxy();
 
 			MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
 			processor.setNumericArray("inputCorpusMatrix", new MatlabNumericArray(docDVCorpusMatrixTFIDF, null));
@@ -243,7 +242,6 @@ public class UserCompDiffVector1b {
 			Object[] obj = new Object[2];
 			obj = proxy.returningEval("knnsearch( inputCorpusMatrix, userMatrix,'k', 11,'Distance','cosine')",2);
 			
-			proxy.disconnect();
 			
 			double[] iDistX = (double[]) obj[0];
 			double[] distance = (double[]) obj[1];
