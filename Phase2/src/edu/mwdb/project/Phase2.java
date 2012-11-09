@@ -30,11 +30,23 @@ public class Phase2 {
 				}
 				else*/
 					//phase2.doTask1a(args[1],args[2]);
-				phase2.doTask1a("","");
+				phase2.doTask1a("PCA","1632672");
 			}else if(taskName.equalsIgnoreCase("task1b")){
-				phase2.doTask1b();
+				/*if(args.length != 4){
+				System.err.println("Please Provide TaskName, userid, diff-vector and model");
+				System.exit(1);
+			}
+			else*/
+				//phase2.doTask1a(args[1],args[2],args[3]);
+				phase2.doTask1b("","","");
 			}else if(taskName.equalsIgnoreCase("task1c")){
-				phase2.doTask1c();
+				/*if(args.length != 4){
+				System.err.println("Please Provide TaskName, userid, diff-vector and model");
+				System.exit(1);
+			}
+			else*/
+				//phase2.doTask1a(args[1],args[2],args[3]);
+				phase2.doTask1c("1632672","TF-IDF2","SVD");
 			}else if(taskName.equalsIgnoreCase("task2a")){
 				phase2.doTask2a();
 			}else if(taskName.equalsIgnoreCase("task2b")){
@@ -50,41 +62,83 @@ public class Phase2 {
 	}
 
 	private void doTask1a(String model, String personId) throws Exception{
-		personId = "1632672";
-		Top5Semantics1a latentSemantics = new Top5Semantics1a();
-		latentSemantics.getSemantics(personId, "PCA");
-		System.out.println("\n\n");
-		latentSemantics.getSemantics(personId, "SVD");
-		System.out.println("\n\n");
-		task1aLDA t1Lda = new task1aLDA();
-		t1Lda.doTask(personId);
+		if(model.equalsIgnoreCase("PCA")){
+			Top5Semantics1a latentSemantics = new Top5Semantics1a();
+			
+			System.out.println("\n\n");
+			System.out.println("********   Top 5 Latent Symantics using "+model+"   *******");
+			latentSemantics.getSemantics(personId, "PCA");
+			System.out.println("\n\n");
+		}
+		else if(model.equalsIgnoreCase("SVD")){
+			Top5Semantics1a latentSemantics = new Top5Semantics1a();
+			
+			System.out.println("\n\n");
+			System.out.println("********   Top 5 Latent Symantics using "+model+"   *******");
+			latentSemantics.getSemantics(personId, "SVD");
+			System.out.println("\n\n");
+		}else if(model.equalsIgnoreCase("LDA")){
+			System.out.println("\n\n");
+			System.out.println("********   Top 5 Latent Symantics using "+model+"   *******");
+			task1aLDA t1Lda = new task1aLDA();
+			t1Lda.doTask(personId);
+			System.out.println("\n\n");
+		}
+		else{
+			System.err.println("Incorrect Model");
+			System.exit(1);
+		}
+		
 	}
 	
-	private void doTask1b() throws Exception{
-		int authorId = 1632672;
-//		UserCompKeywordVector1b t1bKV = new UserCompKeywordVector1b();
-//		t1bKV.runTask(authorId);
-//		System.out.println("\n\n");
-//		UserCompDiffVector1b t1bTFIDF2 = new UserCompDiffVector1b();
-//		t1bTFIDF2.doTask(authorId);
-//		System.out.println("\n\n");
-		UserCompPCASVD1b comp = new UserCompPCASVD1b();
-		comp.computePCA_SVD(authorId, "PCA");
+	private void doTask1b(String personNum, String diffVector, String latentSem) throws Exception{
+		int authorId = Integer.parseInt(personNum);
 		System.out.println("\n\n");
-		comp.computePCA_SVD(authorId, "SVD");
+		System.out.println("*******   Keyword Vector  *******");
+		UserCompKeywordVector1b t1bKV = new UserCompKeywordVector1b();
+		t1bKV.runTask(authorId);
+		
+		
 		System.out.println("\n\n");
-//		UserCompLDA1 t1b = new UserCompLDA1();
-//		t1b.doLatentSemantics(Integer.toString(authorId));
+		System.out.println("*******   Differentiation Vector with "+ diffVector+"   *******");
+		UserCompDiffVector1b t1bTFIDF2 = new UserCompDiffVector1b();
+		t1bTFIDF2.doTask(authorId);
+		
+		System.out.println("\n\n");
+		System.out.println("*******   Top 5 Latent Symantics. Model - "+latentSem+"   *******");
+		
+		if(latentSem.equalsIgnoreCase("PCA")){
+			UserCompPCASVD1b comp = new UserCompPCASVD1b();
+			comp.computePCA_SVD(authorId, "PCA");
+		}
+		else if(latentSem.equalsIgnoreCase("SVD")){
+			UserCompPCASVD1b comp = new UserCompPCASVD1b();
+			comp.computePCA_SVD(authorId, "SVD");
+		}
+		else if(latentSem.equalsIgnoreCase("LDA")){
+			UserCompLDA1 t1b = new UserCompLDA1();
+			t1b.doLatentSemantics(Integer.toString(authorId));
+		}
+		else{
+			System.err.println("Incorrect Model");
+			System.exit(1);
+		}
+		
 	}
 	
-	private void doTask1c() throws Exception{
+	private void doTask1c(String personNum, String diffVector, String latentSem) throws Exception{
 		Task1cCompDocs t1c = new Task1cCompDocs();
-		String personNum = "1632672";
+		System.out.println("\n\n");
+		System.out.println("*******   Keyword Vector  *******");
 		t1c.findKWSimilarDocs(personNum);
+		
 		System.out.println("\n\n");
-		t1c.findDifferentiationSimilarDocs(personNum, "TF-IDF2");
+		System.out.println("*******   Differentiation Vector  with "+diffVector+ "   *******");
+		t1c.findDifferentiationSimilarDocs(personNum, diffVector);
+		
 		System.out.println("\n\n");
-		t1c.findDifferentiationSimilarDocs(personNum, "PF");
+		System.out.println("*******   Top 5 Latent Symantics. Model - "+latentSem+"   *******");
+		t1c.findLatentSemantics(personNum, latentSem);
 
 	}
 	

@@ -59,11 +59,6 @@ public class Task1cCompDocs {
 			
 			IndexReader reader2 = IndexReader.open(theIndex);
 
-//			IndexSearcher searcher = new IndexSearcher(reader2);
-
-				
-			
-				//ArrayList<TermFrequency> termVector = getAuthorKeywordVector1(personNum,searcher, reader2, rankingMethod);
 				Directory theIndextoAuthors = db.createAuthorDocumentIndex();
 				
 				TermFreqVector keywordVector = getAuthorKeywordVector(personNum, theIndextoAuthors);
@@ -75,11 +70,7 @@ public class Task1cCompDocs {
 
 				
 				Directory nonAuthorIndex = db.createNonAuthoredDocsIndex(personNum);
-			//	Map<Integer, TermFreqVector> allDocFreqVectors =  getDocTermFrequencies(nonAuthorIndex);
-				
-				
-	//			documentMatrix =  getDocumentMatrix(nonAuthorIndex, allterms);
-				
+			
 				Similarities =  getSimilarity(nonAuthorIndex, authorKeyword, wordPosMap);
 				
 				
@@ -94,17 +85,6 @@ public class Task1cCompDocs {
 
 				}						// end if similarities is non-empty
 				else { System.out.println("0 total matching documents");}
-
-				
-			
-				
-				
-				
-
-//				keywordVector = getAuthorKeywordPFVector(personNum,searcher, reader2);
-
-
-
 				reader2.close();
 				
 			
@@ -128,7 +108,6 @@ public class Task1cCompDocs {
 			Directory theIndex = db.createAllDocumentIndex();
 			IndexReader reader2 = IndexReader.open(theIndex);
 
-			//ArrayList<TermFrequency> termVector = getAuthorKeywordVector1(personNum,searcher, reader2, rankingMethod);
 			Directory theIndex2 = db.createAuthorDocumentIndex();
 
 
@@ -147,9 +126,6 @@ public class Task1cCompDocs {
 				authorDiscriminationVector =  getAlignedAuthorTfidf2KeywordVector(personNum, wordPosMap);
 			}
 
-	//		Map<Integer, TermFreqVector> allDocFreqVectors =  getDocTermFrequencies(nonAuthorIndex);
-
-	//		documentMatrix =  getDocumentMatrix(nonAuthorIndex, allterms);
 
 			Similarities =  getSimilarity(nonAuthorIndex, authorDiscriminationVector, wordPosMap);
 
