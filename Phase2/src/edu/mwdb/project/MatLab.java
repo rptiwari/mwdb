@@ -24,6 +24,12 @@ public class MatLab {
 		return proxy;
 	}
 	
+	public static void closeConnection() throws MatlabInvocationException{
+		if(proxy != null){
+			//proxy.disconnect();
+			proxy.exit();
+		}
+	}
 	/**
 	 * Computes the SVD
 	 * @param matrix
@@ -35,6 +41,7 @@ public class MatLab {
 		if (matrix.length == 0)
 			throw new Exception("matrix cannot be empty");
 		int columnSize = matrix[0].length;
+		
 		double[][] tempMatrix = new double[columnSize][columnSize];
 		
 		MatlabTypeConverter processor = new MatlabTypeConverter(getProxy());
@@ -74,15 +81,11 @@ public class MatLab {
 		if (matrix.length == 0)
 			throw new Exception("matrix cannot be empty");
 
-		// Connecting to the Matlab
-		MatlabProxyFactory factory = new MatlabProxyFactory();
-		MatlabProxy proxy = factory.getProxy();
-
-		MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
+		MatlabTypeConverter processor = new MatlabTypeConverter(getProxy());
 		processor.setNumericArray("matrix", new MatlabNumericArray(matrix, null));
 
 		// For PCA:
-		proxy.eval("[pc,score]=princomp(matrix);");
+		getProxy().eval("[pc,score]=princomp(matrix);");
 		int columnSize = matrix[0].length;
 		double[][] tempMatrix = new double[columnSize][columnSize];
 

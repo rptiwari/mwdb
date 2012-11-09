@@ -242,8 +242,9 @@ public class UserCompDiffVector1b {
 			processor.setNumericArray("userMatrix", new MatlabNumericArray(givenAuthMatrixTFIDF, null));
 			Object[] obj = new Object[2];
 			obj = proxy.returningEval("knnsearch( inputCorpusMatrix, userMatrix,'k', 11,'Distance','cosine')",2);
+			
 			proxy.disconnect();
-
+			
 			double[] iDistX = (double[]) obj[0];
 			double[] distance = (double[]) obj[1];
 			// obj[1] = proxy.getVariable("D");

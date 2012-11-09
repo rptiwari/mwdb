@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Task3a {
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		try {
 			Task2 task2 = new Task2();
 			ArrayList<Map.Entry<String, Double>>[] authorGroups = getGroupPartitions(task2.getTop3LatSemBySVD_AuthorAuthor());
@@ -31,7 +31,7 @@ public class Task3a {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	/**
 	 * Partitions the latent semantics into groups depending on where the weight is the highest in the semantics
