@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.SortedSet;
+import java.util.TreeMap;
 
 import org.apache.lucene.index.TermFreqVector;
 import org.apache.lucene.store.Directory;
@@ -211,21 +213,19 @@ public class Phase2 {
 
 		// Author-Author
 		System.out.println("Author-Author");
-		HashMap<String, Double> authorAssociatedVector = task
+		SortedSet<Map.Entry<String, Double>> authorAssociatedVector = task
 				.getAssociationKeywVectorToLatSem(authorTermFreq, allTerms,
 						authorGroups);
-		for (Map.Entry<String, Double> entry : authorAssociatedVector
-				.entrySet()) {
+		for (Map.Entry<String, Double> entry : authorAssociatedVector) {
 			System.out.println(entry.getKey() + " : " + entry.getValue());
 		}
 
 		// Coauthor-Coauthor
 		System.out.println("\n\n\n\n\n\nCoauthor-Coauthor");
-		HashMap<String, Double> coauthorAssociatedVector = task
+		SortedSet<Map.Entry<String, Double>> coauthorAssociatedVector = task
 				.getAssociationKeywVectorToLatSem(authorTermFreq, allTerms,
 						coauthorGroups);
-		for (Map.Entry<String, Double> entry : coauthorAssociatedVector
-				.entrySet()) {
+		for (Map.Entry<String, Double> entry : coauthorAssociatedVector) {
 			System.out.println(entry.getKey() + " : " + entry.getValue());
 		}
 	}
