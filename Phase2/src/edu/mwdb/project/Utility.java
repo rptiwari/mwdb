@@ -512,4 +512,15 @@ public class Utility {
 		Double rightPart = Math.abs((r / R) - ((n - r) / (N - R)));				// can be negative so need abs
 		return (leftPart * rightPart);
 	}
+	
+	public static String getCurrentFolder(){
+		String currentPath = Utility.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		if(currentPath.endsWith("jar")){
+			currentPath = currentPath.substring(0, currentPath.lastIndexOf("/"));
+		}
+		if(currentPath.startsWith("/")){
+			currentPath = currentPath.substring(1);
+		}
+		return currentPath;
+	}
 }

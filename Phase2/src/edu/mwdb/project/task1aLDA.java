@@ -194,13 +194,7 @@ public class task1aLDA {
 
 
             //set matlab path
-            String currentPath = task1aLDA.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-
-            currentPath = currentPath.replaceFirst("/","");
-
-
-            currentPath = currentPath.replaceFirst("Phase2.jar", "");
-            currentPath = currentPath.replaceFirst("/", "");
+            String currentPath = Utility.getCurrentFolder();
 
             proxy.eval("cd " + currentPath);
 
