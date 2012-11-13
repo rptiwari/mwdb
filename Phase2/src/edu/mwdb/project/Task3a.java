@@ -75,10 +75,6 @@ public class Task3a {
 class MapEntryComparable implements Comparator<Map.Entry<String, Double>> {
 	@Override
 	public int compare(Entry<String, Double> arg0, Entry<String, Double> arg1) {
-		if (arg0.getValue() > arg1.getValue())
-			return -1;
-		if (arg0.getValue() > arg1.getValue())
-			return 0;
-		return 1;
+		return Double.compare(arg0.getValue(), arg1.getValue());
 	}
 }
