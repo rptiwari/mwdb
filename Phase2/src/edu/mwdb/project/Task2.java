@@ -1,8 +1,13 @@
 package edu.mwdb.project;
 
 import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.lucene.index.TermFreqVector;
 import org.apache.lucene.store.Directory;
@@ -38,14 +43,16 @@ public class Task2 {
 			e.printStackTrace();
 		}
 		
-		Map.Entry[][] retVal = new Map.Entry[svdMatrix.length][svdMatrix[0].length];
+		Map.Entry<String, Double>[][] retVal = new Map.Entry[svdMatrix.length][svdMatrix[0].length];
 		String[] authorIds = authorTermFreq.keySet().toArray(new String[0]);
 		for(int i=0; i<svdMatrix.length; i++) {
 			for (int j=0; j<svdMatrix[i].length; j++) {
 				retVal[i][j] = new AbstractMap.SimpleEntry<String, Double>(authorIds[j], svdMatrix[i][j]);
 			}
 		}
-		
+		for(int i=0; i<3; i++){
+			Arrays.sort(retVal[i], Collections.reverseOrder(new MapEntryComparable()));
+		}
 		return retVal;
 	}
 	
@@ -67,7 +74,7 @@ public class Task2 {
 			e.printStackTrace();
 		}
 		
-		Map.Entry[][] retVal = new Map.Entry[svdMatrix.length][svdMatrix[0].length];
+		Map.Entry<String, Double>[][] retVal = new Map.Entry[svdMatrix.length][svdMatrix[0].length];
 		String[] authorIds = authorTermFreq.keySet().toArray(new String[0]);
 		for(int i=0; i<svdMatrix.length; i++) {
 			for (int j=0; j<svdMatrix[i].length; j++) {
@@ -75,6 +82,9 @@ public class Task2 {
 			}
 		}
 		
+		for(int i=0; i<3; i++){
+			Arrays.sort(retVal[i], Collections.reverseOrder(new MapEntryComparable()));
+		}	
 		return retVal;
 	}
 }
