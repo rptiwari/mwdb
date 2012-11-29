@@ -107,4 +107,37 @@ public class MatLab {
 		
 		return resultSematicMatrixPCA;
 	}
+	
+	/**
+	 * Finds the top kNumber matches of the authKeywordMatrix in allUsersKeyWordMatrix
+	 * @param allUsersKeyWordMatrix It's the matrix where all the information to be compared is to find the best matches
+	 * @param authKeywordMatrix It's the input query matrix that will be compared to the allUsersKeyWordMatrix 
+	 * @param kNumber How many results to be returned
+	 * @return the top kNumber best matches to the authKeywordMatrix from allUsersKeyWordMatrix
+	 * @throws MatlabInvocationException
+	 * @throws MatlabConnectionException
+	 * @throws Exception
+	 */
+	public Object[] knnSearch( double[][] allUsersKeyWordMatrix,  double[] authKeywordMatrix, int kNumber) throws MatlabInvocationException, MatlabConnectionException, Exception{
+		DblpData db = new DblpData();
+
+		double[][] usersPFMatrix = allUsersKeyWordMatrix;
+		double[][] givenauthPFMatrix = new double[1][authKeywordMatrix.length];
+		givenauthPFMatrix[0] = authKeywordMatrix;
+		
+		MatlabProxy proxy = MatLab.getProxy();
+		MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
+
+		String currentPath = Utility.getCurrentFolder();
+		proxy.eval("cd "+currentPath);
+		
+		processor.setNumericArray("givenAuthPFArray", new MatlabNumericArray(givenauthPFMatrix, null));
+		processor.setNumericArray("usersMatrix", new MatlabNumericArray(usersPFMatrix, null));
+		proxy.setVariable("kRange",kNumber);  
+		
+		Object[] objLDA = null;
+		objLDA = proxy.returningEval("knnsearch( usersMatrix, givenAuthPFArray,'k', kRange,'Distance','cosine')",2);
+		
+		return  objLDA;
+	}
 }
