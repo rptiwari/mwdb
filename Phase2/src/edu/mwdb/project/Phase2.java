@@ -96,9 +96,13 @@ public class Phase2 {
 		System.out.println("\n\n");
 		System.out.println("*******   Differentiation Vector with "
 				+ diffVector + "   *******");
-		UserCompDiffVector1b t1bTFIDF2 = new UserCompDiffVector1b();
-		t1bTFIDF2.doTask(authorId);
-
+		if (diffVector.equalsIgnoreCase("PF")) {
+			Task1bCompDiffPFVector comp = new Task1bCompDiffPFVector();
+			comp.findFasterPFSimilarUsers(personNum);
+		} else{
+			UserCompDiffVector1b t1bTFIDF2 = new UserCompDiffVector1b();
+			t1bTFIDF2.doTask(authorId);
+		}
 		System.out.println("\n\n");
 		System.out.println("*******   Top 5 Latent Symantics. Model - "
 				+ latentSem + "   *******");

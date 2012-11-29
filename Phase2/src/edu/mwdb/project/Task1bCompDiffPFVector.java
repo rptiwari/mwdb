@@ -167,6 +167,7 @@ public class Task1bCompDiffPFVector {
 	 return tfv;
 	}
 	
+	
 	public void findFasterPFSimilarUsers(String personNum) throws Exception {
 		List<String> allAuthors = null;
 		double[][] userMatrix = null;
@@ -187,7 +188,7 @@ public class Task1bCompDiffPFVector {
 			userMatrix = new double[allAuthors.size()][wordPosMap.keySet().size()];
 			
 			Map<String, TermFreqVector> allAuthorTFs =  db.getAuthorTermFrequencies(authorIndex2);
-			List<String> allWords = db.getAllTermsInIndex(db.createAllDocumentIndex(), "doc");
+			List<String> allWords = db.getAllTermsInIndex(theIndex, "doc");
 			HashMap<Integer,HashMap> forwardIndex = db.getForwardAndInversePaperKeywIndex()[0];
 
 			int index = 0;
