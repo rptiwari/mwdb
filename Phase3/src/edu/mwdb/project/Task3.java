@@ -1,5 +1,7 @@
 package edu.mwdb.project;
 
+import java.util.List;
+
 public class Task3 {
 
 	/**
@@ -10,4 +12,9 @@ public class Task3 {
 
 	}
 
+	public List GetClustersByKMeans(Graph graph, int k) throws Exception {
+		throw new Exception("Not Implemented yet");
+		//return null;
+	}
+	
 }

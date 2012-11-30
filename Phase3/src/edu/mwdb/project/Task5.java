@@ -1,6 +1,13 @@
 package edu.mwdb.project;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.lucene.index.TermFreqVector;
 
@@ -13,43 +20,61 @@ import matlabcontrol.MatlabInvocationException;
  */
 public class Task5 {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public static void main(String[] args) throws MatlabInvocationException, MatlabConnectionException, Exception {
+		Task1 t1 = new Task1();
+		Graph g = t1.getCoauthorSimilarityGraph_KeywordVector();
+		Map.Entry<String, Double>[] results = GraphSearchContent(g, "1632506", 5);
+		DblpData dblp = new DblpData();
+		for (Map.Entry<String, Double> r : results) {
+			System.out.println(dblp.getAuthName(r.getKey()) + " : " + r.getValue());
+		}
 	}
 	
 	/**
 	 * Given a graph, return the topK most content-wise similar entries from the graph to the searchId
 	 * @param graph “co-author” or “co-authored papers” matrix
 	 * @param searchId author or paper Id to find similarities for
-	 * @param topK number of results to return
-	 * @param isAuthorId specifies if searchId is an author. True=authorId, False=paperId. 
+	 * @param topK number of results to return 
 	 * @return the most content-wise similar entries
 	 * @throws MatlabInvocationException
 	 * @throws MatlabConnectionException
 	 * @throws Exception
 	 */
-	public static Object[] GraphSearchContent(double[][] graph, String searchId, int topK, boolean isAuthorId, Map<String, TermFreqVector> allAuthorsTermFreq) throws MatlabInvocationException, MatlabConnectionException, Exception {
+	public static Map.Entry<String, Double>[] GraphSearchContent(Graph graph, String searchId, int topK) throws MatlabInvocationException, MatlabConnectionException, Exception {
+		double[][] matrix = graph.getAdjacencyMatrix();
 		
-		// Retrieve keyword vector for author or paper id "searchId"
-		double[] keywordVector = null;
-		if (isAuthorId) {
-			TermFreqVector tfVector = allAuthorsTermFreq.get(searchId);
-			String[] authorTerms = tfVector.getTerms();
-			int[] authorTF = tfVector.getTermFrequencies();	
-			
-			// Convert from int[] to double[]
-			keywordVector = new double[authorTF.length];
-			for (int i=0; i<authorTF.length; i++) {
-				keywordVector[i] = authorTF[i];
-			}
-		} else {
-			throw new Exception("NOt Implemented yet");
+		// Locate the index row that the entry searchId is
+		int index = 0;
+		while(index<matrix.length) {
+			if (searchId.equalsIgnoreCase(graph.getNodeLabel(index)))
+				break;
+		}
+
+		// Create a list of all the nonzero entries from the searchId's row with the labels attached
+		ArrayList<Map.Entry<String, Double>> nonZeroFields = new ArrayList<Map.Entry<String, Double>>();
+		for (int i=0; i<matrix[index].length; i++) {
+			Map.Entry<String,Double> nonZero = new AbstractMap.SimpleEntry<String,Double>(graph.getNodeLabel(i), matrix[index][i]);
+			nonZeroFields.add(nonZero);
 		}
 		
-		// Use knn search to find 
-		MatLab ml = new MatLab();
-		return ml.knnSearch(graph, keywordVector, topK);
+		// Sort them in descending order
+		Collections.sort(nonZeroFields, new MapEntryComparable());
+		
+		// Return only topK
+		int realTopK = Math.min(topK, nonZeroFields.size());
+		Map.Entry<String, Double>[] retVal = new Map.Entry[realTopK];
+		for (int i=0; i<realTopK; i++) {
+			retVal[i] = nonZeroFields.get(i);
+		}
+		
+		return retVal;
 	}
 
+}
+
+class MapEntryComparable implements Comparator<Map.Entry<String, Double>> {
+	@Override
+	public int compare(Entry<String, Double> arg0, Entry<String, Double> arg1) {
+		return -1*Double.compare(arg0.getValue(), arg1.getValue());
+	}
 }

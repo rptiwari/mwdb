@@ -469,7 +469,7 @@ public class DblpData {
 	
 	/**
 	 * Get single author name from unique author id  Assumes Author is represented onlyif written a paper with an abstract.
-	 * @param authorId
+	 * @param personid
 	 * @return authName (String)
 	 * @throws Exception
 	 */
