@@ -64,6 +64,11 @@ public class Task5 {
 		int realTopK = Math.min(topK, nonZeroFields.size());
 		Map.Entry<String, Double>[] retVal = new Map.Entry[realTopK];
 		for (int i=0; i<realTopK; i++) {
+			
+			// If the searchId is in the topK, remove it
+			if (nonZeroFields.get(i).getKey().equalsIgnoreCase(searchId))
+				nonZeroFields.remove(i);
+			
 			retVal[i] = nonZeroFields.get(i);
 		}
 		
