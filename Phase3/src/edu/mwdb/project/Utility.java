@@ -406,6 +406,35 @@ public class Utility {
 		return numerator/denominator;
 	}
 
+	/**
+	 * Calculate Cosine Similarity between 2 vectors. Calculated by: a*b/|a||b|
+	 * @param a
+	 * @param b
+	 * @param keys the reference list of what keys to iterate in hashmaps a & b 
+	 * @return the cosine similarity between the two vectors "a" and "b"
+	 * @throws Exception
+	 */
+	public double cosineSimilarity(HashMap<String,Double> a, HashMap<String,Double> b, List<String> keys) throws Exception {
+		// a*b = multiply each a[i] by b[i], then sum all the results
+		// |a| = square each a[i] and then get the square root
+		double numerator = 0;
+		double magnitudeA = 0; // |a|
+		double magnitudeB = 0; // |b|
+		for (String key : keys) {
+			double aa = a.containsKey(key) ? a.get(key) : 0;
+			double bb = b.containsKey(key) ? b.get(key) : 0;
+			numerator += aa*bb;
+			magnitudeA += Math.pow(aa, 2);
+			magnitudeB += Math.pow(bb, 2);
+		}
+		
+		magnitudeA = Math.sqrt(magnitudeA);
+		magnitudeB = Math.sqrt(magnitudeB);
+		double denominator = magnitudeA*magnitudeB;
+		
+		return numerator/denominator;
+	}
+	
 	/*
 	 * Method to sort the vector maps in descending order
 	 */
