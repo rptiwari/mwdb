@@ -590,4 +590,30 @@ public class Utility {
 			sorted.clear();
 		}
 	}
+
+	/**
+	 * Creates a forward index for authors' keyword vectors
+	 * @param allAuthorsKeywVectors obtained by dblp.getAuthorTermFrequencies(indexDir);
+	 * @return a first level hashmap with author's Id as an integer key. The second level hashmap has the keyword as a string
+	 * 			key and a double value for the tf
+	 */
+	public HashMap<Integer,HashMap<String,Double>> getForwardAllAuthorsKeywIndex(Map<String,TermFreqVector> allAuthorsKeywVectors) {
+		HashMap<Integer,HashMap<String,Double>> forwardIndex = new HashMap<Integer,HashMap<String,Double>>();
+		
+		Set<String> keys = allAuthorsKeywVectors.keySet();
+		for (String key : keys) {
+			TermFreqVector authorTermFreqVector = allAuthorsKeywVectors.get(key);
+			String termTexts[] = authorTermFreqVector.getTerms();
+			int termFreqs[] = authorTermFreqVector.getTermFrequencies();
+			
+			HashMap<String,Double> temp = new HashMap<String,Double>();
+			for (int i=0; i<termTexts.length; i++) {
+				temp.put(termTexts[i], (double)termFreqs[i]);
+			}
+			
+			forwardIndex.put(Integer.parseInt(key), temp);
+		}
+		
+		return forwardIndex;
+	}
 }
