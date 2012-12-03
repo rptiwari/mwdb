@@ -523,4 +523,33 @@ public class DblpData {
 		return authors;
 	}
 	
+	/**
+	 * Get all the TermFreqVectors for every Document 
+	 * quickly from Lucene index
+	 * @param lucene directory that has doc field indexed
+	 * @return a Map of TermFreqVector for every document entry in the index
+	 * 
+	 */
+	public Map<String, TermFreqVector> getDocTermFrequencies(Directory luceneIndexDir){
+		IndexReader reader;
+		Map<String, TermFreqVector> docTermFrequencies = new HashMap<String, TermFreqVector>();
+		try {
+			reader = IndexReader.open(luceneIndexDir);
+			for (int i = 0; i < reader.maxDoc(); i++) {
+				String index = reader.document(i).get("paperid");
+				TermFreqVector tfv = reader.getTermFreqVector(i, "doc");
+				docTermFrequencies.put(index, tfv);
+			}
+			reader.close();
+			 
+		} catch (CorruptIndexException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return docTermFrequencies;
+	}
+	
 }
