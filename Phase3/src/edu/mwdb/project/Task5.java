@@ -23,7 +23,7 @@ public class Task5 {
 	public static void main(String[] args) throws MatlabInvocationException, MatlabConnectionException, Exception {
 		Task1 t1 = new Task1();
 		Graph g = t1.getCoauthorSimilarityGraph_KeywordVector();
-		Map.Entry<String, Double>[] results = GraphSearchContent(g, "1632506", 5);
+		Map.Entry<String, Double>[] results = GraphSearchContent(g, "1792339", 5);
 		DblpData dblp = new DblpData();
 		for (Map.Entry<String, Double> r : results) {
 			System.out.println(dblp.getAuthName(r.getKey()) + " : " + r.getValue());
@@ -44,11 +44,8 @@ public class Task5 {
 		double[][] matrix = graph.getAdjacencyMatrix();
 		
 		// Locate the index row that the entry searchId is
-		int index = 0;
-		while(index<matrix.length) {
-			if (searchId.equalsIgnoreCase(graph.getNodeLabel(index)))
-				break;
-		}
+		Map<String,Integer> revIndex = graph.getReversedNodeIndexLabelMap();
+		int index = revIndex.get(searchId);
 
 		// Create a list of all the nonzero entries from the searchId's row with the labels attached
 		ArrayList<Map.Entry<String, Double>> nonZeroFields = new ArrayList<Map.Entry<String, Double>>();

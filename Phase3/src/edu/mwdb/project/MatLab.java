@@ -30,6 +30,27 @@ public class MatLab {
 			proxy.exit();
 		}
 	}
+	
+	
+	
+	public double[][] svd(double[][] matrix, int rowsReturned) throws Exception {
+		if (matrix.length == 0)
+			throw new Exception("matrix cannot be empty");
+		int columnSize = matrix[0].length;
+		MatlabTypeConverter processor = new MatlabTypeConverter(getProxy());
+		processor.setNumericArray("matrix", new MatlabNumericArray(matrix, null));
+		
+		getProxy().eval("[U,S,V]=svd(matrix);");
+		double[][] resultSematicMatrixSVD = new double[rowsReturned][columnSize];
+		for(int k=0;k<rowsReturned;k++)
+		{
+			Object[] obj=getProxy().returningEval("V("+ (k+1) +",:)" ,1);
+			resultSematicMatrixSVD[k]=(double[])obj[0];
+		}	
+		return resultSematicMatrixSVD;
+	}
+	
+	
 	/**
 	 * Computes the SVD
 	 * @param matrix
@@ -37,7 +58,7 @@ public class MatLab {
 	 * @return the v matrix (u,s,v) transposed from computing the svd on the input matrix containing only the top k rows (k=rowsReturned) 
 	 * @throws Exception
 	 */
-	public double[][] svd(double[][] matrix, int rowsReturned) throws Exception {
+	public double[][] svd_withtranspose(double[][] matrix, int rowsReturned) throws Exception {
 		if (matrix.length == 0)
 			throw new Exception("matrix cannot be empty");
 		int columnSize = matrix[0].length;
@@ -70,6 +91,37 @@ public class MatLab {
 		return resultSematicMatrixSVD;
 	}
 
+	
+	
+	/**
+	 * Computes the PCA of a matrix
+	 * @param matrix
+	 * @param rowsReturned - the top k rows of the matrix to be returned
+
+	 */
+	public double[][] pca(double[][] matrix, int rowsReturned) throws Exception {
+		if (matrix.length == 0)
+			throw new Exception("matrix cannot be empty");
+
+		MatlabTypeConverter processor = new MatlabTypeConverter(getProxy());
+		processor.setNumericArray("matrix", new MatlabNumericArray(matrix, null));
+
+		// For PCA:
+		getProxy().eval("[pc,score]=princomp(matrix);");
+		int columnSize = matrix[0].length;
+		double[][] resultSematicMatrixPCA = new double[rowsReturned][columnSize];
+
+		for(int k=0;k<rowsReturned;k++)
+		{
+			Object[] obj=proxy.returningEval("pc(:,"+ (k+1) +")" ,1);
+			resultSematicMatrixPCA[k]=(double[]) obj[0];
+		}
+		return resultSematicMatrixPCA;
+	}
+	
+	
+	
+	
 	/**
 	 * Computes the PCA of a matrix
 	 * @param matrix
@@ -77,7 +129,7 @@ public class MatLab {
 	 * @return the matrix is already transposed
 	 * @throws Exception
 	 */
-	public double[][] pca(double[][] matrix, int rowsReturned) throws Exception {
+	public double[][] pca_withtranspose(double[][] matrix, int rowsReturned) throws Exception {
 		if (matrix.length == 0)
 			throw new Exception("matrix cannot be empty");
 
