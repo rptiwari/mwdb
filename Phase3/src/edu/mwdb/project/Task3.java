@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,7 @@ public class Task3 {
             
             double similarity = 0;
             int index = 0;
-
+            List<Integer> remainingObjects = new ArrayList<Integer>();
 
             for (int col = 0; col < len; col++) {
                 similarity = 0;
@@ -71,8 +72,56 @@ public class Task3 {
                 
                 if(col != index && similarity > 0){
                     clusters.get(index).add(col);
+                }else{
+                    remainingObjects.add(col);
                 }
             }
+            
+            
+            for(Integer i : remainingObjects){
+                List<Integer> neighbours = coAuthorSimGraph.getNeighbours(i.intValue());
+                int cluster = task3.findNeighbourInCluster(neighbours, clusters, adjMatrix);
+                if(cluster != -1){
+                    clusters.get(cluster).add(i);
+                }
+            }
+            
+            Map<String, List<String>> output = task3.attachAuthorNames(clusters, coAuthorSimGraph);
+            
+            System.out.println("\n### CLUSTERS ###\n");
+            task3.printClusters(output);
+
+        }
+        
+        private int findNeighbourInCluster(List<Integer> neighbours, 
+                                           Map<Integer, List<Integer>> clusters,
+                                           double[][] adjMatrix){
+            Iterator<Integer> it = clusters.keySet().iterator();
+            int finalCluster = -1;
+            double similarity = 0;
+            
+            while(it.hasNext()){
+                int clusterNum = it.next().intValue();
+                
+                List<Integer> members = clusters.get(clusterNum);
+                
+                for(Integer i : neighbours){
+                    for(Integer j : members){
+                        if(i.intValue() == j.intValue()){
+                            if (clusterNum != j && adjMatrix[j][clusterNum] > similarity) {
+                                similarity = adjMatrix[j][clusterNum];
+                                finalCluster = clusterNum;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return finalCluster;
+        }
+        
+        private Map<String, List<String>> attachAuthorNames(Map<Integer, List<Integer>> clusters,
+                Graph coAuthorSimGraph){
             
             Map<String, List<String>> output = new HashMap<String, List<String>>();
             DblpData dblp = new DblpData();
@@ -89,12 +138,11 @@ public class Task3 {
                     String id = coAuthorSimGraph.getNodeIndexLabelMap().get(i);
                     output.get(authorName).add(dblp.getAuthName(id));
                 }    
-            }    
+            }
             
-            System.out.println("\n### CLUSTERS ###\n");
-            task3.printClusters(output);
-
+            return output;
         }
+        
         
         private void printClusters(Map<String, List<String>> output){
             Iterator<String> keys = output.keySet().iterator();
