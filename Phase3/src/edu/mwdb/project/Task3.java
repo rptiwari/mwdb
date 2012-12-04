@@ -13,51 +13,142 @@ import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Map.Entry;
+import java.util.Scanner;
+import java.util.Set;
 
 import org.apache.lucene.index.TermFreqVector;
 import org.apache.lucene.store.Directory;
 
 public class Task3 {
 
-	public static void main(String[] args) throws Exception {
-
-		DblpData dblp = new DblpData();
-		HashMap<Integer,HashMap<String,Double>> forwIdx;
-		Task1 t1 = new Task1();
-		Task3 t3 = new Task3();
+	public static void main(String[] args) {
+            System.out.println("Enter the value of K: ");
+            Scanner sc = new Scanner(System.in);
+            int k = sc.nextInt();
+            
+            try{
+                System.out.println("Clustering by K-Means...");
+                doClusteringByKMeans(k);
+                
+                System.out.println("\n\n\nClustering by Single Pass Iterative Algorithm");
+                doSinglePassClustering(k);
+                
+            }catch(Exception ex){
+                System.err.println("Error in building clusters ");
+                ex.printStackTrace();
+            }
 		
-		// Coauthors
-		
-		Directory indexDir = dblp.createAuthorDocumentIndex();
-		Map<String,TermFreqVector> authKeywVectors = dblp.getAuthorTermFrequencies(indexDir);
-		Utility util = new Utility();
-		forwIdx = util.getForwardAllAuthorsKeywIndex(authKeywVectors);
-		
-		ClusterGroup[] results = t3.GetClustersByKMeans(t1.getCoauthorSimilarityGraph_KeywordVector(), 5, forwIdx);
-		
-		for (ClusterGroup cg : results) {
-			ArrayList<Map.Entry<String, Double>> cl = cg.getCluster();
-			SortedSet<Map.Entry<String, Double>> clKeyw = cg.getClusterKeywords();
-			
-			System.out.println("##CLUSTER##");
-			int five = 0;
-			for (Map.Entry<String,Double> e : clKeyw) {
-				System.out.println(e.getKey() + "\t" + e.getValue());
-				if (five == 5) 
-					break;
-				five++;
-			}
-			
-			for (int i=0; i<cl.size(); i++) {
-				Map.Entry<String,Double> e = cl.get(i);
-				System.out.println(dblp.getAuthName(e.getKey()) + "\t" + e.getValue());
-			}
-		}
-		
-		// Papers
-		forwIdx = dblp.getForwardAndInversePaperKeywIndex()[0];
 	}
 
+        private static void doSinglePassClustering(int k) throws Exception{
+            Task1 task1 = new Task1();
+            Task3 task3 = new Task3();
+            
+            Graph coAuthorSimGraph = task1.getCoauthorSimilarityGraph_KeywordVector();
+            
+            double[][] adjMatrix = coAuthorSimGraph.getAdjacencyMatrix();
+            int len = adjMatrix.length;
+            
+            ArrayList<Integer> randomNumbers = task3.getRandomNumbers(k, len);
+            Map<Integer, List<Integer>> clusters = new HashMap<Integer, List<Integer>>();
+            
+            for (int num : randomNumbers) {
+                clusters.put(num, new ArrayList<Integer>());
+            }
+            
+            double similarity = 0;
+            int index = 0;
+
+
+            for (int col = 0; col < len; col++) {
+                similarity = 0;
+                for (int num : randomNumbers) {
+                    if (col != num && adjMatrix[col][num] > similarity) {
+                        similarity = adjMatrix[col][num];
+                        index = num;
+                    }
+                }
+                
+                if(col != index && similarity > 0){
+                    clusters.get(index).add(col);
+                }
+            }
+            
+            Map<String, List<String>> output = new HashMap<String, List<String>>();
+            DblpData dblp = new DblpData();
+            Iterator<Integer> keys = clusters.keySet().iterator();
+            while(keys.hasNext()){
+                Integer key = keys.next();
+                List<Integer> elements = clusters.get(key);
+                
+                String authorId = coAuthorSimGraph.getNodeIndexLabelMap().get(key);
+                String authorName = dblp.getAuthName(authorId);
+                output.put(authorName, new ArrayList<String>());
+                
+                for(Integer i : elements){
+                    String id = coAuthorSimGraph.getNodeIndexLabelMap().get(i);
+                    output.get(authorName).add(dblp.getAuthName(id));
+                }    
+            }    
+            
+            System.out.println("\n### CLUSTERS ###\n");
+            task3.printClusters(output);
+
+        }
+        
+        private void printClusters(Map<String, List<String>> output){
+            Iterator<String> keys = output.keySet().iterator();
+            while(keys.hasNext()){
+                String author = keys.next();
+                
+                System.out.println(author);
+                List<String> elements = output.get(author);
+                for(String s : elements){
+                    System.out.println("    "+s);
+                }    
+                System.out.println();
+            }
+        }
+        
+        private static void doClusteringByKMeans(int k) throws Exception {
+            DblpData dblp = new DblpData();
+            HashMap<Integer, HashMap<String, Double>> forwIdx;
+            Task1 t1 = new Task1();
+            Task3 t3 = new Task3();
+
+            // Coauthors
+
+            Directory indexDir = dblp.createAuthorDocumentIndex();
+            Map<String, TermFreqVector> authKeywVectors = dblp.getAuthorTermFrequencies(indexDir);
+            Utility util = new Utility();
+            forwIdx = util.getForwardAllAuthorsKeywIndex(authKeywVectors);
+
+            ClusterGroup[] results = t3.GetClustersByKMeans(t1.getCoauthorSimilarityGraph_KeywordVector(), k, forwIdx);
+
+            for (ClusterGroup cg : results) {
+                ArrayList<Map.Entry<String, Double>> cl = cg.getCluster();
+                SortedSet<Map.Entry<String, Double>> clKeyw = cg.getClusterKeywords();
+
+                System.out.println("##CLUSTER##");
+                int five = 0;
+                for (Map.Entry<String, Double> e : clKeyw) {
+                    System.out.println(e.getKey() + "\t" + e.getValue());
+                    if (five == 5) {
+                        break;
+                    }
+                    five++;
+                }
+
+                for (int i = 0; i < cl.size(); i++) {
+                    Map.Entry<String, Double> e = cl.get(i);
+                    System.out.println(dblp.getAuthName(e.getKey()) + "\t" + e.getValue());
+                }
+            }
+
+            // Papers
+            forwIdx = dblp.getForwardAndInversePaperKeywIndex()[0];
+    }
+        
 	public ClusterGroup[] GetClustersByKMeans(Graph graph, int k, HashMap<Integer,HashMap<String,Double>> forwIdx) throws Exception {
 		ArrayList<HashMap<String,Double>> centroids = new ArrayList<HashMap<String,Double>>(k);
 		ArrayList<String>[] clusters = new ArrayList[k];
