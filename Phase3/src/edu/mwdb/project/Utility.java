@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -307,19 +308,19 @@ public class Utility {
 	 * @return a 2d array of doubles where the first index represents the paperId and the second one represents the term
 	 * @throws Exception
 	 */
-	public double[][] getAuthor_DocTermMatrix(String authorId, List<String> allTerms, List<Integer> paperIdsFromAuthor, boolean applyIDF) throws Exception {
+	public double[][] getAuthor_DocTermMatrix(String authorId, List<String> allTerms, List<Integer> paperIdsFromAuthor, boolean applyIDF, IndexReader allDocIndexReader) throws Exception {
 		DblpData dblp = new DblpData();
 		HashMap<Integer,HashMap<String,Double>> forwardIndex = dblp.getForwardAndInversePaperKeywIndex()[0];
-		Directory dir = dblp.createAllDocumentIndex();
-		IndexReader reader = IndexReader.open(dir);
-		
+//		Directory dir = dblp.createAllDocumentIndex();
+//		IndexReader reader = IndexReader.open(dir);
+//		
 		double[][] retVal = new double[paperIdsFromAuthor.size()][allTerms.size()];
 		int i=0;
 		for (int paperId : paperIdsFromAuthor) {
 			for (int termIdx = 0; termIdx < allTerms.size(); termIdx++) {
 				String currentTerm = allTerms.get(termIdx);
 				if (forwardIndex.get(paperId).containsKey(currentTerm))
-					retVal[i][termIdx] = forwardIndex.get(paperId).get(currentTerm) * (applyIDF ? getIDF(reader,currentTerm) : 1);
+					retVal[i][termIdx] = forwardIndex.get(paperId).get(currentTerm) * (applyIDF ? getIDF(allDocIndexReader,currentTerm) : 1);
 				else
 					retVal[i][termIdx] = 0;
 			}
@@ -402,7 +403,6 @@ public class Utility {
 		magnitudeA = Math.sqrt(magnitudeA);
 		magnitudeB = Math.sqrt(magnitudeB);
 		double denominator = magnitudeA*magnitudeB;
-		
 		return numerator/denominator;
 	}
 
@@ -615,5 +615,23 @@ public class Utility {
 		}
 		
 		return forwardIndex;
+	}
+	
+	public static void printGraph(Graph g) {
+		DecimalFormat f = new DecimalFormat("#.##");
+		for(int i=0; i<g.getNumNodes(); i++)
+		{
+			System.out.print("\t" + g.getNodeLabel(i));
+		}
+		System.out.println();
+		for(int i=0; i<g.getNumNodes(); i++)
+		{
+			System.out.print(g.getNodeLabel(i) + "\t");
+			for(int j=0; j<g.getNumNodes(); j++)
+			{
+				System.out.print(f.format(g.getAdjacencyMatrix()[i][j]) + "\t");
+			}
+			System.out.print("\n");
+		}
 	}
 }
