@@ -1,0 +1,23 @@
+Top 10 most content-wise similar nodes with: 1792339 (Oliver Po)
+Arsany Sawires :	1.9163360615077736
+Wang-Pin Hsiung :	1.8908250396940416
+Wen-Syan Li :	1.633815203694994
+Radu Sion :	1.5675558853076228
+Divyakant Agrawal :	1.5502000365761166
+Jun'ichi Tatemura :	1.2958208731880594
+Qiong Luo :	1.2348184589999764
+K. Selcuk Candan :	1.15378291350343
+Koji Hino :	1.0565017724672863
+Amr El Abbadi :	0.47107983571653217
+
+Top 10 most content-wise similar nodes with: 1636579 (K. Selcuk Candan)
+Jun'ichi Tatemura : 0.7940107207821654
+Divyakant Agrawal : 0.7796152903349896
+Wen-Syan Li : 0.7445742888646736
+Wang-Pin Hsiung : 0.7435205669003362
+Jong Wook Kim : 0.7429182465975984
+Maria Luisa Sapino : 0.731567324423315
+Amr El Abbadi : 0.7075245782155396
+Yan Qi  : 0.6998781232420022
+Oliver Po : 0.6806708309030938
+Qing Li : 0.6317962318445913

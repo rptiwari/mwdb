@@ -517,7 +517,26 @@ public class DblpData {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public String getPaperTitle(String paperId){
+		Utility util = new Utility();
+		Connection con = util.getDBConnection();
 
+		String authName = new String();
+		try{
+			Statement statement = con.createStatement();
+			ResultSet resultSet = statement.executeQuery("select a.title from papers a where a.paperid = " + paperId);
+			while (resultSet.next()) 
+			{
+				authName = resultSet.getString("title");
+			}
+			return authName;
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**
