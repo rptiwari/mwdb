@@ -110,20 +110,6 @@ public class Task2 {
 	}
 
 	public static void printGraph(Graph g) {
-		DecimalFormat f = new DecimalFormat("#.##");
-		for(int i=0; i<g.getNumNodes(); i++)
-		{
-			System.out.print("\t" + g.getNodeLabel(i));
-		}
-		System.out.println();
-		for(int i=0; i<g.getNumNodes(); i++)
-		{
-			System.out.print(g.getNodeLabel(i) + "\t");
-			for(int j=0; j<g.getNumNodes(); j++)
-			{
-				System.out.print(f.format(g.getAdjacencyMatrix()[i][j]) + "\t");
-			}
-			System.out.print("\n");
-		}
+		Utility.printPaperSortedEdges(g);
 	}
 }

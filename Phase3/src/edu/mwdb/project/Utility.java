@@ -628,6 +628,28 @@ public class Utility {
         }
     }
     
-    
+    public static void printPaperSortedEdges(Graph g) {
+        DecimalFormat f = new DecimalFormat("#.##");
+        
+        List<Edge> edgeList = new ArrayList<Edge>();
+        
+        for (int i = 0; i < g.getNumNodes(); i++) {
+            
+            for (int j = 0; j <= i; j++) {
+                Edge e = new Edge(i, j, g.getAdjacencyMatrix()[i][j]);
+                edgeList.add(e);
+            }
+                      
+        }
+        
+        Collections.sort(edgeList, Collections.reverseOrder());
+        DblpData dblp = new DblpData();
+        
+        for(int i=0; i<20; i++){
+            Edge e = edgeList.get(i);
+            System.out.println(g.getNodeLabel(e.i)+"  =>  "
+                    +g.getNodeLabel(e.j) + " ,  "+e.weight);
+        }
+    }
     
 }
