@@ -1,0 +1,30 @@
+Ramayans-MacBook-Pro:dist ramayantiwari$ java -jar mwdb.jar Task4 10 Author KV
+Dominant 10 Authors
+
+Author               Author ID    Ranking Score
+K. Selcuk Candan     1636579      0.1034627362
+Wen-Syan Li          1672554      0.0330060516
+Jun'ichi Tatemura    1700782      0.0254171980
+Divyakant Agrawal    1634203      0.0237467931
+Maria Luisa Sapino   1677020      0.0225144568
+Hari Sundaram        1691060      0.0211890587
+Wang-Pin Hsiung      1792340      0.0179698540
+Qing Li              1636367      0.0175556963
+Jong Wook Kim        1756460      0.0173538417
+Oliver Po            1792339      0.0169008453
+
+
+Dominant 10 Authors
+
+Author		      AuthorID      Ranking Value
+---------------------------------------------------------------------------------
+K. Selcuk Candan      1636579       0.1034627264
+Wen-Syan Li           1672554       0.0330060460
+Jun'ichi Tatemura     1700782       0.0254171935
+Divyakant Agrawal     1634203       0.0237467888
+Maria Luisa Sapino    1677020       0.0225144540
+Hari Sundaram         1691060       0.0211890557
+Wang-Pin Hsiung       1792340       0.0179698508
+Qing Li               1636367       0.0175556942
+Jong Wook Kim         1756460       0.0173538393
+Oliver Po             1792339       0.0169008422

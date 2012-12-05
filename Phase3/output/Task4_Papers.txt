@@ -1,0 +1,15 @@
+Ramayans-MacBook-Pro:dist ramayantiwari$ java -jar mwdb.jar Task4 10 Paper TF
+Dominant 10 Papers
+
+ Paper       Ranking Score     Title
+-----------------------------------------------------------------------------
+ 642089      0.00657880018    View Invalidation for Dynamic Content Caching in Multitiered Architectures.
+ 499885      0.00642079012    WreC: A Scalable Middleware Architecture to Enable XML Caching for Web-Services.
+ 845903      0.00628168684    Evaluations of architectural designs and implementation for database-driven web sites.
+ 642213      0.00622898112    TwigStack: Bottom-up Processing of Generalized-Tree-Pattern Queries over XML Documents.
+ 643132      0.00607463595    Issues and Evaluations of Caching Solutions for Web Application Acceleration.
+ 643129      0.00598182636    Safety Guarantee of Continuous Join Queries over Punctuated Data Streams.
+ 599788      0.00587713207    Incremental Maintenance of Path Expression Views.
+ 1113100     0.00560126660    Query Relaxation by Structure and Semantics for Retrieval of Logical Web Documents.
+ 525329      0.00547143619    On Overlay Schemes to Support Point-in-Range Queries for Scalable Grid Resource Discovery.
+ 674307      0.00538667039    Challenges and practices in deploying web acceleration solutions for distributed enterprise systems.

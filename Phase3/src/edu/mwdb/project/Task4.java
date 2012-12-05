@@ -533,7 +533,7 @@ public class Task4 {
         public static void runTask4(int k, String task, Graph g) throws Exception{
             Task4 t4 = new Task4();
             
-            if(task.equalsIgnoreCase("Auhtor")){
+            if(task.equalsIgnoreCase("Author")){
                 t4.doTask4a(k, g);
             }else if(task.equalsIgnoreCase("Paper")){
                 Directory luceneIndexDir = t4.dblpData.createAllDocumentIndex();
