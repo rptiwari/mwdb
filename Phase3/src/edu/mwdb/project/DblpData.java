@@ -357,9 +357,9 @@ public class DblpData {
 		Statement stmt = con.createStatement();
 		
 	  	stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("select paperid " +
-				"from writtenby " +  
-				"where personid=" + authorId);
+		ResultSet rs = stmt.executeQuery("select p.paperid " +
+				"from writtenby w, papers p " +  
+				"where w.personid=" + authorId + " and w.paperid = p.paperid and p.abstract <> ''");
 		List<Integer> retVal = new ArrayList<Integer>();
 	  	while (rs.next()) {
 	  		retVal.add(rs.getInt("paperid"));
@@ -377,56 +377,47 @@ public class DblpData {
 	 * @throws Exception
 	 */
 	public HashMap[] getForwardAndInversePaperKeywIndex() throws Exception {
-		Utility util = new Utility();
-		Connection con = util.getDBConnection();
-		Statement stmt = con.createStatement();
-		Set<char[]> stopWords = util.createStopWordsSet();
-		
-		ResultSet allPapersRs = stmt.executeQuery("SELECT paperid,abstract FROM papers");
-		
 		HashMap<Integer,HashMap> paperIdIndex = new HashMap();
 		HashMap<String,HashMap> invertedIndex = new HashMap();
-		
-		int numberOfPapers = 0;
-		while (allPapersRs.next()) {
-			numberOfPapers++;
-			int paperId = allPapersRs.getInt("paperId");
-			String abst = allPapersRs.getString("abstract");
-			HashMap<String,Double> abstractIndex = new HashMap();
-			
-			// Creating the words vector per paperId (forward index)
-			String[] wordsInAbstract = abst.split("[ .,?!()]+");
-			for (int i=0; i<wordsInAbstract.length; i++) {
-				String word = wordsInAbstract[i].toLowerCase();
-				if (word.length() == 0) // empty
-					continue;
-				if (!stopWords.contains(word.toCharArray())) {
-					if (abstractIndex.containsKey(word)) {
-						double tf = abstractIndex.get(word);
-						tf++;
-						abstractIndex.put(word, tf);
+		Directory lucenedir = createAllDocumentIndex();
+		IndexReader reader;
+		try {
+			reader = IndexReader.open(lucenedir);
+			for (int i = 0; i < reader.numDocs(); i++) {
+				TermFreqVector tfv = reader.getTermFreqVector(i, "doc");
+				
+				int paperId = Integer.parseInt(reader.document(i).get("paperid"));
+				String[] terms = tfv.getTerms();
+				int[] termFreqs = tfv.getTermFrequencies();
+				
+				HashMap<String,Double> abstractIndex = new HashMap<String, Double>();
+				for(int j=0; j<terms.length; j++){
+					abstractIndex.put(terms[j], (double)termFreqs[j]);
+				}
+
+				// Creating the inverted index
+				for (String key : abstractIndex.keySet()) { 
+					HashMap papersHavingWord;
+					if (invertedIndex.containsKey(key)) {
+						papersHavingWord = invertedIndex.get(key);
+						papersHavingWord.put(paperId, true);
 					} else {
-						abstractIndex.put(word, 1.0);
+						papersHavingWord = new HashMap();
+						papersHavingWord.put(paperId, true);
 					}
+					invertedIndex.put(key, papersHavingWord);
 				}
+				paperIdIndex.put(paperId, abstractIndex);
 			}
-			
-			// Creating the inverted index
-			for (String key : abstractIndex.keySet()) { 
-				HashMap papersHavingWord;
-				if (invertedIndex.containsKey(key)) {
-					papersHavingWord = invertedIndex.get(key);
-					papersHavingWord.put(paperId, true);
-				} else {
-					papersHavingWord = new HashMap();
-					papersHavingWord.put(paperId, true);
-				}
-				invertedIndex.put(key, papersHavingWord);
-			}
-			
-			paperIdIndex.put(paperId, abstractIndex);
+			reader.close();
+
+		} catch (CorruptIndexException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		
 		return new HashMap[]{paperIdIndex, invertedIndex};
 	}
 	

@@ -308,19 +308,14 @@ public class Utility {
 	 * @return a 2d array of doubles where the first index represents the paperId and the second one represents the term
 	 * @throws Exception
 	 */
-	public double[][] getAuthor_DocTermMatrix(String authorId, List<String> allTerms, List<Integer> paperIdsFromAuthor, boolean applyIDF, IndexReader allDocIndexReader) throws Exception {
-		DblpData dblp = new DblpData();
-		HashMap<Integer,HashMap<String,Double>> forwardIndex = dblp.getForwardAndInversePaperKeywIndex()[0];
-//		Directory dir = dblp.createAllDocumentIndex();
-//		IndexReader reader = IndexReader.open(dir);
-//		
+	public double[][] getAuthor_DocTermMatrix(String authorId, List<String> allTerms, List<Integer> paperIdsFromAuthor, boolean applyIDF, IndexReader allDocIndexReader, Map<Integer,HashMap<String,Double>> paperKeywordIndex) throws Exception {
 		double[][] retVal = new double[paperIdsFromAuthor.size()][allTerms.size()];
 		int i=0;
 		for (int paperId : paperIdsFromAuthor) {
 			for (int termIdx = 0; termIdx < allTerms.size(); termIdx++) {
 				String currentTerm = allTerms.get(termIdx);
-				if (forwardIndex.get(paperId).containsKey(currentTerm))
-					retVal[i][termIdx] = forwardIndex.get(paperId).get(currentTerm) * (applyIDF ? getIDF(allDocIndexReader,currentTerm) : 1);
+				if (paperKeywordIndex.get(paperId).containsKey(currentTerm))
+					retVal[i][termIdx] = paperKeywordIndex.get(paperId).get(currentTerm) * (applyIDF ? getIDF(allDocIndexReader,currentTerm) : 1);
 				else
 					retVal[i][termIdx] = 0;
 			}
@@ -472,6 +467,31 @@ public class Utility {
 	{
 		return Math.log(reader.numDocs()/ ((double)reader.docFreq(new Term("doc", termName))));
 	}
+	
+	
+	/*
+	 * Similar to getAlignedTermFreqVector function in Utility but with
+	 * different input parameters
+	 */
+	public static double[] getAlignedWordVector(String[] termTexts,
+			Float[] termFreqs, Map<String, Integer> allKeywordsPosMap) {
+
+		double[] alignedVector = new double[allKeywordsPosMap.keySet().size()];
+
+		for (int i = 0; i < termTexts.length; i++) {
+			if (!allKeywordsPosMap.containsKey(termTexts[i])) {
+				// System.out.println(termTexts[i]);
+			} else {
+				int j = allKeywordsPosMap.get(termTexts[i]);
+				if (j != -1) {
+					alignedVector[j] = termFreqs[i];
+				}
+			}
+		}
+		return alignedVector;
+	}
+	
+	
 	
 	public static double[] getAlignedTermFreqVector(TermFreqVector authorTermFreqVector, Map<String, Integer> allKeywordsPosMap){
 		double[] alignedVector = new double[allKeywordsPosMap.keySet().size()];
