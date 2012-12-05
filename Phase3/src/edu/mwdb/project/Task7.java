@@ -133,7 +133,7 @@ public class Task7 {
 		int termFreqs[] = authorTermFreqVector.getTermFrequencies();
 		for(int i=0; i<termTexts.length; i++){
 			Double pfFactor = allPFs.get(termTexts[i]);
-			if (termFreqs[i] > THRESHOLD){
+			if (termFreqs[i] > 0){
 				movedKWVector[i] = weight*pfFactor;
 			//	movedKWVector[i]*= getIDF(docIndexReader, term);	/**** code for tfidf processing *****/
 			//	movedKWVector[i] *= pfFactor;
@@ -487,11 +487,31 @@ public class Task7 {
 			task.displayAuthors(outputTask5.getSimilarities(),k, testAuthor);
 			task.displayAdjustedQuery(outputTask5.getNewTermFreqVector(),outputTask5.getOldQuery());
 			
+			testAuthor = "1792339";
+		
+			
+			Map.Entry<String, Double>[] task5bresult = Task5.GraphSearchContent(authorGraph, testAuthor, k);
+			List<String> nodeListb = new ArrayList<String>();
+			for(int i = 0; i < k; i++){
+				nodeListb.add(task5bresult[i].getKey());
+				System.out.print(task5bresult[i].getKey());
+				System.out.print(" ");
+				System.out.println(task5bresult[i].getValue());
+				}
+
+			
+			TaskResults outputTask5b = task.doTask7(nodeListb, k, authorGraph.getNodeIndexLabelMap(),testAuthor);
+			task.displayAuthors(outputTask5b.getSimilarities(),k, testAuthor);
+			task.displayAdjustedQuery(outputTask5b.getNewTermFreqVector(),outputTask5b.getOldQuery());
+			
+			
 
 			Graph paperGraph = task2.getCoauthorPapersSimilarityGraph_KeywordVector("TF");
 			String testPaper = "159366";
 			task5result = Task5.GraphSearchContent(paperGraph, testPaper, k);
 			nodeList = new ArrayList<String>();
+			System.out.println();
+			System.out.println("Paper 		 Similarity");
 			for(int i = 0; i < k; i++){
 				nodeList.add(task5result[i].getKey());
 				System.out.print(task5result[i].getKey());
@@ -502,8 +522,7 @@ public class Task7 {
 			TaskResults outputPapers = task.doTask7(nodeList, k, paperGraph.getNodeIndexLabelMap(),testPaper);
 			task.displayPapers(outputPapers.getSimilarities(),k, testPaper,docIndex);
 			task.displayAdjustedQuery(outputPapers.getNewTermFreqVector(),outputPapers.getOldQuery());
-			System.out.println(outputPapers.getNewTermFreqVector().size());
-					
+			
 	
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -534,31 +553,6 @@ public class Task7 {
 			e1.printStackTrace();
 		}
 		return docTermFrequencies;
-	}
-	private Graph getPaperSimilarityGraph(Directory luceneIndexDir) throws Exception{
-		Directory indexDir = db.createAllDocumentIndex();
-		
-		Map<Integer, TermFreqVector> docTermFreq = getDocIndexTermFreq(indexDir);
-		List<String> allTerms = db.getAllTermsInIndex(indexDir, "doc");
-		Task4 task = new Task4();
-		Map<Integer,String>	paperMap = task.getIndexPaperMap(luceneIndexDir);
-		
-		Map<String, Integer> allKeywordsPosMap = new HashMap<String, Integer>();
-		int termIdx = 0;
-		for(String kw:allTerms){
-			allKeywordsPosMap.put(kw, termIdx++);
-		}
-		
-		double[][] simMatrix  = new double[docTermFreq.size()][docTermFreq.size()];
-		for(int i=0; i<docTermFreq.size(); i++){
-			double[] a1 = Utility.getAlignedTermFreqVector(docTermFreq.get(i), allKeywordsPosMap);
-			for(int j=0; j<docTermFreq.size(); j++){
-				double[] a2 = Utility.getAlignedTermFreqVector(docTermFreq.get(j), allKeywordsPosMap);
-				double cosineSim = utils.cosineSimilarity(a1, a2);
-				simMatrix[i][j] = cosineSim;
-			}
-		}
-		return new Graph(simMatrix, paperMap);
 	}
 	
 	class MapEntryComparable implements Comparator<Map.Entry<String, Double>> {
