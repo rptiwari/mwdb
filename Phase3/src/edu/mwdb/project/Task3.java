@@ -60,7 +60,7 @@ public class Task3 {
             double similarity = 0;
             int index = 0;
             List<Integer> remainingObjects = new ArrayList<Integer>();
-
+            
             for (int col = 0; col < len; col++) {
                 similarity = 0;
                 for (int num : randomNumbers) {
@@ -71,12 +71,12 @@ public class Task3 {
                 }
                 
                 if(col != index && similarity > 0){
-                    clusters.get(index).add(col);
+                    clusters.get(index).add(col);                    
                 }else{
-                    remainingObjects.add(col);
+                    if(col != index)
+                        remainingObjects.add(col);
                 }
             }
-            
             
             for(Integer i : remainingObjects){
                 List<Integer> neighbours = coAuthorSimGraph.getNeighbours(i.intValue());
@@ -85,13 +85,66 @@ public class Task3 {
                     clusters.get(cluster).add(i);
                 }
             }
-            
+          
             Map<String, List<String>> output = task3.attachAuthorNames(clusters, coAuthorSimGraph);
-            
+
             System.out.println("\n### CLUSTERS ###\n");
+            System.out.println("\n### Authors ###\n");
+            task3.printClusters(output);
+
+
+
+            // Papers
+            Task2 task2 = new Task2();
+            Graph paperSimGraph = task2.getCoauthorPapersSimilarityGraph_KeywordVector("TF");
+
+            double[][] paperAdjMatrix = paperSimGraph.getAdjacencyMatrix();
+            len = paperAdjMatrix.length;
+
+            randomNumbers = task3.getRandomNumbers(k, len);
+            clusters = new HashMap<Integer, List<Integer>>();
+
+            for (int num : randomNumbers) {
+                clusters.put(num, new ArrayList<Integer>());
+            }
+
+            similarity = 0;
+            index = 0;
+            remainingObjects = new ArrayList<Integer>();
+
+            for (int col = 0; col < len; col++) {
+                similarity = 0;
+                for (int num : randomNumbers) {
+                    if (col != num && paperAdjMatrix[col][num] > similarity) {
+                        similarity = paperAdjMatrix[col][num];
+                        index = num;
+                    }
+                }
+
+                if (col != index && similarity > 0) {
+                    clusters.get(index).add(col);
+                } else {
+                    if (col != index) {
+                        remainingObjects.add(col);
+                    }
+                }
+            }
+
+            for (Integer i : remainingObjects) {
+                List<Integer> neighbours = paperSimGraph.getNeighbours(i.intValue());
+                int cluster = task3.findNeighbourInCluster(neighbours, clusters, paperAdjMatrix);
+                if (cluster != -1) {
+                    clusters.get(cluster).add(i);
+                }
+            }
+
+            output = task3.attachPaperTitles(clusters, paperSimGraph);
+
+            System.out.println("\n### Papers ###\n");
             task3.printClusters(output);
 
         }
+        
         
         private int findNeighbourInCluster(List<Integer> neighbours, 
                                            Map<Integer, List<Integer>> clusters,
@@ -132,30 +185,55 @@ public class Task3 {
                 
                 String authorId = coAuthorSimGraph.getNodeIndexLabelMap().get(key);
                 String authorName = dblp.getAuthName(authorId);
-                output.put(authorName, new ArrayList<String>());
+                output.put(authorName+" ("+authorId+") ", new ArrayList<String>());
                 
                 for(Integer i : elements){
                     String id = coAuthorSimGraph.getNodeIndexLabelMap().get(i);
-                    output.get(authorName).add(dblp.getAuthName(id));
+                    output.get(authorName+" ("+authorId+") ").add(dblp.getAuthName(id)+" ("+id+") ");
                 }    
             }
             
             return output;
         }
         
+        private Map<String, List<String>> attachPaperTitles(Map<Integer, List<Integer>> clusters,
+                Graph paperSimGraph){
+            
+            Map<String, List<String>> output = new HashMap<String, List<String>>();
+            DblpData dblp = new DblpData();
+            Iterator<Integer> keys = clusters.keySet().iterator();
+            while(keys.hasNext()){
+                Integer key = keys.next();
+                List<Integer> elements = clusters.get(key);
+                
+                String paperId = paperSimGraph.getNodeIndexLabelMap().get(key);
+                String paperTitle = dblp.getPaperTitle(paperId);
+                output.put(paperTitle+" ("+paperId+") ", new ArrayList<String>());
+                
+                for(Integer i : elements){
+                    String id = paperSimGraph.getNodeIndexLabelMap().get(i);
+                    output.get(paperTitle+" ("+paperId+") ").add(dblp.getPaperTitle(id)+" ("+id+") ");
+                }    
+            }
+            
+            return output;
+        }
         
         private void printClusters(Map<String, List<String>> output){
+            int count = 0;
             Iterator<String> keys = output.keySet().iterator();
             while(keys.hasNext()){
+                System.out.println("Cluster "+ ++count+"  :");
                 String author = keys.next();
                 
-                System.out.println(author);
+                System.out.println("Cluster Representative: "+  author);
                 List<String> elements = output.get(author);
                 for(String s : elements){
-                    System.out.println("    "+s);
+                    System.out.println("    "+s);                    
                 }    
                 System.out.println();
             }
+            
         }
         
         private static void doClusteringByKMeans(int k) throws Exception {
@@ -379,7 +457,7 @@ public class Task3 {
 				randTemp = randomGen.nextInt(maxRandomNumber);
 			randomNumbers.add(randTemp);
 		}
-//		System.out.println("Random Numbers:");
+//		System.out.println("Randomly Selected Authors:");
 //		for (int i=0; i<randomNumbers.size(); i++)
 //			System.out.println(randomNumbers.get(i));
 		

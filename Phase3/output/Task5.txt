@@ -1,15 +1,3 @@
-Top 10 most content-wise similar nodes with: 1792339 (Oliver Po)
-Arsany Sawires :	1.9163360615077736
-Wang-Pin Hsiung :	1.8908250396940416
-Wen-Syan Li :	1.633815203694994
-Radu Sion :	1.5675558853076228
-Divyakant Agrawal :	1.5502000365761166
-Jun'ichi Tatemura :	1.2958208731880594
-Qiong Luo :	1.2348184589999764
-K. Selcuk Candan :	1.15378291350343
-Koji Hino :	1.0565017724672863
-Amr El Abbadi :	0.47107983571653217
-
 Top 10 most content-wise similar nodes with: 1636579 (K. Selcuk Candan)
 Jun'ichi Tatemura : 0.7940107207821654
 Divyakant Agrawal : 0.7796152903349896
@@ -21,3 +9,15 @@ Amr El Abbadi : 0.7075245782155396
 Yan Qi  : 0.6998781232420022
 Oliver Po : 0.6806708309030938
 Qing Li : 0.6317962318445913
+
+Top 10 coauthored papers most content-wise similar nodes with: 674403 (FLUX: fuzzy content and structure matching of XML range queries.)
+TWIX: twig structure and content matching of selective queries using binary labeling. :	0.2027443846676588
+WreC: A Scalable Middleware Architecture to Enable XML Caching for Web-Services. :	0.15298929292765606
+Scalable Filtering of Multiple Generalized-Tree-Pattern Queries over XML Streams. :	0.1400467523303959
+Query Relaxation by Structure and Semantics for Retrieval of Logical Web Documents. :	0.10519719210559401
+Browsing Large Digital Library Collections Using Classification Hierarchies. :	0.10463863014992944
+Query Processing for Moving Objects with Space-Time Grid Storage Model. :	0.10448039603032977
+Incremental Maintenance of Path Expression Views. :	0.10353205848424055
+An integrated efficient solution for computing frequent and top- elements in data streams. :	0.10316010942329792
+Progressive Ranking of Range Aggregates. :	0.09696178424750683
+Progressive ranking of range aggregates. :	0.09696178424750683
