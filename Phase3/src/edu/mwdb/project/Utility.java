@@ -41,617 +41,593 @@ import org.apache.lucene.search.DefaultSimilarity;
 import org.apache.lucene.search.Similarity;
 import org.apache.lucene.store.Directory;
 
-
 public class Utility {
 
-	private static File stopWordsFile;
-	
-	public static File getStopWordsFile(){
-		if(stopWordsFile == null){
-			//String currentPath = Utility.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-                        //System.out.println("PATH: "+currentPath);
-			stopWordsFile = new File("StopWords.txt");
-		}
-		return stopWordsFile;
-	}
-	
-	
-	/*
-	 * Method to get the DB Connection.
-	 */
-	private static Connection con;
-	public Connection getDBConnection()
-	{
-		if (con != null)
-			return con;
-		
-		String dbUrl = "jdbc:mysql://localhost:3306/dblp";
-		
-		try 
-		{
-			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(dbUrl,"root","password");
-		}
+    private static File stopWordsFile;
 
-		catch(ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+    public static File getStopWordsFile() {
+        if (stopWordsFile == null) {
+            //String currentPath = Utility.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            //System.out.println("PATH: "+currentPath);
+            stopWordsFile = new File("StopWords.txt");
+        }
+        return stopWordsFile;
+    }
+    /*
+     * Method to get the DB Connection.
+     */
+    private static Connection con;
 
-		catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return con;
-	}
+    public Connection getDBConnection() {
+        if (con != null) {
+            return con;
+        }
 
-	/*
-	 * Method to create a Character Set to store the Stop words List.
-	 */
-	public Set<char[]> createStopWordsSet()
-	{
-		Set<char[]> stopWordsSet = new HashSet<char[]>();
-		try
-		{
-			FileInputStream fstream = new FileInputStream(getStopWordsFile());
-			DataInputStream in = new DataInputStream(fstream);
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        String dbUrl = "jdbc:mysql://localhost:3306/dblp";
 
-			String strLine;
-			char[] charline;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection(dbUrl, "root", "password");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return con;
+    }
 
-			while ((strLine = br.readLine()) != null) 	
-			{
-				charline = strLine.toCharArray();
-				stopWordsSet.add(charline);
-			}
-			in.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		return stopWordsSet;
-	}
+    /*
+     * Method to create a Character Set to store the Stop words List.
+     */
+    public Set<char[]> createStopWordsSet() {
+        Set<char[]> stopWordsSet = new HashSet<char[]>();
+        try {
+            FileInputStream fstream = new FileInputStream(getStopWordsFile());
+            DataInputStream in = new DataInputStream(fstream);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
-	/*
-	 * Method to calculate the TF for a given set of Keywords.
-	 */
-	public Map<String,Float> createTF(TokenStream keywords,String rowData) throws IOException
-	{
-		Map<String,Float> termFreq = new HashMap<String,Float>();
-		List<String> keywordsList = new ArrayList<String>(); 
-		while(keywords.incrementToken())
-		{
-			keywordsList.add(keywords.getAttribute(CharTermAttribute.class).toString());
-		}
-		String keyword="";
-		String[] rowDataArr = rowData.split("[ ]+");
-		int noOfWords = rowDataArr.length;
-		float counter = 0;
-		try 
-		{
-			for(int j=0;j<keywordsList.size();j++)
-			{
-				keyword = keywordsList.get(j);
-				counter=0;
-				for (int i=0;i<keywordsList.size();i++)
-				{
-					if(keywordsList.get(i).equalsIgnoreCase(keyword))
-					{
-						counter++;
-					}
-				}
-				termFreq.put(keyword.toLowerCase(), counter/(float)noOfWords);
-			}
-		}
-		catch (Exception e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return termFreq;
-	}
+            String strLine;
+            char[] charline;
 
-	public Map<String,Float> createNewTF(TokenStream keywords,String rowData) throws IOException
-	{
+            while ((strLine = br.readLine()) != null) {
+                charline = strLine.toCharArray();
+                stopWordsSet.add(charline);
+            }
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return stopWordsSet;
+    }
 
-		Map<String,Float> termFreq = new HashMap<String,Float>();
-		try
-		{
-			// remove any '\n' characters that may occur  
-			String temp = rowData.replaceAll("[\\n]", " ");  
+    /*
+     * Method to calculate the TF for a given set of Keywords.
+     */
+    public Map<String, Float> createTF(TokenStream keywords, String rowData) throws IOException {
+        Map<String, Float> termFreq = new HashMap<String, Float>();
+        List<String> keywordsList = new ArrayList<String>();
+        while (keywords.incrementToken()) {
+            keywordsList.add(keywords.getAttribute(CharTermAttribute.class).toString());
+        }
+        String keyword = "";
+        String[] rowDataArr = rowData.split("[ ]+");
+        int noOfWords = rowDataArr.length;
+        float counter = 0;
+        try {
+            for (int j = 0; j < keywordsList.size(); j++) {
+                keyword = keywordsList.get(j);
+                counter = 0;
+                for (int i = 0; i < keywordsList.size(); i++) {
+                    if (keywordsList.get(i).equalsIgnoreCase(keyword)) {
+                        counter++;
+                    }
+                }
+                termFreq.put(keyword.toLowerCase(), counter / (float) noOfWords);
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return termFreq;
+    }
 
-			// replace any grammatical characters and split the String into an array  
-			String[] splitter = temp.replaceAll("[.,?!:;/]", "").split(" ");  
+    public Map<String, Float> createNewTF(TokenStream keywords, String rowData) throws IOException {
 
-			// intialize an int array to hold count of each word  
-			int[] counter= new int[splitter.length];
+        Map<String, Float> termFreq = new HashMap<String, Float>();
+        try {
+            // remove any '\n' characters that may occur  
+            String temp = rowData.replaceAll("[\\n]", " ");
 
-			// loop through the sentence  
-			for(int i =0; i< splitter.length; i++)
-			{
+            // replace any grammatical characters and split the String into an array  
+            String[] splitter = temp.replaceAll("[.,?!:;/]", "").split(" ");
 
-				// hold current word in the sentence in temp variable  
-				temp = splitter[i];  
+            // intialize an int array to hold count of each word  
+            int[] counter = new int[splitter.length];
 
-				// inner loop to compare current word with those in the sentence  
-				// incrementing the counter of the adjacent int array for each match  
-				for (int k=0; k< splitter.length; k++)
-				{  
+            // loop through the sentence  
+            for (int i = 0; i < splitter.length; i++) {
 
-					if(temp.equals(splitter[k]))  
-					{  
-						counter[k]++;
-					}  
-				}
-			}  
+                // hold current word in the sentence in temp variable  
+                temp = splitter[i];
 
-			// populate the map  
-			for (int i=0; i< splitter.length; i++)  
-			{  
-				termFreq.put(splitter[i].toLowerCase(), (float)counter[i]/splitter.length);  
-			}
-		}
-		catch (Exception e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return termFreq;
-	}
+                // inner loop to compare current word with those in the sentence  
+                // incrementing the counter of the adjacent int array for each match  
+                for (int k = 0; k < splitter.length; k++) {
 
+                    if (temp.equals(splitter[k])) {
+                        counter[k]++;
+                    }
+                }
+            }
 
-	public Map<String,Float> countijvalue(String keyword,List<String> rowData) throws IOException
-	{
-		Map<String,Float> termFreq = new HashMap<String,Float>();
-		float counter = 0;
-		try 
-		{
-			for(int i=0;i<rowData.size();i++)
-			{
-				String[] rowDataArr = rowData.get(i).split("[ ]+");
-				for(int j=0;j<rowDataArr.length;j++)
-				{
-					if(rowDataArr[j].equalsIgnoreCase(keyword))
-					{
-						counter++;
-					}
-				}
-			}
-			termFreq.put(keyword, counter);
-		}
-		catch (Exception e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return termFreq;
-	}
+            // populate the map  
+            for (int i = 0; i < splitter.length; i++) {
+                termFreq.put(splitter[i].toLowerCase(), (float) counter[i] / splitter.length);
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return termFreq;
+    }
 
-	public Map<String,Float> createauthorTF(TokenStream keywords,String rowData) throws IOException
-	{
-		Map<String,Float> termFreq = new HashMap<String,Float>();
-		List<String> keywordsList = new ArrayList<String>(); 
-		while(keywords.incrementToken())
-		{
-			keywordsList.add(keywords.getAttribute(CharTermAttribute.class).toString());
-		}
-		String keyword="";
-		float counter = 0;
-		try 
-		{
-			for(int j=0;j<keywordsList.size();j++)
-			{
-				keyword = keywordsList.get(j);
-				counter=0;
-				for (int i=0;i<keywordsList.size();i++)
-				{
-					if(keywordsList.get(i).equalsIgnoreCase(keyword))
-					{
-						counter++;
-					}
-				}
-				termFreq.put(keyword.toLowerCase(), counter);
-			}
-		}
-		catch (Exception e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return termFreq;
-	}
+    public Map<String, Float> countijvalue(String keyword, List<String> rowData) throws IOException {
+        Map<String, Float> termFreq = new HashMap<String, Float>();
+        float counter = 0;
+        try {
+            for (int i = 0; i < rowData.size(); i++) {
+                String[] rowDataArr = rowData.get(i).split("[ ]+");
+                for (int j = 0; j < rowDataArr.length; j++) {
+                    if (rowDataArr[j].equalsIgnoreCase(keyword)) {
+                        counter++;
+                    }
+                }
+            }
+            termFreq.put(keyword, counter);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return termFreq;
+    }
 
-	/*
-	 * Method to calculate the weighted count of a given set of Keywords.
-	 */
-	public Map<String,Float> createTF(TokenStream keywords,String rowData,float weight) throws IOException
-	{
-		Map<String,Float> termFreq = new HashMap<String,Float>();
-		List<String> keywordsList = new ArrayList<String>(); 
-		while(keywords.incrementToken())
-		{
-			keywordsList.add(keywords.getAttribute(CharTermAttribute.class).toString());
-		}
-		String keyword="";
-		float counter = 0;
-		try 
-		{
-			for(int j=0;j<keywordsList.size();j++)
-			{
-				keyword = keywordsList.get(j);
-				counter=0;
-				for (int i=0;i<keywordsList.size();i++)
-				{
-					if(keywordsList.get(i).equalsIgnoreCase(keyword))
-					{
-						counter++;
-					}
-				}
-				termFreq.put(keyword.toLowerCase(), counter*weight);
-			}
-		}
-		catch (Exception e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return termFreq;
-	}
+    public Map<String, Float> createauthorTF(TokenStream keywords, String rowData) throws IOException {
+        Map<String, Float> termFreq = new HashMap<String, Float>();
+        List<String> keywordsList = new ArrayList<String>();
+        while (keywords.incrementToken()) {
+            keywordsList.add(keywords.getAttribute(CharTermAttribute.class).toString());
+        }
+        String keyword = "";
+        float counter = 0;
+        try {
+            for (int j = 0; j < keywordsList.size(); j++) {
+                keyword = keywordsList.get(j);
+                counter = 0;
+                for (int i = 0; i < keywordsList.size(); i++) {
+                    if (keywordsList.get(i).equalsIgnoreCase(keyword)) {
+                        counter++;
+                    }
+                }
+                termFreq.put(keyword.toLowerCase(), counter);
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return termFreq;
+    }
 
-	
-	/**
-	 * Retrieves a PaperId-Term vector for all the author's paperIds
-	 * @param authorId
-	 * @param allTerms - all the terms in the entire document corpus.
-	 * @param paperIdsFromAuthor - obtained by "dblp.getPaperIdsFromAuthor(authorId)"
-	 * @param applyIDF - flag to apply idf values if wanted (PCA,SVD) or not (LDA)
-	 * @return a 2d array of doubles where the first index represents the paperId and the second one represents the term
-	 * @throws Exception
-	 */
-	public double[][] getAuthor_DocTermMatrix(String authorId, List<String> allTerms, List<Integer> paperIdsFromAuthor, boolean applyIDF, IndexReader allDocIndexReader, Map<Integer,HashMap<String,Double>> paperKeywordIndex) throws Exception {
-		double[][] retVal = new double[paperIdsFromAuthor.size()][allTerms.size()];
-		int i=0;
-		for (int paperId : paperIdsFromAuthor) {
-			for (int termIdx = 0; termIdx < allTerms.size(); termIdx++) {
-				String currentTerm = allTerms.get(termIdx);
-				if (paperKeywordIndex.get(paperId).containsKey(currentTerm))
-					retVal[i][termIdx] = paperKeywordIndex.get(paperId).get(currentTerm) * (applyIDF ? getIDF(allDocIndexReader,currentTerm) : 1);
-				else
-					retVal[i][termIdx] = 0;
-			}
-			i++;
-		}
-		return retVal;
-	}
-	
-	/*
-	 * Method to generate the TF and the TF-IDF vector mapping
-	 */
-	public Map<String,Float> createTFIDF(int noOfDocs, Directory indexDir, Map<String,Float> termFreq, String weightOption) throws IOException
-	{
-		IndexReader iReader = IndexReader.open(indexDir);
+    /*
+     * Method to calculate the weighted count of a given set of Keywords.
+     */
+    public Map<String, Float> createTF(TokenStream keywords, String rowData, float weight) throws IOException {
+        Map<String, Float> termFreq = new HashMap<String, Float>();
+        List<String> keywordsList = new ArrayList<String>();
+        while (keywords.incrementToken()) {
+            keywordsList.add(keywords.getAttribute(CharTermAttribute.class).toString());
+        }
+        String keyword = "";
+        float counter = 0;
+        try {
+            for (int j = 0; j < keywordsList.size(); j++) {
+                keyword = keywordsList.get(j);
+                counter = 0;
+                for (int i = 0; i < keywordsList.size(); i++) {
+                    if (keywordsList.get(i).equalsIgnoreCase(keyword)) {
+                        counter++;
+                    }
+                }
+                termFreq.put(keyword.toLowerCase(), counter * weight);
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return termFreq;
+    }
 
-		int docFreq = 0;
-		Similarity similarity = new DefaultSimilarity();
-		float tf = 0;
-		float idf = 0;
-		float tfidf=0;
+    /**
+     * Retrieves a PaperId-Term vector for all the author's paperIds
+     *
+     * @param authorId
+     * @param allTerms - all the terms in the entire document corpus.
+     * @param paperIdsFromAuthor - obtained by
+     * "dblp.getPaperIdsFromAuthor(authorId)"
+     * @param applyIDF - flag to apply idf values if wanted (PCA,SVD) or not
+     * (LDA)
+     * @return a 2d array of doubles where the first index represents the
+     * paperId and the second one represents the term
+     * @throws Exception
+     */
+    public double[][] getAuthor_DocTermMatrix(String authorId, List<String> allTerms, List<Integer> paperIdsFromAuthor, boolean applyIDF, IndexReader allDocIndexReader, Map<Integer, HashMap<String, Double>> paperKeywordIndex) throws Exception {
+        double[][] retVal = new double[paperIdsFromAuthor.size()][allTerms.size()];
+        int i = 0;
+        for (int paperId : paperIdsFromAuthor) {
+            for (int termIdx = 0; termIdx < allTerms.size(); termIdx++) {
+                String currentTerm = allTerms.get(termIdx);
+                if (paperKeywordIndex.get(paperId).containsKey(currentTerm)) {
+                    retVal[i][termIdx] = paperKeywordIndex.get(paperId).get(currentTerm) * (applyIDF ? getIDF(allDocIndexReader, currentTerm) : 1);
+                } else {
+                    retVal[i][termIdx] = 0;
+                }
+            }
+            i++;
+        }
+        return retVal;
+    }
 
-		Map<String,Float> idfMap = new HashMap<String, Float>();
+    /*
+     * Method to generate the TF and the TF-IDF vector mapping
+     */
+    public Map<String, Float> createTFIDF(int noOfDocs, Directory indexDir, Map<String, Float> termFreq, String weightOption) throws IOException {
+        IndexReader iReader = IndexReader.open(indexDir);
 
-		for(Map.Entry<String, Float> keyword: termFreq.entrySet()){
-			Term t = new Term("doc",keyword.getKey().toLowerCase());
-			docFreq = iReader.docFreq(t);
-			idf = similarity.idf(docFreq, noOfDocs);
-			tf = keyword.getValue();
-			tfidf = tf*idf;
-			idfMap.put(keyword.getKey(), tfidf);
-			//System.out.println("TF-IDF: " + "{" + keyword.getKey() + "," + tf*idf + "}");
-		}
+        int docFreq = 0;
+        Similarity similarity = new DefaultSimilarity();
+        float tf = 0;
+        float idf = 0;
+        float tfidf = 0;
 
-		//termFreq = sortByComparator(termFreq);
-		idfMap = sortByComparator(idfMap);
+        Map<String, Float> idfMap = new HashMap<String, Float>();
 
-		/*if(arg.equalsIgnoreCase("TF"))
-		{
-			for(Map.Entry<String, Float> keyword: termFreq.entrySet()){
-				tf = keyword.getValue();
-				System.out.println("TF: " + "{" + keyword.getKey() + "," + tf + "}");
-			}
-		}
+        for (Map.Entry<String, Float> keyword : termFreq.entrySet()) {
+            Term t = new Term("doc", keyword.getKey().toLowerCase());
+            docFreq = iReader.docFreq(t);
+            idf = similarity.idf(docFreq, noOfDocs);
+            tf = keyword.getValue();
+            tfidf = tf * idf;
+            idfMap.put(keyword.getKey(), tfidf);
+            //System.out.println("TF-IDF: " + "{" + keyword.getKey() + "," + tf*idf + "}");
+        }
 
-		if(arg.equalsIgnoreCase("TF-IDF") || arg.equalsIgnoreCase("TF-IDF2"))
-		{
-			for(Map.Entry<String, Float> keyword: idfMap.entrySet()){
-				tf = keyword.getValue();
-				if(arg.equalsIgnoreCase("TF-IDF"))
-					System.out.println("****TF-IDF****: " + "{" + keyword.getKey() + "," + keyword.getValue() + "}");
-				else
-					System.out.println("****TF-IDF2****: " + "{" + keyword.getKey() + "," + keyword.getValue() + "}");
-			}
-		}*/
-		//System.out.println("IDF Map is: " + idfMap);
-		return idfMap;
-	}
+        //termFreq = sortByComparator(termFreq);
+        idfMap = sortByComparator(idfMap);
 
-	/**
-	 * Calculate Cosine Similarity between 2 vectors. Calculated by: a*b/|a||b|
-	 * @param a
-	 * @param b
-	 * @return the cosine similarity between the two vectors "a" and "b"
-	 */
-	public double cosineSimilarity(double[] a, double[] b) throws Exception {
-		if (a.length != b.length)
-			throw new Exception("Both vectors length should match");
-		
-		// a*b = multiply each a[i] by b[i], then sum all the results
-		// |a| = square each a[i] and then get the square root
-		double numerator = 0;
-		double magnitudeA = 0; // |a|
-		double magnitudeB = 0; // |b|
-		for (int i=0; i<a.length; i++) {
-			numerator += a[i]*b[i];
-			magnitudeA += Math.pow(a[i], 2);
-			magnitudeB += Math.pow(b[i], 2);
-		}
-		
-		magnitudeA = Math.sqrt(magnitudeA);
-		magnitudeB = Math.sqrt(magnitudeB);
-		double denominator = magnitudeA*magnitudeB;
-		return numerator/denominator;
-	}
+        /*if(arg.equalsIgnoreCase("TF"))
+         {
+         for(Map.Entry<String, Float> keyword: termFreq.entrySet()){
+         tf = keyword.getValue();
+         System.out.println("TF: " + "{" + keyword.getKey() + "," + tf + "}");
+         }
+         }
 
-	/**
-	 * Calculate Cosine Similarity between 2 vectors. Calculated by: a*b/|a||b|
-	 * @param a
-	 * @param b
-	 * @param keys the reference list of what keys to iterate in hashmaps a & b 
-	 * @return the cosine similarity between the two vectors "a" and "b"
-	 * @throws Exception
-	 */
-	public double cosineSimilarity(HashMap<String,Double> a, HashMap<String,Double> b, List<String> keys) throws Exception {
-		// a*b = multiply each a[i] by b[i], then sum all the results
-		// |a| = square each a[i] and then get the square root
-		double numerator = 0;
-		double magnitudeA = 0; // |a|
-		double magnitudeB = 0; // |b|
-		for (String key : keys) {
-			double aa = a.containsKey(key) ? a.get(key) : 0;
-			double bb = b.containsKey(key) ? b.get(key) : 0;
-			numerator += aa*bb;
-			magnitudeA += Math.pow(aa, 2);
-			magnitudeB += Math.pow(bb, 2);
-		}
-		
-		magnitudeA = Math.sqrt(magnitudeA);
-		magnitudeB = Math.sqrt(magnitudeB);
-		double denominator = magnitudeA*magnitudeB;
-		
-		return numerator/denominator;
-	}
-	
-	/*
-	 * Method to sort the vector maps in descending order
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Map<String,Float> sortByComparator(Map<String,Float> inputMap) {
+         if(arg.equalsIgnoreCase("TF-IDF") || arg.equalsIgnoreCase("TF-IDF2"))
+         {
+         for(Map.Entry<String, Float> keyword: idfMap.entrySet()){
+         tf = keyword.getValue();
+         if(arg.equalsIgnoreCase("TF-IDF"))
+         System.out.println("****TF-IDF****: " + "{" + keyword.getKey() + "," + keyword.getValue() + "}");
+         else
+         System.out.println("****TF-IDF2****: " + "{" + keyword.getKey() + "," + keyword.getValue() + "}");
+         }
+         }*/
+        //System.out.println("IDF Map is: " + idfMap);
+        return idfMap;
+    }
 
-		LinkedList linkedList = new LinkedList(inputMap.entrySet());
-		List list = linkedList;
-		Collections.sort(list, new Comparator() 
-		{
-			public int compare(Object ele1, Object ele2)
-			{
-				return ((Comparable) ((Map.Entry) (ele2)).getValue()).compareTo(((Map.Entry) (ele1)).getValue());
-			}
-		}
-		);
-		Map sortedMap = new LinkedHashMap();
-		for (Iterator it = list.iterator(); it.hasNext();) {
-			Map.Entry entry = (Map.Entry)it.next();
-			sortedMap.put(entry.getKey(), entry.getValue());
-		}
-		return sortedMap;
-	}
-	
-	public static double[] getAlignedTFIDFVector(TermFreqVector authorTermFreqVector, Map<String, Integer> allKeywordsPosMap, IndexReader docIndexReader) throws IOException{
-		double[] alignedTFVector = getAlignedTermFreqVector(authorTermFreqVector, allKeywordsPosMap);
-		for(String term : authorTermFreqVector.getTerms()){
-			int idx = allKeywordsPosMap.get(term);
-			alignedTFVector[idx] *= getIDF(docIndexReader, term);
-		}
-		return alignedTFVector;
-	}
-	
-	public static double getIDF(IndexReader reader, String termName) throws IOException
-	{
-		return Math.log(reader.numDocs()/ ((double)reader.docFreq(new Term("doc", termName))));
-	}
-	
-	
-	/*
-	 * Similar to getAlignedTermFreqVector function in Utility but with
-	 * different input parameters
-	 */
-	public static double[] getAlignedWordVector(String[] termTexts,
-			Float[] termFreqs, Map<String, Integer> allKeywordsPosMap) {
+    /**
+     * Calculate Cosine Similarity between 2 vectors. Calculated by: a*b/|a||b|
+     *
+     * @param a
+     * @param b
+     * @return the cosine similarity between the two vectors "a" and "b"
+     */
+    public double cosineSimilarity(double[] a, double[] b) throws Exception {
+        if (a.length != b.length) {
+            throw new Exception("Both vectors length should match");
+        }
 
-		double[] alignedVector = new double[allKeywordsPosMap.keySet().size()];
+        // a*b = multiply each a[i] by b[i], then sum all the results
+        // |a| = square each a[i] and then get the square root
+        double numerator = 0;
+        double magnitudeA = 0; // |a|
+        double magnitudeB = 0; // |b|
+        for (int i = 0; i < a.length; i++) {
+            numerator += a[i] * b[i];
+            magnitudeA += Math.pow(a[i], 2);
+            magnitudeB += Math.pow(b[i], 2);
+        }
 
-		for (int i = 0; i < termTexts.length; i++) {
-			if (!allKeywordsPosMap.containsKey(termTexts[i])) {
-				// System.out.println(termTexts[i]);
-			} else {
-				int j = allKeywordsPosMap.get(termTexts[i]);
-				if (j != -1) {
-					alignedVector[j] = termFreqs[i];
-				}
-			}
-		}
-		return alignedVector;
-	}
-	
-	
-	
-	public static double[] getAlignedTermFreqVector(TermFreqVector authorTermFreqVector, Map<String, Integer> allKeywordsPosMap){
-		double[] alignedVector = new double[allKeywordsPosMap.keySet().size()];
-		String termTexts[] = authorTermFreqVector.getTerms();
-		int termFreqs[] = authorTermFreqVector.getTermFrequencies();
-		for(int i=0; i<termTexts.length; i++){
-			if(!allKeywordsPosMap.containsKey(termTexts[i])){
-				System.out.println(termTexts[i]);
-			}
-			int j = allKeywordsPosMap.get(termTexts[i]);
-			if(j != -1){
-				alignedVector[j] = termFreqs[i];
-			}
-		}
-		return alignedVector;
-	}
-	
-	/**
-	 * Given an authorId, computes the PF for all the keywords
-	 * @param authorId
-	 * @return a HashMap that contains the terms as the key and the pf as the value.
-	 * @throws Exception
-	 */
-	public static HashMap<String,Double> getPF(String authorId) throws Exception {
-		DblpData dblp = new DblpData();
-		List<String> allWords = dblp.getAllTermsInIndex(dblp.createAllDocumentIndex(), "doc");
-		HashMap<Integer,HashMap> forwardIndex = dblp.getForwardAndInversePaperKeywIndex()[0];
-		HashSet<Integer> paperIdsByCoauthors = dblp.getPaperIdsFromCoauthorExcludingSelf(authorId);
-		Set<Integer> paperIdsByCoauthorsAndSelf = dblp.getPaperIdsFromCoauthorAndSelf(authorId);
-		
-		double R = paperIdsByCoauthors.size();
-		double N = paperIdsByCoauthorsAndSelf.size();
-		
-		HashMap<String,Double> retVal = new HashMap<String,Double>(allWords.size());
-		for (String word : allWords) {
-  			// Calculate the number of coauthor papers not containing the keyword
-  			double r_ij = 0;
-  			for (int paperId : paperIdsByCoauthors) {
-  				if (!forwardIndex.get(paperId).containsKey(word))
-  					r_ij++;
-  			}
-  			
-  			// Calculate number of papers in coauthor_and_self(ai) not containing the keyword
-  			double n_ij = 0;
-  			for (int paperId : paperIdsByCoauthorsAndSelf) {
-  				if (!forwardIndex.get(paperId).containsKey(word))
-  					n_ij++;
-  			}
-  			
-  			double result = doFormulaPF(R, N, r_ij, n_ij);
-  			retVal.put(word, result);
-		}
-		return retVal;
-	}
-	
-	/**
-	 * Calculates the PF value
-	 * @param R - ||coauthor_papers_of_author||
-	 * @param N - ||coauthor_and_self_of_author||
-	 * @param r - number of coauthor_papers_of_author not containing keyword
-	 * @param n - number of coauthor_and_self_of_author not containing keyword
-	 * @return
-	 */
-	public static double doFormulaPF(Double R, Double N, Double r, Double n) {
-		/* compute the formula for PF Model for this term tempTerm */
-		Double leftPart = Math.log(((r + 0.5) / ((R - r) + 1)) / (((n - r) + 0.5) / ((N - n - R + r) + 1)));
-		Double rightPart = Math.abs((r / R) - ((n - r) / (N - R)));				// can be negative so need abs
-		return (leftPart * rightPart);
-	}
-	
-	public static String getCurrentFolder(){
-		String currentPath = Utility.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		if(currentPath.endsWith("jar")){
-			currentPath = currentPath.substring(0, currentPath.lastIndexOf("/"));
-		}
-		if(currentPath.startsWith("/")){
-			currentPath = currentPath.substring(1);
-		}
-		return currentPath;
-	}
-	
-	
-	/**
-	 * Finds word mapped to index into Matrix and Prints matrix value
-	 *  M is values, N is latents in a MxN matrix
-	 * prints 10 words
-	 * @param finalKeywordsList  String of terms that map to index in matrix
-	 * @param resultMatrix
-	 * @param howManyLatents - number of latents to print
-	 * @return
-	 */
-	
-	public void	printSortedList(List<String> finalKeywordsList, double[][] resultMatrix, int howManyLatents){
-		Map<String,Float> latentcy = new HashMap<String,Float>(resultMatrix.length);
-		Map<String,Float> sorted	= new HashMap<String,Float>(resultMatrix.length);
-		Utility ut = new Utility();
-		int columnSize = resultMatrix.length;  //actually its  number of rows
-		for(int j=0;j<howManyLatents;j++)
-		{
-			for(int i=0;i<columnSize;i++)
-			{
-				latentcy.put(finalKeywordsList.get(i), (float)resultMatrix[i][j]);
-			}
-			sorted = ut.sortByComparator(latentcy);
-			Iterator it = sorted.entrySet().iterator();
-			int numToPrint = Math.min(10,sorted.size());
-			for(int wordcount=0;wordcount<numToPrint;wordcount++){
-				if  (it.hasNext()) {
-					Map.Entry pairs = (Map.Entry)it.next();
-					System.out.printf("%-22s  =  %10.8f",pairs.getKey(), pairs.getValue());
-					System.out.println();
-				}
-			}
-			System.out.println();
-			latentcy.clear();
-			sorted.clear();
-		}
-	}
+        magnitudeA = Math.sqrt(magnitudeA);
+        magnitudeB = Math.sqrt(magnitudeB);
+        double denominator = magnitudeA * magnitudeB;
+        return numerator / denominator;
+    }
 
-	/**
-	 * Creates a forward index for authors' keyword vectors
-	 * @param allAuthorsKeywVectors obtained by dblp.getAuthorTermFrequencies(indexDir);
-	 * @return a first level hashmap with author's Id as an integer key. The second level hashmap has the keyword as a string
-	 * 			key and a double value for the tf
-	 */
-	public HashMap<Integer,HashMap<String,Double>> getForwardAllAuthorsKeywIndex(Map<String,TermFreqVector> allAuthorsKeywVectors) {
-		HashMap<Integer,HashMap<String,Double>> forwardIndex = new HashMap<Integer,HashMap<String,Double>>();
-		
-		Set<String> keys = allAuthorsKeywVectors.keySet();
-		for (String key : keys) {
-			TermFreqVector authorTermFreqVector = allAuthorsKeywVectors.get(key);
-			String termTexts[] = authorTermFreqVector.getTerms();
-			int termFreqs[] = authorTermFreqVector.getTermFrequencies();
-			
-			HashMap<String,Double> temp = new HashMap<String,Double>();
-			for (int i=0; i<termTexts.length; i++) {
-				temp.put(termTexts[i], (double)termFreqs[i]);
-			}
-			
-			forwardIndex.put(Integer.parseInt(key), temp);
-		}
-		
-		return forwardIndex;
-	}
-	
-	public static void printGraph(Graph g) {
-		DecimalFormat f = new DecimalFormat("#.##");
-		for(int i=0; i<g.getNumNodes(); i++)
-		{
-			System.out.print("\t" + g.getNodeLabel(i));
-		}
-		System.out.println();
-		for(int i=0; i<g.getNumNodes(); i++)
-		{
-			System.out.print(g.getNodeLabel(i) + "\t");
-			for(int j=0; j<g.getNumNodes(); j++)
-			{
-				System.out.print(f.format(g.getAdjacencyMatrix()[i][j]) + "\t");
-			}
-			System.out.print("\n");
-		}
-	}
+    /**
+     * Calculate Cosine Similarity between 2 vectors. Calculated by: a*b/|a||b|
+     *
+     * @param a
+     * @param b
+     * @param keys the reference list of what keys to iterate in hashmaps a & b
+     * @return the cosine similarity between the two vectors "a" and "b"
+     * @throws Exception
+     */
+    public double cosineSimilarity(HashMap<String, Double> a, HashMap<String, Double> b, List<String> keys) throws Exception {
+        // a*b = multiply each a[i] by b[i], then sum all the results
+        // |a| = square each a[i] and then get the square root
+        double numerator = 0;
+        double magnitudeA = 0; // |a|
+        double magnitudeB = 0; // |b|
+        for (String key : keys) {
+            double aa = a.containsKey(key) ? a.get(key) : 0;
+            double bb = b.containsKey(key) ? b.get(key) : 0;
+            numerator += aa * bb;
+            magnitudeA += Math.pow(aa, 2);
+            magnitudeB += Math.pow(bb, 2);
+        }
+
+        magnitudeA = Math.sqrt(magnitudeA);
+        magnitudeB = Math.sqrt(magnitudeB);
+        double denominator = magnitudeA * magnitudeB;
+
+        return numerator / denominator;
+    }
+
+    /*
+     * Method to sort the vector maps in descending order
+     */
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public Map<String, Float> sortByComparator(Map<String, Float> inputMap) {
+
+        LinkedList linkedList = new LinkedList(inputMap.entrySet());
+        List list = linkedList;
+        Collections.sort(list, new Comparator() {
+            public int compare(Object ele1, Object ele2) {
+                return ((Comparable) ((Map.Entry) (ele2)).getValue()).compareTo(((Map.Entry) (ele1)).getValue());
+            }
+        });
+        Map sortedMap = new LinkedHashMap();
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedMap;
+    }
+
+    public static double[] getAlignedTFIDFVector(TermFreqVector authorTermFreqVector, Map<String, Integer> allKeywordsPosMap, IndexReader docIndexReader) throws IOException {
+        double[] alignedTFVector = getAlignedTermFreqVector(authorTermFreqVector, allKeywordsPosMap);
+        for (String term : authorTermFreqVector.getTerms()) {
+            int idx = allKeywordsPosMap.get(term);
+            alignedTFVector[idx] *= getIDF(docIndexReader, term);
+        }
+        return alignedTFVector;
+    }
+
+    public static double getIDF(IndexReader reader, String termName) throws IOException {
+        return Math.log(reader.numDocs() / ((double) reader.docFreq(new Term("doc", termName))));
+    }
+
+    /*
+     * Similar to getAlignedTermFreqVector function in Utility but with
+     * different input parameters
+     */
+    public static double[] getAlignedWordVector(String[] termTexts,
+            Float[] termFreqs, Map<String, Integer> allKeywordsPosMap) {
+
+        double[] alignedVector = new double[allKeywordsPosMap.keySet().size()];
+
+        for (int i = 0; i < termTexts.length; i++) {
+            if (!allKeywordsPosMap.containsKey(termTexts[i])) {
+                // System.out.println(termTexts[i]);
+            } else {
+                int j = allKeywordsPosMap.get(termTexts[i]);
+                if (j != -1) {
+                    alignedVector[j] = termFreqs[i];
+                }
+            }
+        }
+        return alignedVector;
+    }
+
+    public static double[] getAlignedTermFreqVector(TermFreqVector authorTermFreqVector, Map<String, Integer> allKeywordsPosMap) {
+        double[] alignedVector = new double[allKeywordsPosMap.keySet().size()];
+        String termTexts[] = authorTermFreqVector.getTerms();
+        int termFreqs[] = authorTermFreqVector.getTermFrequencies();
+        for (int i = 0; i < termTexts.length; i++) {
+            if (!allKeywordsPosMap.containsKey(termTexts[i])) {
+                System.out.println(termTexts[i]);
+            }
+            int j = allKeywordsPosMap.get(termTexts[i]);
+            if (j != -1) {
+                alignedVector[j] = termFreqs[i];
+            }
+        }
+        return alignedVector;
+    }
+
+    /**
+     * Given an authorId, computes the PF for all the keywords
+     *
+     * @param authorId
+     * @return a HashMap that contains the terms as the key and the pf as the
+     * value.
+     * @throws Exception
+     */
+    public static HashMap<String, Double> getPF(String authorId) throws Exception {
+        DblpData dblp = new DblpData();
+        List<String> allWords = dblp.getAllTermsInIndex(dblp.createAllDocumentIndex(), "doc");
+        HashMap<Integer, HashMap> forwardIndex = dblp.getForwardAndInversePaperKeywIndex()[0];
+        HashSet<Integer> paperIdsByCoauthors = dblp.getPaperIdsFromCoauthorExcludingSelf(authorId);
+        Set<Integer> paperIdsByCoauthorsAndSelf = dblp.getPaperIdsFromCoauthorAndSelf(authorId);
+
+        double R = paperIdsByCoauthors.size();
+        double N = paperIdsByCoauthorsAndSelf.size();
+
+        HashMap<String, Double> retVal = new HashMap<String, Double>(allWords.size());
+        for (String word : allWords) {
+            // Calculate the number of coauthor papers not containing the keyword
+            double r_ij = 0;
+            for (int paperId : paperIdsByCoauthors) {
+                if (!forwardIndex.get(paperId).containsKey(word)) {
+                    r_ij++;
+                }
+            }
+
+            // Calculate number of papers in coauthor_and_self(ai) not containing the keyword
+            double n_ij = 0;
+            for (int paperId : paperIdsByCoauthorsAndSelf) {
+                if (!forwardIndex.get(paperId).containsKey(word)) {
+                    n_ij++;
+                }
+            }
+
+            double result = doFormulaPF(R, N, r_ij, n_ij);
+            retVal.put(word, result);
+        }
+        return retVal;
+    }
+
+    /**
+     * Calculates the PF value
+     *
+     * @param R - ||coauthor_papers_of_author||
+     * @param N - ||coauthor_and_self_of_author||
+     * @param r - number of coauthor_papers_of_author not containing keyword
+     * @param n - number of coauthor_and_self_of_author not containing keyword
+     * @return
+     */
+    public static double doFormulaPF(Double R, Double N, Double r, Double n) {
+        /* compute the formula for PF Model for this term tempTerm */
+        Double leftPart = Math.log(((r + 0.5) / ((R - r) + 1)) / (((n - r) + 0.5) / ((N - n - R + r) + 1)));
+        Double rightPart = Math.abs((r / R) - ((n - r) / (N - R)));				// can be negative so need abs
+        return (leftPart * rightPart);
+    }
+
+    public static String getCurrentFolder() {
+        String currentPath = Utility.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        if (currentPath.endsWith("jar")) {
+            currentPath = currentPath.substring(0, currentPath.lastIndexOf("/"));
+        }
+        if (currentPath.startsWith("/")) {
+            currentPath = currentPath.substring(1);
+        }
+        return currentPath;
+    }
+
+    /**
+     * Finds word mapped to index into Matrix and Prints matrix value M is
+     * values, N is latents in a MxN matrix prints 10 words
+     *
+     * @param finalKeywordsList String of terms that map to index in matrix
+     * @param resultMatrix
+     * @param howManyLatents - number of latents to print
+     * @return
+     */
+    public void printSortedList(List<String> finalKeywordsList, double[][] resultMatrix, int howManyLatents) {
+        Map<String, Float> latentcy = new HashMap<String, Float>(resultMatrix.length);
+        Map<String, Float> sorted = new HashMap<String, Float>(resultMatrix.length);
+        Utility ut = new Utility();
+        int columnSize = resultMatrix.length;  //actually its  number of rows
+        for (int j = 0; j < howManyLatents; j++) {
+            for (int i = 0; i < columnSize; i++) {
+                latentcy.put(finalKeywordsList.get(i), (float) resultMatrix[i][j]);
+            }
+            sorted = ut.sortByComparator(latentcy);
+            Iterator it = sorted.entrySet().iterator();
+            int numToPrint = Math.min(10, sorted.size());
+            for (int wordcount = 0; wordcount < numToPrint; wordcount++) {
+                if (it.hasNext()) {
+                    Map.Entry pairs = (Map.Entry) it.next();
+                    System.out.printf("%-22s  =  %10.8f", pairs.getKey(), pairs.getValue());
+                    System.out.println();
+                }
+            }
+            System.out.println();
+            latentcy.clear();
+            sorted.clear();
+        }
+    }
+
+    /**
+     * Creates a forward index for authors' keyword vectors
+     *
+     * @param allAuthorsKeywVectors obtained by
+     * dblp.getAuthorTermFrequencies(indexDir);
+     * @return a first level hashmap with author's Id as an integer key. The
+     * second level hashmap has the keyword as a string key and a double value
+     * for the tf
+     */
+    public HashMap<Integer, HashMap<String, Double>> getForwardAllAuthorsKeywIndex(Map<String, TermFreqVector> allAuthorsKeywVectors) {
+        HashMap<Integer, HashMap<String, Double>> forwardIndex = new HashMap<Integer, HashMap<String, Double>>();
+
+        Set<String> keys = allAuthorsKeywVectors.keySet();
+        for (String key : keys) {
+            TermFreqVector authorTermFreqVector = allAuthorsKeywVectors.get(key);
+            String termTexts[] = authorTermFreqVector.getTerms();
+            int termFreqs[] = authorTermFreqVector.getTermFrequencies();
+
+            HashMap<String, Double> temp = new HashMap<String, Double>();
+            for (int i = 0; i < termTexts.length; i++) {
+                temp.put(termTexts[i], (double) termFreqs[i]);
+            }
+
+            forwardIndex.put(Integer.parseInt(key), temp);
+        }
+
+        return forwardIndex;
+    }
+
+    public static void printGraph(Graph g) {
+        DecimalFormat f = new DecimalFormat("#.##");
+        for (int i = 0; i < g.getNumNodes(); i++) {
+            System.out.print("\t" + g.getNodeLabel(i));
+        }
+        System.out.println();
+        for (int i = 0; i < g.getNumNodes(); i++) {
+            System.out.print(g.getNodeLabel(i) + "\t");
+            for (int j = 0; j < g.getNumNodes(); j++) {
+                System.out.print(f.format(g.getAdjacencyMatrix()[i][j]) + "\t");
+            }
+            System.out.print("\n");
+        }
+    }
+
+    
+    public static void printSortedEdges(Graph g) {
+        DecimalFormat f = new DecimalFormat("#.##");
+        
+        List<Edge> edgeList = new ArrayList<Edge>();
+        
+        for (int i = 0; i < g.getNumNodes(); i++) {
+            
+            for (int j = 0; j <= i; j++) {
+                Edge e = new Edge(i, j, g.getAdjacencyMatrix()[i][j]);
+                edgeList.add(e);
+            }
+                      
+        }
+        
+        Collections.sort(edgeList, Collections.reverseOrder());
+        DblpData dblp = new DblpData();
+        
+        for(int i=0; i<20; i++){
+            Edge e = edgeList.get(i);
+            System.out.println(dblp.getAuthName(g.getNodeLabel(e.i))+"("+g.getNodeLabel(e.i)+")  =>  "+
+                    dblp.getAuthName(g.getNodeLabel(e.j))+"("+g.getNodeLabel(e.j) + ") ,  "+e.weight);
+        }
+    }
+    
+    
+    
 }

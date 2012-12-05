@@ -29,7 +29,7 @@ public class Task8 {
         try {
             if (taskName.equalsIgnoreCase("Task1")) {
                 Graph g = createGraphFromParam(args[1]);
-                Utility.printGraph(g);
+                Utility.printSortedEdges(g);
             } 
             else if (taskName.equalsIgnoreCase("Task2")) {
                 Graph g = createGraphFromParam(args[1]);
