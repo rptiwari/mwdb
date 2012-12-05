@@ -60,7 +60,7 @@ public class Task3 {
             double similarity = 0;
             int index = 0;
             List<Integer> remainingObjects = new ArrayList<Integer>();
-
+            
             for (int col = 0; col < len; col++) {
                 similarity = 0;
                 for (int num : randomNumbers) {
@@ -71,12 +71,12 @@ public class Task3 {
                 }
                 
                 if(col != index && similarity > 0){
-                    clusters.get(index).add(col);
+                    clusters.get(index).add(col);                    
                 }else{
-                    remainingObjects.add(col);
+                    if(col != index)
+                        remainingObjects.add(col);
                 }
             }
-            
             
             for(Integer i : remainingObjects){
                 List<Integer> neighbours = coAuthorSimGraph.getNeighbours(i.intValue());
@@ -132,11 +132,11 @@ public class Task3 {
                 
                 String authorId = coAuthorSimGraph.getNodeIndexLabelMap().get(key);
                 String authorName = dblp.getAuthName(authorId);
-                output.put(authorName, new ArrayList<String>());
+                output.put(authorName+" ("+authorId+") ", new ArrayList<String>());
                 
                 for(Integer i : elements){
                     String id = coAuthorSimGraph.getNodeIndexLabelMap().get(i);
-                    output.get(authorName).add(dblp.getAuthName(id));
+                    output.get(authorName+" ("+authorId+") ").add(dblp.getAuthName(id)+" ("+id+") ");
                 }    
             }
             
@@ -145,17 +145,20 @@ public class Task3 {
         
         
         private void printClusters(Map<String, List<String>> output){
+            int count = 0;
             Iterator<String> keys = output.keySet().iterator();
             while(keys.hasNext()){
+                System.out.println("Cluster "+ ++count+"  :");
                 String author = keys.next();
                 
-                System.out.println(author);
+                System.out.println("Cluster Representative: "+  author);
                 List<String> elements = output.get(author);
                 for(String s : elements){
-                    System.out.println("    "+s);
+                    System.out.println("    "+s);                    
                 }    
                 System.out.println();
             }
+            
         }
         
         private static void doClusteringByKMeans(int k) throws Exception {
@@ -348,7 +351,7 @@ public class Task3 {
 				randTemp = randomGen.nextInt(maxRandomNumber);
 			randomNumbers.add(randTemp);
 		}
-		System.out.println("Random Numbers:");
+		System.out.println("Randomly Selected Authors:");
 		for (int i=0; i<randomNumbers.size(); i++)
 			System.out.println(randomNumbers.get(i));
 		
