@@ -1,0 +1,32 @@
+Ramayans-MacBook-Pro:dist ramayantiwari$ java -jar mwdb.jar Task6 10 Author 1636579 KV
+PERSONALIZED PAGE RANK
+
+Dominant 10 Authors  With Preference for K. Selcuk Candan
+
+Author                Author ID     Ranking Score
+---------------------------------------------------
+K. Selcuk Candan      1636579       0.2373241552
+Wen-Syan Li           1672554       0.0307286337
+Jun'ichi Tatemura     1700782       0.0252807122
+Divyakant Agrawal     1634203       0.0236886177
+Maria Luisa Sapino    1677020       0.0208770121
+Hari Sundaram         1691060       0.0186599413
+Wang-Pin Hsiung       1792340       0.0182031125
+Oliver Po             1792339       0.0169677566
+Jong Wook Kim         1756460       0.0165699252
+Qing Li               1636367       0.0152986756
+
+Dominant 10 Authors With Preference for K. Selcuk Candan
+
+Author		      AuthorID      Ranking Value
+----------------------------------------------------
+K. Selcuk Candan      1636579       0.2373241663
+Wen-Syan Li           1672554       0.0307286400
+Jun'ichi Tatemura     1700782       0.0252807173
+Divyakant Agrawal     1634203       0.0236886226
+Maria Luisa Sapino    1677020       0.0208770153
+Hari Sundaram         1691060       0.0186599447
+Wang-Pin Hsiung       1792340       0.0182031163
+Oliver Po             1792339       0.0169677602
+Jong Wook Kim         1756460       0.0165699280
+Qing Li               1636367       0.0152986779

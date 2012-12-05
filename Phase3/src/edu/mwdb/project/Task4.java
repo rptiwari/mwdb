@@ -355,7 +355,7 @@ public class Task4 {
 				
 		MatlabProxy proxy = MatLab.getProxy();
 		String currentPath = Utility.getCurrentFolder();
-		proxy.eval("cd "+currentPath);
+		//proxy.eval("cd "+currentPath);
 		MatlabTypeConverter processor = new MatlabTypeConverter(proxy);
 		processor.setNumericArray("MS", new MatlabNumericArray(simMatrixMStar, null));
 		proxy.eval("[S,D] = eig(MS)");
