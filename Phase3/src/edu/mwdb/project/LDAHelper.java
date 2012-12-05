@@ -33,7 +33,6 @@ public class LDAHelper {
 		processor.setNumericArray("DS", new MatlabNumericArray(DS, null));
 
 		/* set the number of latent semantics to retrieve */
-		double T = 5.0;
 		proxy.setVariable("T", 5);
 		proxy.setVariable("WO", staticVocabulary);
 		proxy.eval("[WPALL,DPALL,ZALL] = LDA1(WS,DS,T,WO)");

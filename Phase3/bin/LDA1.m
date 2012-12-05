@@ -24,24 +24,17 @@ OUTPUT = 2;
 
 [ WP,DP,Z ] = GibbsSamplerLDA( WS , DS , 5 , N , ALPHA , BETA , SEED , OUTPUT );
 
+WPALL = full(WP);
+DPALL = full(DP);
+ZALL = full(Z);
 
-
-
-WPALL = full(WP)
-DPALL = full(DP)
-ZALL = full(Z)
-
-
-
-
-%[WO] = textread('words.mat','%s')
 
 [S] = WriteTopics( WP , BETA , WO , 7 , 0.7 );
 
 fprintf( '\n\nMost likely words in the first 5 topics:\n' );
 
 S( 1:5 )
-WriteTopics( WP , BETA , WO , 7 , 1.0 , 5 , 'topics.txt');
+WriteTopics( WP , BETA , WO , 20 , 1.0 , 3 , 'topics.txt');
 
 % [ Order ] = OrderTopics( DP , ALPHA );
 

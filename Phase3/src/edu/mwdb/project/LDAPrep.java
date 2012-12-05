@@ -124,7 +124,7 @@ public class LDAPrep {
 					wordProb.setWeightedFreq(prob);
 
 					if (wordCount > 0){
-					System.out.printf("%-25s  %-10.7f    ", word, prob);
+					//System.out.printf("%-25s  %-10.7f    ", word, prob);
 					if (topics[i]== null){
 						wordsProbabilities = new ArrayList<KeywordData>();
 					}
@@ -136,21 +136,22 @@ public class LDAPrep {
 					i++;
 					}
 					else{
-						System.out.printf("%-36s    ", word);}
+						//System.out.printf("%-36s    ", word);
+						}
 					
 					
 					}
 					else break; // skip rest of topics
 					
 				}
-				System.out.println();
+				//System.out.println();
 				wordCount++;
 				if (wordCount > numRelevantWords){
 					wordCount =0;
 					int k = i;
 					topicCount = i;
 					i= k+i;
-					System.out.println();
+					//System.out.println();
 				}
 			}
 			sc.close();

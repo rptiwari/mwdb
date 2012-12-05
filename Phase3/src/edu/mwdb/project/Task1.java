@@ -30,9 +30,9 @@ public class Task1 {
 		try {
 			t1 = new Task1();
 			//Graph g = t1.getCoauthorSimilarityGraph_KeywordVector();
-			Graph g = t1.getCoauthorSimilarityGraph_PCA();
+			//Graph g = t1.getCoauthorSimilarityGraph_PCA();
 			//Graph g = t1.getCoauthorSimilarityGraph_SVD();
-			//Graph g = t1.getCoauthorSimilarityGraph_LDA();
+			Graph g = t1.getCoauthorSimilarityGraph_LDA();
 			Utility.printGraph(g);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -208,8 +208,8 @@ public class Task1 {
 			
 			if(author1docMatrix.length > 0){
 				LDAHelper lda = new LDAHelper();
-				String[] authorKeywords = getAuthorKeywords(authorPaperIds, paperKeywordIndex);
-				List<HashMap<String,Float>>  ldaOutput = lda.doLDA(author1docMatrix, authorKeywords);
+				//String[] authorKeywords = getAuthorKeywords(authorPaperIds, paperKeywordIndex);
+				List<HashMap<String,Float>>  ldaOutput = lda.doLDA(author1docMatrix, allTerms.toArray(new String[allTerms.size()]));
 				authortop3Semantics = new double[3][allTerms.size()];
 				for(int i=0; i<3; i++){
 					authortop3Semantics[i] = alignLDASemantic(ldaOutput.get(i), allKeywordsPosMap);
@@ -221,11 +221,11 @@ public class Task1 {
 	}
 	
 	private String[] getAuthorKeywords(List<Integer> authorPaperIds, Map<Integer, HashMap<String,Double>> paperKeywordIndex){
-		Set<String> keywordSet = new HashSet<String>();
+		List<String> keywordList = new ArrayList<String>();
 		for(int paperid:authorPaperIds){
-			keywordSet.addAll(paperKeywordIndex.get(paperid).keySet());
+			keywordList.addAll(paperKeywordIndex.get(paperid).keySet());
 		}
-		return keywordSet.toArray(new String[keywordSet.size()]);
+		return keywordList.toArray(new String[keywordList.size()]);
 	}
 	
 	private double[][] getTop3Semantics_SVD(List<String> allTerms,
