@@ -295,8 +295,9 @@ public class Task6 extends Task4 {
 			}
 			else if (taskName.equalsIgnoreCase("task6b")){
 				Directory luceneIndexDir = task.dblpData.createAllDocumentIndex();
-	//			Graph simGraph = task.getPaperSimilarityGraph(luceneIndexDir);
-	//			task.doTask6b(k,seed,simGraph, luceneIndexDir);
+				Task2 task2 = new Task2();
+				Graph simGraph = task2.getCoauthorPapersSimilarityGraph_KeywordVector("TF");
+				task.doTask6b(k,seed,simGraph, luceneIndexDir);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
