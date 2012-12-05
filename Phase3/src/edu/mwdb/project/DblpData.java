@@ -257,6 +257,32 @@ public class DblpData {
 		return null;
 	}
 	
+	public Map<String,Set<String>> getAuthorPapers(){
+		Utility util = new Utility();
+		Connection con = util.getDBConnection();
+		
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM writtenby");
+			ResultSet rs = stmt.executeQuery();
+			Map<String, Set<String>> result = new HashMap<String,Set<String>>();
+			
+			while(rs.next()){
+				Set<String> s = result.get(rs.getString(2));
+				if(s == null)
+					s = new HashSet<String>();
+				
+				s.add(rs.getString(1));
+				result.put(rs.getString(2), s);
+			}
+			
+			return result;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/**
 	 * Get all the paper Ids written by the author and his coauthors. (OR)
 	 * @param authorId - Author's ID in which to get his paper Ids, as well as his coauthors' paper Ids.
@@ -491,7 +517,26 @@ public class DblpData {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public String getPaperTitle(String paperId){
+		Utility util = new Utility();
+		Connection con = util.getDBConnection();
 
+		String authName = new String();
+		try{
+			Statement statement = con.createStatement();
+			ResultSet resultSet = statement.executeQuery("select a.title from papers a where a.paperid = " + paperId);
+			while (resultSet.next()) 
+			{
+				authName = resultSet.getString("title");
+			}
+			return authName;
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**

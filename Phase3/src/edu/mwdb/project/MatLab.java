@@ -44,7 +44,7 @@ public class MatLab {
 		double[][] resultSematicMatrixSVD = new double[rowsReturned][columnSize];
 		for(int k=0;k<rowsReturned;k++)
 		{
-			Object[] obj=getProxy().returningEval("V("+ (k+1) +",:)" ,1);
+			Object[] obj=getProxy().returningEval("V(:,"+ (k+1) +")" ,1);
 			resultSematicMatrixSVD[k]=(double[])obj[0];
 		}	
 		return resultSematicMatrixSVD;

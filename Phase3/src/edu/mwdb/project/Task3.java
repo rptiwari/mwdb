@@ -85,13 +85,66 @@ public class Task3 {
                     clusters.get(cluster).add(i);
                 }
             }
-            
+          
             Map<String, List<String>> output = task3.attachAuthorNames(clusters, coAuthorSimGraph);
-            
+
             System.out.println("\n### CLUSTERS ###\n");
+            System.out.println("\n### Authors ###\n");
+            task3.printClusters(output);
+
+
+
+            // Papers
+            Task2 task2 = new Task2();
+            Graph paperSimGraph = task2.getCoauthorPapersSimilarityGraph_KeywordVector("TF");
+
+            double[][] paperAdjMatrix = paperSimGraph.getAdjacencyMatrix();
+            len = paperAdjMatrix.length;
+
+            randomNumbers = task3.getRandomNumbers(k, len);
+            clusters = new HashMap<Integer, List<Integer>>();
+
+            for (int num : randomNumbers) {
+                clusters.put(num, new ArrayList<Integer>());
+            }
+
+            similarity = 0;
+            index = 0;
+            remainingObjects = new ArrayList<Integer>();
+
+            for (int col = 0; col < len; col++) {
+                similarity = 0;
+                for (int num : randomNumbers) {
+                    if (col != num && paperAdjMatrix[col][num] > similarity) {
+                        similarity = paperAdjMatrix[col][num];
+                        index = num;
+                    }
+                }
+
+                if (col != index && similarity > 0) {
+                    clusters.get(index).add(col);
+                } else {
+                    if (col != index) {
+                        remainingObjects.add(col);
+                    }
+                }
+            }
+
+            for (Integer i : remainingObjects) {
+                List<Integer> neighbours = paperSimGraph.getNeighbours(i.intValue());
+                int cluster = task3.findNeighbourInCluster(neighbours, clusters, paperAdjMatrix);
+                if (cluster != -1) {
+                    clusters.get(cluster).add(i);
+                }
+            }
+
+            output = task3.attachPaperTitles(clusters, paperSimGraph);
+
+            System.out.println("\n### Papers ###\n");
             task3.printClusters(output);
 
         }
+        
         
         private int findNeighbourInCluster(List<Integer> neighbours, 
                                            Map<Integer, List<Integer>> clusters,
@@ -143,6 +196,28 @@ public class Task3 {
             return output;
         }
         
+        private Map<String, List<String>> attachPaperTitles(Map<Integer, List<Integer>> clusters,
+                Graph paperSimGraph){
+            
+            Map<String, List<String>> output = new HashMap<String, List<String>>();
+            DblpData dblp = new DblpData();
+            Iterator<Integer> keys = clusters.keySet().iterator();
+            while(keys.hasNext()){
+                Integer key = keys.next();
+                List<Integer> elements = clusters.get(key);
+                
+                String paperId = paperSimGraph.getNodeIndexLabelMap().get(key);
+                String paperTitle = dblp.getPaperTitle(paperId);
+                output.put(paperTitle+" ("+paperId+") ", new ArrayList<String>());
+                
+                for(Integer i : elements){
+                    String id = paperSimGraph.getNodeIndexLabelMap().get(i);
+                    output.get(paperTitle+" ("+paperId+") ").add(dblp.getPaperTitle(id)+" ("+id+") ");
+                }    
+            }
+            
+            return output;
+        }
         
         private void printClusters(Map<String, List<String>> output){
             int count = 0;
@@ -165,6 +240,7 @@ public class Task3 {
             DblpData dblp = new DblpData();
             HashMap<Integer, HashMap<String, Double>> forwIdx;
             Task1 t1 = new Task1();
+            Task2 t2 = new Task2();
             Task3 t3 = new Task3();
 
             // Coauthors
@@ -175,29 +251,59 @@ public class Task3 {
             forwIdx = util.getForwardAllAuthorsKeywIndex(authKeywVectors);
 
             ClusterGroup[] results = t3.GetClustersByKMeans(t1.getCoauthorSimilarityGraph_KeywordVector(), k, forwIdx);
+            System.out.println("Coauthors\n");
 
             for (ClusterGroup cg : results) {
                 ArrayList<Map.Entry<String, Double>> cl = cg.getCluster();
                 SortedSet<Map.Entry<String, Double>> clKeyw = cg.getClusterKeywords();
 
-                System.out.println("##CLUSTER##");
+                System.out.println("\n##CLUSTER##");
+                System.out.println("Labels:");
                 int five = 0;
                 for (Map.Entry<String, Double> e : clKeyw) {
-                    System.out.println(e.getKey() + "\t" + e.getValue());
+                    System.out.println("\t" + e.getKey() + "\t" + e.getValue());
                     if (five == 5) {
                         break;
                     }
                     five++;
                 }
 
+                System.out.println("Members:");
                 for (int i = 0; i < cl.size(); i++) {
                     Map.Entry<String, Double> e = cl.get(i);
-                    System.out.println(dblp.getAuthName(e.getKey()) + "\t" + e.getValue());
+                    System.out.println("\t" + dblp.getAuthName(e.getKey()) + "\t" + e.getValue());
                 }
+                System.out.println("\n");
             }
 
             // Papers
+            
             forwIdx = dblp.getForwardAndInversePaperKeywIndex()[0];
+            results = t3.GetClustersByKMeans(t2.getCoauthorPapersSimilarityGraph_KeywordVector("TF"), k, forwIdx);
+            System.out.println("Papers\n");
+
+            for (ClusterGroup cg : results) {
+                ArrayList<Map.Entry<String, Double>> cl = cg.getCluster();
+                SortedSet<Map.Entry<String, Double>> clKeyw = cg.getClusterKeywords();
+
+                System.out.println("\n##CLUSTER##");
+                System.out.println("Labels:");
+                int five = 0;
+                for (Map.Entry<String, Double> e : clKeyw) {
+                    System.out.println("\t" + e.getValue() + "\t" + e.getKey());
+                    if (five == 5) {
+                        break;
+                    }
+                    five++;
+                }
+
+                System.out.println("Members:");
+                for (int i = 0; i < cl.size(); i++) {
+                    Map.Entry<String, Double> e = cl.get(i);
+                    System.out.println("\t" + e.getValue() + "\t" + dblp.getPaperTitle(e.getKey()));
+                }
+                System.out.println("\n");
+            }
     }
         
 	public ClusterGroup[] GetClustersByKMeans(Graph graph, int k, HashMap<Integer,HashMap<String,Double>> forwIdx) throws Exception {
@@ -287,7 +393,7 @@ public class Task3 {
 	    		ArrayList<String> remappedNeighbors = remap(neighbors, graph.getNodeIndexLabelMap());
 	    		if (!isAnEntryMatching(cl, remappedNeighbors)) {
 	    			removed.add(s);
-	    			System.out.println("removed:" + s);
+	    			//System.out.println("removed:" + s);
 	    			iter.remove();
 	    		}
 	    	}
