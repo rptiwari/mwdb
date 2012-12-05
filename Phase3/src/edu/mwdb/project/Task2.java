@@ -42,6 +42,22 @@ public class Task2 {
 		}
 	}
 
+        public static Graph runTask2(String param) throws Exception{
+            Task2 t2 = new Task2();
+            Graph g = null;
+            
+            if(param.equalsIgnoreCase("TF")){
+                g = t2.getCoauthorPapersSimilarityGraph_KeywordVector("TF");               
+            }else if(param.equalsIgnoreCase("TF-IDF")){
+                g = t2.getCoauthorPapersSimilarityGraph_KeywordVector("TF-IDF");                
+            }else{
+                System.out.println("Incorrect Usage");
+                System.exit(1);
+            }
+            
+            return g;
+        }
+        
 	public Graph getCoauthorPapersSimilarityGraph_KeywordVector(String type) throws Exception{
 		Directory indexDir = dblpData.createAllDocumentIndex();
 		IndexReader reader = IndexReader.open(indexDir);
@@ -93,7 +109,7 @@ public class Task2 {
 		return g;
 	}
 
-	private static void printGraph(Graph g) {
+	public static void printGraph(Graph g) {
 		DecimalFormat f = new DecimalFormat("#.##");
 		for(int i=0; i<g.getNumNodes(); i++)
 		{

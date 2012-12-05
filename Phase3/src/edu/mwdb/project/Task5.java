@@ -16,7 +16,7 @@ import matlabcontrol.MatlabConnectionException;
 import matlabcontrol.MatlabInvocationException;
 
 /**
- * Task 5: Graph search task (content): Given a “co-author” or “co-authored papers” graph and an author 
+ * Task 5: Graph search task (content): Given a ï¿½co-authorï¿½ or ï¿½co-authored papersï¿½ graph and an author 
  * or paperid, identify and list K most content-wise similar nodes (for a user supplied K).
  */
 public class Task5 {
@@ -44,10 +44,22 @@ public class Task5 {
 			System.out.println(dblp.getPaperTitle(r.getKey()) + " :\t" + r.getValue());
 		}
 	}
+        
+        public static void runTask5(int k, String searchID, Graph g) throws MatlabInvocationException, MatlabConnectionException, Exception {
+            DblpData dblp = new DblpData();
+
+
+            Map.Entry<String, Double>[] results = GraphSearchContent(g, searchID, k);
+            for (Map.Entry<String, Double> r : results) {
+                System.out.println(dblp.getAuthName(r.getKey()) + " : " + r.getValue());
+            }    
+        }
+        
+        
 	
 	/**
 	 * Given a graph, return the topK most content-wise similar entries from the graph to the searchId
-	 * @param graph “co-author” or “co-authored papers” matrix
+	 * @param graph ï¿½co-authorï¿½ or ï¿½co-authored papersï¿½ matrix
 	 * @param searchId author or paper Id to find similarities for
 	 * @param topK number of results to return 
 	 * @return the most content-wise similar entries

@@ -22,6 +22,7 @@ import org.apache.lucene.store.Directory;
 import edu.mwdb.project.DblpData;
 import edu.mwdb.project.MatLab;
 import edu.mwdb.project.Utility;
+import java.text.DecimalFormat;
 
 public class Task7 {
 
@@ -218,21 +219,25 @@ public class Task7 {
 		String[] currentKeywords = queryKeyWord.getTerms();
 		int[] currentValues	= queryKeyWord.getTermFrequencies();
 		int index = 0;
-		int displayindex = 1;
-		System.out.println("Query");
-		System.out.println("KeyWord Values: old  new           old  new                     old  new                   old  new");
+		boolean newline = false;
+                
+                
+		System.out.println("\n\n Query");
+                System.out.println("");
+                System.out.format("%-20s%-10s%-10s","KeyWord","Old","New");
+               // System.out.format("%-20s%-10s%-10s","KeyWord","Old","New");
+                System.out.println("");
 		
-		for (Map.Entry<String,Double> keyword : newQuery.entrySet()){
-			if (!((keyword.getValue() == 0) && (keyword.getValue() == 0))){
-			System.out.printf("%-15s %-3d  ",keyword.getKey(),currentValues[index] );
-			System.out.printf("%-3.3f  ",keyword.getValue());
-			displayindex++;
-			}
-			index++;
-			if ((displayindex % 10) == 0) {
-				displayindex = 1;
-				System.out.println();
-			}
+		DecimalFormat f = new DecimalFormat("#.##");
+		
+                for (Map.Entry<String,Double> keyword : newQuery.entrySet()){
+                    if (!((keyword.getValue() == 0) && (keyword.getValue() == 0))){
+                            System.out.format("%-20s%-10s%-10s\n", keyword.getKey(), f.format(currentValues[index]), f.format(keyword.getValue()));                            
+                    }
+                    
+                    index++;
+			
+                        
 		}
 	}
 	

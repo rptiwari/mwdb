@@ -33,13 +33,36 @@ public class Task1 {
 			//Graph g = t1.getCoauthorSimilarityGraph_PCA();
 			//Graph g = t1.getCoauthorSimilarityGraph_SVD();
 			Graph g = t1.getCoauthorSimilarityGraph_LDA();
-			Utility.printGraph(g);
+			
+                        
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+        public static Graph runTask1(String param) throws Exception{
+            Task1 t1 = new Task1();
+            Graph g = null;
+            if(param.equalsIgnoreCase("KV")){
+                g = t1.getCoauthorSimilarityGraph_KeywordVector();
+                               
+            }else if(param.equalsIgnoreCase("PCA")){
+                g = t1.getCoauthorSimilarityGraph_PCA();
+                
+            }else if(param.equalsIgnoreCase("SVD")){
+                g = t1.getCoauthorSimilarityGraph_SVD();
+                
+            }else if(param.equalsIgnoreCase("LDA")){
+                g = t1.getCoauthorSimilarityGraph_LDA();
+                
+            }else{
+                System.out.println("Incorrect Usage");
+                System.exit(1);
+            }
+            
+            return g;
+        }
 
 	private double getTopkSemanticSimilarity(double[][] author1topksemantics, double[][] author2topksemantics, int k) throws Exception{
 		double sim = 0;
