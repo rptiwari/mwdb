@@ -1,0 +1,26 @@
+PERSONALIZED PAGE RANK
+
+Dominant 20 Papers Giving Preference to  Paper:159366 Attribute-Based Access to Distributed Data over P2P Networks.
+
+ Paper       Ranking Score     Title
+---------------------------------------------------------
+ 159366      0.16347202326    Attribute-Based Access to Distributed Data over P2P Networks.
+ 846398      0.01071857466    Privacy preserving decision tree learning over multiple parties.
+ 299874      0.01058610949    Privacy Preserving Query Processing Using Third Parties.
+ 302255      0.01050182676    Database Management as a Service: Challenges and Opportunities.
+ 499859      0.01025709877    ABACUS: A Distributed Middleware for Privacy Preserving Data Sharing Across Private Data Warehouses.
+ 618238      0.01020983092    pCube: Update-Efficient Online Aggregation with Progressive Feedback and Error Bounds.
+ 144425      0.01000283665    Space-Efficient Data Cubes for Dynamic Environments.
+ 1533        0.00993095904    Dynamic Multidimensional Data Cubes.
+ 599586      0.00968553053    Efficient integration and aggregation of historical information.
+ 939134      0.00965548611    High dimensional nearest neighbor searching.
+ 502779      0.00910565662    PRISM: indexing multi-dimensional data in P2P networks using reference vectors.
+ 644071      0.00858029460    Tabular Placement of Relational Data on MEMS-based Storage Devices.
+ 599788      0.00856906457    Incremental Maintenance of Path Expression Views.
+ 95308       0.00853480065    Clustering Declustered Data for Efficient Retrieval.
+ 144448      0.00839482071    Progressive Ranking of Range Aggregates.
+ 846412      0.00839482071    Progressive ranking of range aggregates.
+ 499885      0.00831836403    WreC: A Scalable Middleware Architecture to Enable XML Caching for Web-Services.
+ 642089      0.00821660747    View Invalidation for Dynamic Content Caching in Multitiered Architectures.
+ 618219      0.00813366435    Supporting Sliding Window Queries for Continuous Data Streams.
+ 299963      0.00808533937    Relative Prefix Sums: An Efficient Approach for Querying Dynamic OLAP Data Cubes.
