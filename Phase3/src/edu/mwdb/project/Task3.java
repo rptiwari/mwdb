@@ -457,9 +457,9 @@ public class Task3 {
 				randTemp = randomGen.nextInt(maxRandomNumber);
 			randomNumbers.add(randTemp);
 		}
-		System.out.println("Randomly Selected Authors:");
-		for (int i=0; i<randomNumbers.size(); i++)
-			System.out.println(randomNumbers.get(i));
+//		System.out.println("Randomly Selected Authors:");
+//		for (int i=0; i<randomNumbers.size(); i++)
+//			System.out.println(randomNumbers.get(i));
 		
 		return randomNumbers;
 	}

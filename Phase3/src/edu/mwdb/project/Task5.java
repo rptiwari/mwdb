@@ -27,34 +27,19 @@ public class Task5 {
 		// Task1
 		Task1 t1 = new Task1();
 		
-//		Graph g = t1.getCoauthorSimilarityGraph_PCA();
-//		System.out.println("Top 10 most content-wise similar nodes with: 1792339 (" + dblp.getAuthName("1792339") + ")");
-//		Map.Entry<String, Double>[] results = GraphSearchContent(g, "1792339", 10);
-//		for (Map.Entry<String, Double> r : results) {
-//			System.out.println(dblp.getAuthName(r.getKey()) + " :\t" + r.getValue());
-//		}
-//		
-//		g = t1.getCoauthorSimilarityGraph_KeywordVector();
-//		System.out.println("\nTop 10 most content-wise similar nodes with: 1636579 (" + dblp.getAuthName("1636579") + ")");
-//		results = GraphSearchContent(g, "1636579", 10);
-//		for (Map.Entry<String, Double> r : results) {
-//			System.out.println(dblp.getAuthName(r.getKey()) + " : " + r.getValue());
-//		}
+		Graph g = t1.getCoauthorSimilarityGraph_KeywordVector();
+		System.out.println("\nTop 10 coauthors most content-wise similar nodes with: 1636579 (" + dblp.getAuthName("1636579") + ")");
+		Map.Entry<String, Double>[] results = GraphSearchContent(g, "1636579", 10);
+		for (Map.Entry<String, Double> r : results) {
+			System.out.println(dblp.getAuthName(r.getKey()) + " : " + r.getValue());
+		}
 		
 		// Task2
 		Task2 t2 = new Task2();
-		Graph g;
-		Map.Entry<String, Double>[] results;
-		g = t2.getCoauthorPapersSimilarityGraph_KeywordVector("TF");
-		System.out.println("\nTop 10 most content-wise similar nodes with: 845569 (" + dblp.getPaperTitle("845569") + ")");
-		results = GraphSearchContent(g, "845569", 10);
-		for (Map.Entry<String, Double> r : results) {
-			System.out.println(dblp.getPaperTitle(r.getKey()) + " :\t" + r.getValue());
-		}
 		
 		g = t2.getCoauthorPapersSimilarityGraph_KeywordVector("TF-IDF");
-		System.out.println("\nTop 10 most content-wise similar nodes with: 1578652 (" + dblp.getPaperTitle("1578652") + ")");
-		results = GraphSearchContent(g, "1578652", 10);
+		System.out.println("\nTop 10 coauthored papers most content-wise similar nodes with: 674403 (" + dblp.getPaperTitle("674403") + ")");
+		results = GraphSearchContent(g, "674403", 10);
 		for (Map.Entry<String, Double> r : results) {
 			System.out.println(dblp.getPaperTitle(r.getKey()) + " :\t" + r.getValue());
 		}
