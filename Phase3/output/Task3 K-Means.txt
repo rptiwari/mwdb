@@ -1,0 +1,538 @@
+Clustering by K-Means... 
+
+COAUTHOR------
+
+##CLUSTER##
+Labels:
+	media	6.048780487804878
+	based	5.585365853658536
+	social	4.097560975609756
+	paper	3.8780487804878048
+	time	3.4878048780487805
+	system	3.097560975609756
+Members:
+	Darijus Strasunskas	0.8363457846864518
+	Alejandro Jaimes	0.6752302934904875
+	Alberto Del Bimbo	0.6746429377471957
+	Munmun De Choudhury	0.6415407389116466
+	Yu-Ru Lin	0.5981312832929863
+	Hari Sundaram	0.5872630216035761
+	Gisik Kwon	0.5811827063734315
+	Afonso Ferreira	0.5663838517071221
+	Chengfei Liu	0.5470122460645892
+	Pamela Jennings	0.5223820074238628
+	Luigi Di Caro	0.5212379179133393
+	Xinxin Wang	0.5168302539128703
+	Yi Zhuang	0.4863566321435443
+	Lina Peng	0.43922187233997195
+	Lexing Xie	0.4313037027973797
+	Lei Chen 	0.42191642535097273
+	Frank Nack	0.40952375805592384
+	Kwang-Hoon Kim	0.40673875928554937
+	Ron Wakkary	0.40673875928554937
+	Dickson K. W. Chiu	0.40673875928554937
+	Amanda Steggell	0.40673875928554937
+	Gregory J. Brault	0.40673875928554937
+	Aisling Kelliher	0.4046466800916393
+	Christopher B. Mayer	0.4034604174278858
+	Stein L. Tomassen	0.3902032192214952
+	Karam S. Chatha	0.3902032192214952
+	Yinpeng Chen	0.37062368956194724
+	Aleksandra Dulic	0.3671096036847431
+	Venkata Snehith Cherukuri	0.3582242239720344
+	Renwei Yu	0.337187948299974
+	Clarence A. Ellis	0.3307573831562185
+	Andruid Kerne	0.3307573831562185
+	Qi Yan	0.3208246420050416
+	Qing Li	0.31207166696314237
+	Tejas A. Bapat	0.2686680919077491
+	Venkatesh Sangam	0.26109757364146413
+	Kyung Dong Ryu	0.25384150807497174
+	Stephane Perennes	0.17991195477885466
+	Rynson W. H. Lau	0.17991195477885466
+	Benjamin W. Wah	0.1429999752029893
+
+
+
+##CLUSTER##
+Labels:
+	data	9.357142857142858
+	based	9.142857142857142
+	query	7.071428571428571
+	paper	6.285714285714286
+	feedback	5.5
+	system	5.428571428571429
+Members:
+	Yan Qi 	0.9098379515163211
+	V. S. Subrahmanian	0.8543887966013688
+	Huiping Cao	0.7535602726319155
+	Sibel Adali	0.6918712188734653
+	Claudio Schifanella	0.6772385272707172
+	Sushil Jajodia	0.5106103465521241
+	Eenjun Hwang	0.4770860076305147
+	Mario Cataldi	0.4731279529445554
+	John Grant	0.47164927788156885
+	B. Prabhakaran	0.4504268556807705
+	Jaikannan Ramamoorthy	0.44553989274660294
+	Maria Luisa Sapino	0.33957985703254645
+	Eric Lemar	0.3336454392932538
+
+
+
+##CLUSTER##
+Labels:
+	web	12.222222222222221
+	data	11.38888888888889
+	query	10.083333333333334
+	based	8.833333333333334
+	paper	6.166666666666667
+	content	6.166666666666667
+Members:
+	K. Selcuk Candan	0.9477955686658195
+	Wen-Syan Li	0.8780705612788594
+	Wang-Pin Hsiung	0.8298919577979575
+	Jun'ichi Tatemura	0.808847849418517
+	Oliver Po	0.7782596340293213
+	Jong Wook Kim	0.7024589396562027
+	Arsany Sawires	0.6367386766214282
+	Yoshinori Hara	0.635438828686791
+	Inderpal Narang	0.6067199526274832
+	Radu Sion	0.5910416121942726
+	Kyoji Hirata	0.5757119212183891
+	Thomas Phan	0.5723220154853813
+	Vijayshankar Raman	0.5598607963323756
+	Vishal S. Batra	0.5481306794550129
+	Qiong Luo	0.5385182622892529
+	Huan Liu	0.5226280599272439
+	Reshma Suvarna	0.5226280599272439
+	Mehmet Emin Donderler	0.4922681763735611
+	Junho Shim	0.49072921065768255
+	Dmitri V. Kalashnikov	0.4724117575267948
+	Sougata Mukherjea	0.47061343574876247
+	Koji Hino	0.4670160221133364
+	Murat Kantarcioglu	0.45444976540742066
+	Quoc Vu	0.44778625325037386
+	Wei Han	0.44754113717955146
+	Yannis Papakonstantinou	0.39965750253063437
+	Dirceu Cavendish	0.39476824226783735
+	Ping Lin	0.36701024427121437
+	Lakshmi Priya Mahalingam	0.3561094526677459
+	Keith W. Kintigh	0.312345490721419
+	Liping Chen	0.3119049329336716
+	Maria Goveas	0.3095639237604136
+	Prakash Yamuna	0.3079881874222607
+	Mijung Kim	0.27718657254272894
+	Syed Toufeeq Ahmed	0.27718657254272894
+	Terri Hedgpeth	0.2519948891429837
+	Minqi Zhou	0.24773660093841873
+	Yifeng Yang	0.24199029060320423
+	Shibo Wu	0.2408739304639127
+	P. Venkat Rangan	0.20233061771961575
+	Nancy Fix	0.19328149422463758
+
+
+
+##CLUSTER##
+Labels:
+	data	67.55555555555556
+	queries	23.88888888888889
+	paper	22.11111111111111
+	query	21.0
+	based	20.444444444444443
+	applications	17.77777777777778
+Members:
+	Divyakant Agrawal	0.9946813099754026
+	Amr El Abbadi	0.993562453214967
+	Shan Wang	0.5273267314897501
+	Xiao Zhang	0.2779393164547435
+	Abdulmotaleb El-Saddik	0.27739857037869725
+	Carsten Griwodz	0.27739857037869725
+
+
+
+##CLUSTER##
+Labels:
+	data	25.4
+	query	15.4
+	queries	13.2
+	maintenance	12.8
+	processing	10.0
+	results	8.2
+Members:
+	Songting Chen	0.9532409723808434
+	Elke A. Rundensteiner	0.9161655713793634
+	Luping Ding	0.7863284584346047
+	Hua-Gang Li	0.7102254485561753
+	Fenglin Liao	0.41176923027942663
+	
+	
+
+COAUTHORED PAPERS ------
+
+
+##CLUSTER##
+Labels:
+	2.0826446280991737	data
+	0.9669421487603306	query
+	0.8099173553719008	paper
+	0.6487603305785123	queries
+	0.5785123966942148	based
+	0.5702479338842975	system
+Members:
+	0.5935717018664133	The design of a real-time, multimodal biofeedback system for stroke patient rehabilitation.
+	0.5641967814735914	Assessing Standard and Inverted Skip Graphs Using Multi-Dimensional Range Queries and Mobile Nodes.
+	0.5562546491221185	Object and Combination Shedding Schemes for Adaptive Media Workflow Execution.
+	0.551018571933368	Contour map matching for event detection in sensor networks.
+	0.5456058937531246	Exploring spatial datasets with histograms.
+	0.5390577221658799	Distributed Resource Discovery in Large Scale Computing Systems.
+	0.5268668453882753	Efficient Retrieval for Browsing Large Image Databases.
+	0.518431658233425	Optimization of media processing workflows with adaptive operator behaviors.
+	0.5183474611468316	From Static Distributed Systems to Dynamic Systems.
+	0.5174967128929437	Optimal Information Dissemination in Star and Pancake Networks.
+	0.5161561892217943	Techniques for Efficient Routing and Load Balancing in Content-Addressable Networks.
+	0.5152158960123788	DHT overlay schemes for scalable p-range resource discovery.
+	0.5106632677082934	Managing Concurrent Activities in Collaborative Environments.
+	0.505904678578426	Automated Storage Management with QoS Guarantees.
+	0.4948926284122209	Multi-Criteria Query Optimization in the Presence of Result Size and Quality Tradeoffs.
+	0.4948926284122209	Enabling access-privacy for random walk based data analysis applications.
+	0.4929568767817467	Towards Optimal I/O Scheduling for MEMS-Based Storag.
+	0.48616186164766756	System support for exploration and expert feedback in resolving conflicts during integration of metadata.
+	0.48520420340382225	The Performance of Two-phase Commit Protocols in the Presence of Site Failures.
+	0.484095199741981	Efficient Processing of Conical Queries.
+	0.4741802842033636	Extracting Relevant Snippets for Web Navigation.
+	0.47348863315878875	ARIA: an adaptive and programmable media-flow architecture for interactive arts.
+	0.4626824849269865	Information extraction from biomedical literature: methodology, evaluation and an application.
+	0.4518243254560123	Reducing metadata complexity for faster table summarization.
+	0.4491991582278318	Deadline and QoS Aware Data Warehouse.
+	0.44343326076793305	CAM conscious integrated answering of frequent elements and top-k queries over data streams.
+	0.44135820647654483	Relevant shape contour snippet extraction with metadata supported hidden Markov models.
+	0.43849801321735116	Maintaining XPath Views In Loosely Coupled Systems.
+	0.43602531475193007	Modeling and Maintaining Multi-View Data Warehouses.
+	0.4319022899928085	Enhancing a biomedical information extraction system with dictionary mining and context disambiguation.
+	0.4312595347448831	Load distribution of analytical query workloads for database cluster architectures.
+	0.4278749585760971	Process Synchronization In Workflow Management Systems.
+	0.42531338459237816	Fast Algorithms for Heavy Distinct Hitters using Associative Memories.
+	0.42253051965136107	Approximate constrained bipartite edge coloring.
+	0.4173284107144709	Flexible support for multiple access control policies.
+	0.4139612352152119	Ranked Relations: Query Languages and Query Processing Methods for Multimedia.
+	0.41353493100346134	DANS: decentralized, autonomous, and networkwide service delivery and multimedia workflow processing.
+	0.4128494159477124	Least-Cost High-Quality Object Retrieval for Distributed Multimedia Collaborations.
+	0.4125319471433749	Presentation Planning for Distributed VoD Systems.
+	0.40615590374725696	PULSATINGSTORE: An Analytic Framework for Automated Storage Management.
+	0.40590095794292547	GPER: Geographic Power Efficient Routing in Sensor Networks.
+	0.4012012563089921	Adaptive Multi-Sensor, Multi-Actuator Media Workflow System for Interactive Arts.
+	0.399012756208314	GMP: Distributed Geographic Multicast Routing in Wireless Sensor Networks.
+	0.3950895166646798	Optimal Data-Space Partitioning of Spatial Data for Parallel I/O.
+	0.3933763186974871	Aggregate operators in probabilistic databases.
+	0.3932515758562869	Using Delayed Commitment in Locking Protocols for Real-Time Databases.
+	0.39082457058608544	Multiversion-based view maintenance over distributed data sources.
+	0.38438405346084015	Relative Serializbility: An Approach for Relaxing the Atomicity of Transactions.
+	0.3839172672476775	Towards an information infrastructure for the grid.
+	0.38234814297670167	Exploiting Planned Disconnections in Mobile Environments.
+	0.37824244316143585	Meghdoot: Content-Based Publish/Subscribe over P2P Networks.
+	0.3725308850796356	Handling Updates and Crashes in VoD Systems.
+	0.3723198731036067	Integration of Server, Storage and Database Stack: Moving Processing Towards Data.
+	0.3717797929787949	Consistency and Orderability: Semantics-Based Correctness Criteria for Databases.
+	0.36827968711746634	Range CUBE: Efficient Cube Computation by Exploiting Data Correlation.
+	0.365582729805385	Performance Analytic Models and Analyses for Workflow Architectures.
+	0.3640647061232741	PRISM: indexing multi-dimensional data in P2P networks using reference vectors.
+	0.3626212712936778	An Efficient Peer-to-Peer File Sharing Exploiting Hierarchy and Asymmetry.
+	0.3617744993999118	Partial Database Replication using Epidemic Communication.
+	0.3604961816090941	FLUX: fuzzy content and structure matching of XML range queries.
+	0.3591666639359925	Aggregate Skyline: Analysis for Online Users.
+	0.35887994513900573	Space-Efficient Data Cubes for Dynamic Environments.
+	0.3571023912555752	Media adaptation framework in biofeedback system for stroke patient rehabilitation.
+	0.355399053042071	Skip-and-prune: cosine-based top-k query processing for efficient context-sensitive document retrieval.
+	0.35448617782646613	Ordered Shared Locks for Real-Time Databases
+	0.3542888691063034	ABACUS: A Distributed Middleware for Privacy Preserving Data Sharing Across Private Data Warehouses.
+	0.35404138307491795	Secure Mediated Databases.
+	0.3529906919197443	Extracting Relevant Snippets fromWeb Documents through Language Model based Text Segmentation.
+	0.35269016493321204	CloudDB: One Size Fits All Revived.
+	0.35031490592275605	Indexing high-dimensional data in dual distance spaces: a symmetrical encoding approach.
+	0.34876213298514513	Attribute-Based Access to Distributed Data over P2P Networks.
+	0.348218357410624	Load Balancing for Multi-tiered Database Systems through Autonomic Placement of Materialized Views.
+	0.3481347155236782	Scalable ranking for preference queries.
+	0.3456202363346347	Relative Prefix Sums: An Efficient Approach for Querying Dynamic OLAP Data Cubes.
+	0.344207694186123	Perceived Consistency.
+	0.34298536114353834	Database Management as a Service: Challenges and Opportunities.
+	0.3421307432185885	RHist: adaptive summarization over continuous data streams.
+	0.3384956394532141	Epidemic Algorithms for Replicated Databases.
+	0.3373217184399019	Clustering Declustered Data for Efficient Retrieval.
+	0.33724142345150043	MJoin: a metadata-aware stream join operator.
+	0.3348962060471075	Dimensionality Reduction for Similarity Searching in Dynamic Databases.
+	0.3345773325768766	Disk Allocation for Fast Range and Nearest-Neighbor Queries.
+	0.33426185532681835	J2EE Architecture for Database Cluster-Based High Volume E-Commerce Web Applications.
+	0.33406012569355	SLEUTH: Single-pubLisher attack dEtection Using correlaTion Hunting.
+	0.33242716125921085	Topic Development Based Refinement of Audio-Segmented Television News.
+	0.33242716125921085	Detectives: detecting coalition hit inflation attacks in advertising networks streams.
+	0.33087458157605554	Dynamic Materialization of Query Views for Data Warehouse Workloads.
+	0.3295403169565839	Storage Efficient Replicated Databases.
+	0.3295040939697207	Performance Characteristics of Protocols With Ordered Shared Locks.
+	0.3285977652816645	Supporting Sliding Window Queries for Continuous Data Streams.
+	0.32847645389805186	An integrated efficient solution for computing frequent and top- elements in data streams.
+	0.3269053187230338	Scalable Access Within the Context of Digital Libraries.
+	0.3261992295303741	Feedback-driven result ranking and query refinement for exploring semi-structured data collections.
+	0.3261811257626763	Exploring path query results through relevance feedback.
+	0.32461921509812836	Incremental Maintenance of Path Expression Views.
+	0.3235064738439426	Discovering mappings in hierarchical data from multiple sources using the inherent structure.
+	0.32114824242427165	Browsing Large Digital Library Collections Using Classification Hierarchies.
+	0.320620114918046	Lazy, adaptive rid-list intersection, and its application to index anding.
+	0.3202982309337225	Speeding Up Similarity Queries over Large Chinese Calligraphic Character Databases Using Data Grid.
+	0.31924162867275935	Detection and Correction of Conflicting Source Updates for View Maintenance.
+	0.3182620132214794	Towards Video Management over Relational Database.
+	0.3172821107338424	Database Replication: If You Must be Lazy, be Consistent.
+	0.31615151982752243	Monitoring Moving Objects Using Low Frequency Snapshots in Sensor Networks.
+	0.31196844459459416	A Multi-Similarity Algebra.
+	0.30831637777569443	FMware: Middleware for Efficient Filtering and Matching of XML Messages with Local Data.
+	0.30699278759839826	On Querying and Exploring Activities on a User's Desktop.
+	0.30641515650519363	Protein structure alignment using geometrical features.
+	0.30475618896098206	Hierarchical result views for keyword queries over relational databases.
+	0.3030891501543194	Privacy preserving decision tree learning over multiple parties.
+	0.3005454609851637	Collaborative Multimedia Systems: Synthesis of Media Objects.
+	0.30049617426336933	Supporting OLAP operations over imperfectly integrated taxonomies.
+	0.2975283505957294	SPOT Databases: Efficient Consistency Checking and Optimistic Selection in Probabilistic Spatial Databases.
+	0.2947697075401555	Query Caching and Optimization in Distributed Mediator Systems.
+	0.2947034944344105	G-Store: a scalable data store for transactional multi key access in the cloud.
+	0.294523014422114	Load balancing and data placement for multi-tiered database systems.
+	0.29447658067726706	StratOSphere: Unification of Code, Data, Location, Scope, and Mobility.
+	0.29419065079271445	Application semantics in query optimization for WSNs.
+	0.2922000784362245	P2P systems with transactional semantics.
+	0.2916376190555139	CP/CV: concept similarity mining without frequency information from domain describing taxonomies.
+	0.2908023107551346	GPIVOT: Efficient Incremental Maintenance of Complex ROLAP Views.
+	0.2907786576908578	Sum-Max Monotonic Ranked Joins for Evaluating Top-K Twig Queries on Weighted Data Graphs.
+	0.2893371115645141	The Performance of Database Replication with Group Multicast.
+	0.2862136061117746	A Unified Framework for Enforcing Multiple Access Control Policies.
+	0.28559887598068223	Demand-scalable geographic multicasting in wireless sensor networks.
+	0.2844438617189801	SVL: Storage Virtualization Engine Leveraging DBMS Technology.
+	0.2840391129103427	Efficient Disk Allocation for Fast Similarity Searching.
+	0.28329533242319804	A grid-based approach for enterprise-scale data mining.
+	0.2829519508501932	Interactive high-dimensional index for large Chinese calligraphic character databases.
+	0.2823684862813908	Load and Network Aware Query Routing for Information Integration.
+	0.2817895694983954	Parallel Querying with Non-Dedicated Computers.
+	0.2806101882240696	Distributed Access System for Uniform and Scalbale Data and Service Access.
+	0.2788797098557338	A utility framework for the automatic generation of audio-visual skims.
+	0.27780541706521017	High dimensional nearest neighbor searching.
+	0.2766518577703308	Privacy Preserving Query Processing Using Third Parties.
+	0.27525681703981336	Scalable Access Within the Context of Digital Libraries.
+	0.2722612011118305	A Database Approach for Accelerate Video Data Access.
+	0.2692935447462748	FICSR: eedback-based nonistency esolution and query processing on misaligned data sources.
+	0.26907948535894394	Autonomic Query Parallelization using Non-dedicated Computers: An Evaluation of Adaptivity Options.
+	0.2677519344444979	The Performance of Protocols Based on Locks with Ordered Sharing.
+	0.266179675388951	ADOME-WFMS: Towards Cooperative Handling of Workflow Exceptions.
+	0.26382412728636695	pCube: Update-Efficient Online Aggregation with Progressive Feedback and Error Bounds.
+	0.2638202186539241	Hardware Acceleration for Spatial Selections and Joins.
+	0.26347049385360805	Multi-query Optimization for Distributed Similarity Query Processing.
+	0.26100872952059867	The performance of replica control protocols in the presence of site failures.
+	0.2601065325233957	Using space-time grid for efficient management of moving objects.
+	0.25903642368081653	On the Importance of Tuning in Incremental View Maintenance: An Experience Case Study.
+	0.25724865542695885	Using Reconfiguration for Efficient Management of Replicated Data.
+	0.25710820579034876	An algebraic approach for incremental maintenance of materialized XQuery views.
+	0.2559260612799785	Reasoning in Inconsistent Knowledge Bases.
+	0.25547891710678916	AlphaSum: size-constrained table summarization using value lattices.
+	0.2548304479275993	A Unified Indexing Structure for Efficient Cross-Media Retrieval.
+	0.2522375348371656	The Performance of Two Phase Commit Protocols in the Presence of Site Failures.
+	0.25212495942095053	Classifying Network Architectures for Locating Information Sources.
+	0.24854237677138463	UQBE: uncertain query by example for web service mashup.
+	0.24840255915790677	Fast data stream algorithms using associative memories.
+	0.24817951068167884	Exploiting sequential access when declustering data over disks and MEMS-based storage.
+	0.24528208754995198	Workflow View Based E-Contracts in a Cross-Organizational E-Services Environment.
+	0.24444017363125575	Evaluating window joins over punctuated streams.
+	0.2439183221911303	Mobility and Extensibility in the StratOSphere Framework.
+	0.24232529676705214	Reducing Recovery Constraints on Locking based Protocols.
+	0.239405831383349	Unified Read Requests.
+	0.2390809523951409	STORAGEDB: Enhancing the Storage Sub-System with DBMS Functionalities.
+	0.23790396223349586	Approximate Constrained Bipartite Edge Coloring.
+	0.2371670829662628	Autonomic query parallelization using non-dedicated computers: an evaluation of adaptivity options.
+	0.23434454898147142	Index tuning for parameterized streaming groupby queries.
+	0.2337238576667319	Tabular Placement of Relational Data on MEMS-based Storage Devices.
+	0.23215004727738822	Towards interactive indexing for large Chinese calligraphic character databases.
+	0.23112306778203393	Smart Indexes for Efficient Browsing of Library Collections.
+	0.2301905876498923	Cyclic Allocation of Two-Dimensional Data.
+	0.22999888726221066	A real-time, multimodal biofeedback system for stroke patient rehabilitation.
+	0.22742579504056856	Using Association Rules for Fraud Detection in Web Advertising Networks.
+	0.22341851463521567	Multiple query optimization in middleware using query teamwork.
+	0.22262279444055638	ElasTraS: An Elastic Transactional Data Store in the Cloud
+	0.22248948502532542	Scalable Filtering of Multiple Generalized-Tree-Pattern Queries over XML Streams.
+	0.2213844522145349	IFQ: A Visual Query Interface for Object-based Image Retrieval.
+	0.22026174624450356	Progressive ranking of range aggregates.
+	0.22012640499815223	A Logical Language for Expressing Authorizations.
+	0.21844254937376933	E-ADOME: Enacting Composite E-services in an Advanced Workflow Environment.
+	0.21816035739876485	IFQ: A Visual Query Interface and Query Generator for Object-Based Media Retrieval.
+	0.21764207044428616	Semantic Locking in Object-Oriented Database Systems.
+	0.21731435215650746	An Efficient and Fault-Tolerant Solution for Distributed Mutual Exclusion.
+	0.21730853209266157	Access-Private Outsourcing of Markov Chain and RandomWalk based Data Analysis Applications.
+	0.2156364335835851	Range and kNN Query Processing for Moving Objects in Grid Model.
+	0.21468778825858945	Billiard Quorums on the Grid.
+	0.2139928915519275	A Compensation-Based Approach for View Maintenance in Distributed Environments.
+	0.2136677000679715	A Logical Formulation of Probabilistic Spatial Databases.
+	0.21358436737187733	Table summarization with the help of domain lattices.
+	0.2125425947637683	Hypermedia Database ``Himotoki'' and Its Applications.
+	0.21146903840632203	Query Processing for Moving Objects with Space-Time Grid Storage Model.
+	0.2112227454770326	VideoMAP: A Generic Framework for Video Management and Application Processing.
+	0.21007854938500164	The CPR model for summarizing video.
+	0.20802052290117337	Why go logarithmic if we can go linear?: Towards effective distinct counting of search traffic.
+	0.2068828609964237	Scheduling Tertiary I/O in Database Applications.
+	0.2059510870581577	Managing a Large Shared Bank of Unstructured Data by Using Free-Table.
+	0.20346506369192133	Efficient integration and aggregation of historical information.
+	0.20317305877084904	The Generalized Tree Quorum Protocol: An Efficient Approach for Managing Replicated Data.
+	0.20277031872381823	Analysis of Quorum-Based Protocols for Distributed (k+1)-Exclusion.
+	0.2025483529940486	Fast computation of spatial selections and joins using graphics hardware.
+	0.2019929020053571	A dynamic decision network framework for online media adaptation in stroke rehabilitation.
+	0.20193385543027084	A Peer-to-peer Framework for Caching Range Queries.
+	0.20174065759133017	TWIX: twig structure and content matching of selective queries using binary labeling.
+	0.20026068919956286	On Overlay Schemes to Support Point-in-Range Queries for Scalable Grid Resource Discovery.
+	0.19942931548443868	Confidence-driven early object elimination in quality-aware sensor workflows.
+	0.19606290900773862	An AGM-Based Belief Revision Mechanism for Probabilistic Spatio-Temporal Logics.
+	0.19549010422181487	Guaranteeing Correctness of Lock-Free Range Queries over P2P Data.
+	0.1947113437564355	Progressive Ranking of Range Aggregates.
+	0.19439793877161507	Propagation-vectors for trees (PVT): concise yet effective summaries for hierarchical data and trees.
+	0.19332175157656462	Duplicate detection in click streams.
+	0.19327027422543283	Power-aware single- and multipath geographic routing in sensor networks.
+	0.19316831302800655	Workflow performance and scalability analysis using the layered queuing modeling methodology.
+	0.19239715269920035	On demand synchronization and load distribution for database grid-based Web applications.
+	0.19070559584376867	Supporting efficient multimedia database exploration.
+	0.18930563633104938	Advanced Transaction Models in Workflow Contexts.
+	0.18920533556654634	View Invalidation for Dynamic Content Caching in Multitiered Architectures.
+	0.18813911876206066	Efficient View Maintenance at Data Warehouses.
+	0.1881004439247703	Using Multicast Communication to Reduce Deadlock in Replicated Databases.
+	0.1842261582015032	Batch data warehouse maintenance in dynamic environments.
+	0.18267547885655658	Media processing workflow design and execution with ARIA.
+	0.1823885540206562	CoTS: A Scalable Framework for Parallelizing Frequency Counting over Data Streams.
+	0.17943527433812637	Safety Guarantee of Continuous Join Queries over Punctuated Data Streams.
+	0.17895276373587238	Location dependent query in a mobile environment.
+	0.1776504299047228	Integrating and querying taxonomies with quest in the presence of conflicts.
+	0.17034158441202496	Thread Cooperation in Multicore Architectures for Frequency Counting over Multiple Data Streams.
+	0.16402941932466683	Constant-Time Query Processing.
+	0.16350191648348059	Runtime Semantic Query Optimization for Event Stream Processing.
+	0.16114492590504567	BYPASS: Topology-Aware Lookup Overlay for DHT-based P2P File Locating Services.
+	0.15683881844654274	Filtration of String Proximity Search via Transformation.
+	0.15657157662383425	BINOCULAR: a system monitoring framework.
+	0.15657157662383425	Information-Gradient Based Decentralized Data Management over RFID Tag Clouds.
+	0.15606192871653332	AURA: Enabling Attribute-Based Spatial Search in RFID Rich Environments.
+	0.1532570865845846	MOOLAP: Towards Multi-Objective OLAP.
+	0.1532343546385401	Dynamic Multidimensional Data Cubes.
+	0.15187002185101162	Optimal Scheduling Algorithms for Tertiary Storage.
+	0.14934945433817495	The CPR Model for Summarizing Video.
+	0.1477447261524317	On Hit Inflation Techniques and Detection in Streams of Web Advertising Networks.
+	0.14029608169785543	Fast and Accurate Prediction of the Destination of Moving Objects.
+	0.13633095305551957	MEMS based storage architecture for relational databases.
+	0.13276142095625576	Guest Editors' Introduction: Emerging Internet Technologies for E-Learning.
+	0.12921788743345441	Event Stream Processing with Out-of-Order Data Arrival.
+	0.12651583235952005	Data space mapping for efficient I/O in large multi-dimensional databases.
+	0.12617945648622148	TwigStack: Bottom-up Processing of Generalized-Tree-Pattern Queries over XML Documents.
+	0.11569972360554842	An AGM-style belief revision mechanism for probabilistic spatio-temporal logics.
+	0.0	Application-Layer Protocol for Collaborative Multimedia Presentations.
+
+
+
+##CLUSTER##
+Labels:
+	2.8979591836734695	web
+	0.9795918367346939	service
+	0.9795918367346939	content
+	0.8571428571428571	information
+	0.8367346938775511	paper
+	0.7346938775510204	search
+Members:
+	0.6169058914478266	Enabling Dynamic Content Caching for Database-Driven Web Sites.
+	0.5807545462106141	Evaluations of architectural designs and implementation for database-driven web sites.
+	0.5661978659595022	WebDB: A Web Query System and Its Modeling, Language, and Implementation.
+	0.5545532382436551	Issues and Evaluations of Caching Solutions for Web Application Acceleration.
+	0.55446389298742	Query Relaxation by Structure and Semantics for Retrieval of Logical Web Documents.
+	0.548285659867217	Resource Description Framework: Metadata and Its Applications.
+	0.5386303726808475	Challenges and practices in deploying web acceleration solutions for distributed enterprise systems.
+	0.5217172008417192	Reasoning for Web document associations and its applications in site map construction.
+	0.5149917639159014	Freshness-driven adaptive caching for dynamic content Web sites.
+	0.4974991825903091	Heuristics-based scheduling of composite web service workloads.
+	0.4837554180440898	A Peer-to-Peer Framework for Web Service Discovery with Ranking.
+	0.4698438336920609	Freshness-driven Adaptive Caching for Dynamic Content.
+	0.46361784718673404	Engineering and hosting adaptive freshness-sensitive web applications on data centers.
+	0.46237273536413076	WreC: A Scalable Middleware Architecture to Enable XML Caching for Web-Services.
+	0.413601017504245	An ontology-driven approach to web search: analysis of its sensitivity to ontology quality and search tasks.
+	0.40727451338630016	Construction of Ontology Based Semantic-Linguistic Feature Vectors for Searching: The Process and Effect.
+	0.38578059628237066	On Significance of Ontology Quality in Ontology-Driven Web Search.
+	0.376779087501559	AMORE: A World Wide Web Image Retrieval Engine.
+	0.3767465855618397	Relating ontology and web terminologies by feature vectors: unsupervised construction and experimental validation.
+	0.37597954625203084	Web service decomposition: Edge computing architecture for cache-friendly e-commerce applications.
+	0.3719828889176654	Integration of Image Matching and Classification for Multimedia Navigation.
+	0.3714432416885177	Dynamic Stochastic Models for Workflow Response Optimization.
+	0.37143098806409763	Efficient overlap and content reuse detection in blogs and online news articles.
+	0.3666458978464078	Integrating Image Matching and Classification for Multimedia Retrieval on the Web.
+	0.35959254205983265	Empirical Insights on a Value of Ontology Quality in Ontology-Driven Web Search.
+	0.3566712477852222	Web-Based Image Retrieval: A Hybrid Approach.
+	0.35375251943180985	Leveraging Structural Knowledge for Hierarchically-Informed Keyword Weight Propagation in the Web.
+	0.34497910343432564	Extracting data records from the web using tag path clustering.
+	0.33157501314199817	Topic segmentation of message hierarchies for indexing and navigation support.
+	0.32211579575200944	Ontology Based Content Management for Digital Television Services.
+	0.31219612160072197	Semantic-Linguistic Feature Vectors for Search: Unsupervised Construction and Experimental Validation.
+	0.3112204726362628	Distributed XML processing: Theory and applications.
+	0.3100163873363864	Systematic Interaction Management in a Workflow View Based Business-to-Business Process Engine.
+	0.3016193582649677	Mashup Feeds: : continuous queries over web services.
+	0.2858228563360632	Flows and views for scalable scientific process integration.
+	0.27693340398094884	SEA: Segment-enrich-annotate paradigm for adapting dialog-based content for improved accessibility.
+	0.27442777144317876	Enabling accessible interfaces to digital library content.
+	0.2714971345199796	Disconnection Modes for Mobile Databases.
+	0.2631893345071666	Effects of User Request Patterns on a Multimedia Delivery System.
+	0.2624624032430419	A request-routing framework for SOA-based enterprise computing.
+	0.2616962197628768	Frontiers in Information and Software as Services.
+	0.2556733035202459	Designing a Credit Approval System Using Web Services, BPEL, and AJAX.
+	0.21677367238991602	Challenges and opportunities in collaborative business process management: Overview of recent advances and introduction to the special issue.
+	0.20569586721460253	PowerBookmarks: An Advanced Web Bookmark Database System and its Information Sharing and Management.
+	0.20277025725988929	Technology supports for distributed and collaborative learning over the internet.
+	0.19395795661798157	Planned Disconnections for Mobile Databases.
+	0.18742399161906434	Augmented Hypermedia: System Integration and Usability.
+	0.18094731403197517	Brokerage Architecture for Stock Photo Industry.
+	0.1713301527965815	Workshop Organizers' Message.
+
+
+
+##CLUSTER##
+Labels:
+	1.5952380952380953	social
+	1.119047619047619	media
+	1.119047619047619	multimedia
+	1.0476190476190477	temporal
+	0.8809523809523809	content
+	0.7857142857142857	based
+Members:
+	0.5526512992119816	Connecting content to community in social media via image content, user tags and user communication.
+	0.5074664791548178	Context Aware Routing of Enterprise User Communications.
+	0.5054039391244003	Blog Community Discovery and Evolution Based on Mutual Awareness Expansion.
+	0.46276229854034545	Contextual wisdom: social relations and correlations for multimedia event annotation.
+	0.44613535963172224	Connecting artists and scientists in multimedia research.
+	0.4401336096046243	Summarization of social activity over time: people, actions and concepts in dynamic networks.
+	0.43916446462651765	Temporal patterns in social media streams: Theme discovery and evolution using joint analysis of content and context.
+	0.4369319146128554	Facetnet: a framework for analyzing communities and their evolutions in dynamic networks.
+	0.4257111802660809	Dynamic prediction of communication flow using social context.
+	0.4236299109760079	Representing and Reasoning with Temporal Constraints in Multimedia Presentations.
+	0.4234173701340422	Similarity-Based Retrieval of Temporal Specifications and its Application to the Retrieval of Multimedia Documents.
+	0.4004087890693824	Temporal Modules: An Approach Toward Federated Temporal Databases.
+	0.39668229598037	Creating tag hierarchies for effective navigation in social media.
+	0.3928410784793766	Social Synchrony: Predicting Mimicry of User Actions in Online Social Media.
+	0.37285516111441286	A slide-ware application to support discursive presentations.
+	0.3653013374640768	Analyzing communities and their evolutions in dynamic social networks.
+	0.3554311302398243	Similarity-based retrieval of temporal documents.
+	0.3526677810006528	ClusTR: Exploring Multivariate Cluster Correlations and Topic Trends.
+	0.3502847220520304	Organization and Tagging of Blog and News Entries Based on Content Reuse.
+	0.34621339667690976	Multi-scale characterization of social network dynamics in the blogosphere.
+	0.3444822176657545	Detecting splogs via temporal dynamics using self-similarity analysis.
+	0.34369492666888907	An algebra for creating and querying multimedia presentations.
+	0.340915232905304	Eventory -- An Event Based Media Repository.
+	0.3392911023001454	CDIP: Collection-Driven, yet Individuality-Preserving Automated Blog Tagging.
+	0.3360504460567394	What makes conversations interesting?: themes, participants and consequences of conversations in online social media.
+	0.3159536710349083	A Multimedia Presentation Algebra.
+	0.30989971331196636	Second international workshop on story representation, mechanism and context (SRMC 2008).
+	0.3083350320681739	Modeling personal and social network context for event annotation in images.
+	0.3075706867285911	Can blog communication dynamics be correlated with stock market activity?
+	0.29489521899150795	NextSlidePlease: agile hyperpresentations.
+	0.29405339225909033	ACM multimedia interactive art program: an introduction to the digital boundaries exhibition.
+	0.27298301401647057	MetaFac: community discovery via relational hypergraph factorization.
+	0.2601175372113973	Digital Boundaries: The 2004 ACM Multimedia Interactive Art Program Exhibition.
+	0.25963261608564536	Extracting community structure through relational hypergraphs.
+	0.23704966494949242	Summarization of large scale social network activity.
+	0.23536028115765298	CoSeNa: a context-based search and navigation system.
+	0.22602207521202722	CUTS: rvature-based development pattern analysis and segmentation for blogs and other ext treams.
+	0.19165578363703933	Using for condensing navigable tag hierarchies from tag clouds.
+	0.18508364764936358	Contextual Prediction of Communication Flow in Social Networks.
+	0.17122730852239074	View Management in Multimedia Databases.
+	0.14011388882081208	Splog Detection Using Self-similarity Analysis on Blog Temporal Dynamics.
