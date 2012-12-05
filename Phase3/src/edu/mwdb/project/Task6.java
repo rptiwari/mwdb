@@ -303,6 +303,22 @@ public class Task6 extends Task4 {
 			e.printStackTrace();
 		}
 	}
+        
+        public static void runTask6(int k, String task, String seed, Graph g) throws Exception{
+            Task6 t6 = new Task6();
+            
+            if(task.equalsIgnoreCase("Author")){
+                t6.doTask6a(k,seed, g);
+            }else if(task.equalsIgnoreCase("Paper")){
+                Directory luceneIndexDir = t6.dblpData.createAllDocumentIndex();
+                t6.doTask6b(k,seed, g, luceneIndexDir);
+            }else{
+                System.out.println("Incorrect Usage");
+                System.exit(1);
+            }
+        }
+        
+        
 	public double getcFactor() {
 		return cFactor;
 	}

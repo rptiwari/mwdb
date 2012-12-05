@@ -40,6 +40,20 @@ public class Task3 {
             }
 		
 	}
+        
+        public static void runTask3(int k){
+            try{
+                System.out.println("Clustering by K-Means...");
+                doClusteringByKMeans(k);
+                
+                System.out.println("\n\n\nClustering by Single Pass Iterative Algorithm");
+                doSinglePassClustering(k);
+                
+            }catch(Exception ex){
+                System.err.println("Error in building clusters ");
+                ex.printStackTrace();
+            }
+        }
 
         private static void doSinglePassClustering(int k) throws Exception{
             Task1 task1 = new Task1();

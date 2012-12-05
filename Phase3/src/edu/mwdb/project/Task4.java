@@ -519,6 +519,8 @@ public class Task4 {
 			}
 			else if (taskName.equalsIgnoreCase("task4b")){
 				Directory luceneIndexDir = task.dblpData.createAllDocumentIndex();
+                                Task2 t2 = new Task2();
+                                Graph simGraph = t2.getCoauthorPapersSimilarityGraph_KeywordVector("TF");
 //				Graph simGraph = task.getPaperSimilarityGraph( luceneIndexDir);
 //				task.doTask4b(k,simGraph, luceneIndexDir);
 			}
@@ -527,6 +529,20 @@ public class Task4 {
 			e.printStackTrace();
 		}
 	}
+        
+        public static void runTask4(int k, String task, Graph g) throws Exception{
+            Task4 t4 = new Task4();
+            
+            if(task.equalsIgnoreCase("Auhtor")){
+                t4.doTask4a(k, g);
+            }else if(task.equalsIgnoreCase("Paper")){
+                Directory luceneIndexDir = t4.dblpData.createAllDocumentIndex();
+                t4.doTask4b(k, g, luceneIndexDir);
+            }else{
+                System.out.println("Incorrect Usage");
+                System.exit(1);
+            }
+        }
 	public double getCFactor() {
 		return cFactor;
 	}
