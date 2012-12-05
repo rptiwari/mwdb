@@ -51,10 +51,11 @@ public class Task7 {
 			HashMap<String,Double> all2PFs = getALLPF(k, nodeKWVectors, relevantAuthors, allGraphAuthors);
 			ArrayList<Map.Entry<String, Double>> similarities = computeFeedbackSim(all2PFs, relevantAuthors,  k,  allGraphAuthors,nodeKWVectors, sourceAuthor);
 
-			displayAuthors(similarities,k, sourceAuthor);
+//			displayAuthors(similarities,k, sourceAuthor);
 			HashMap<String,Double> newQuery = computeAdjustedQuery(allAuthors.get(sourceAuthor), all2PFs);
-			HashMap<String,Double> newQueryforDisplay = displayAdjustedQuery(allAuthors.get(sourceAuthor), all2PFs);
-			output = new TaskResults(similarities,newQuery);
+//			HashMap<String,Double> newQueryforDisplay = displayAdjustedQuery(allAuthors.get(sourceAuthor), all2PFs);
+//			displayAdjustedQueryMap(newQuery);		
+			output = new TaskResults(similarities,newQuery,allAuthors.get(sourceAuthor) );
 			return output;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -76,12 +77,8 @@ public class Task7 {
 		HashMap<String,Double> all2PFs = getALLPF(k, nodeKWVectors, relevantPapers, allGraphPapers);
 		ArrayList<Map.Entry<String, Double>> similarities = computeFeedbackSim(all2PFs, relevantPapers,  k,  allGraphPapers,nodeKWVectors, sourceNode);
 		
-		displayPapers(similarities,k,sourceNode, allIndex);
-		System.out.println(sourceNode);
-		TermFreqVector apple = allPapers.get(sourceNode);  System.out.println(apple.size());
 		HashMap<String,Double> newQuery = computeAdjustedQuery(allPapers.get(sourceNode), all2PFs);
-		HashMap<String,Double> newdisplayQuery = displayAdjustedQuery(allPapers.get(sourceNode), all2PFs);
-		output = new TaskResults(similarities,newQuery);
+		output = new TaskResults(similarities,newQuery,allPapers.get(sourceNode) );
 		return output;
 		} catch (Exception e) {
 				e.printStackTrace();
@@ -120,7 +117,8 @@ public class Task7 {
 				
 		for(int i=0; i<termTexts.length; i++){
 			Double pfFactor = allPFs.get(termTexts[i]);
-			if (termFreqs[i] > THRESHOLD)
+			weight = termFreqs[i];
+		//	if (termFreqs[i] > THRESHOLD)
 				dqSim += weight*pfFactor;
 		}
 		return dqSim;
@@ -150,7 +148,9 @@ public class Task7 {
 		// Sort them in descending order
 		Collections.sort(similarities,  new MapEntryComparable());
 
-		HashMap<String, String> authNamePersonIdList = db.getAuthNamePersonIdList();	 
+		HashMap<String, String> authNamePersonIdList = db.getAuthNamePersonIdList();	
+		System.out.println("Relevance Feed Back Query: " + authNamePersonIdList.get(sourceAuthor));
+		System.out.println();
 		int maxDisplay = Math.min(k,similarities.size());
 		System.out.println();
 		System.out.println("Most Relevant "+ maxDisplay + " Authors");
@@ -171,6 +171,9 @@ public class Task7 {
 		
 		IndexReader papersReader =  IndexReader.open(luceneIndexDir);
 		Map<String,Integer>  paperIndexMap = getPaperMap(papersReader);
+		System.out.println();
+		System.out.println("Relevance Feed Back Query: " + papersReader.document(paperIndexMap.get(sourceNode)).get("title"));
+		System.out.println();
 		int maxDisplay = Math.min(k,similarities.size());
 		System.out.println();
 		System.out.println("Most Relevant "+ maxDisplay + " Papers");
@@ -196,24 +199,41 @@ public class Task7 {
 		}
 		return tempVector;
 	}
-	public HashMap<String,Double>displayAdjustedQuery(TermFreqVector queryKeyWord, HashMap<String,Double> allPFs) throws Exception {
-		double[] adjKeywords = computeModifiedKWVector(queryKeyWord, allPFs);
-		String[] currentKeywords = queryKeyWord.getTerms();
-		int[] currentValues	= queryKeyWord.getTermFrequencies();
+	
+
+	public void displayAdjustedQueryMap(HashMap<String,Double> queryKeyWord) {
 		int index = 0;
 		System.out.println("Query");
-		System.out.println("KeyWord Values: old  new    old        new      old          new      old       new");
-		for (String keyword : currentKeywords){
-			System.out.printf("%-15s %-3d ",keyword,currentValues[index]);
-			System.out.printf("%-3f  ",adjKeywords[index]);
+		System.out.println("KeyWord Values:   new         new            new          new");
+		for (Map.Entry<String,Double> keyword : queryKeyWord.entrySet()){
+			System.out.printf("%-15s ",keyword.getKey());
+			System.out.printf("%-3f  ",keyword.getValue());
 			index++;
 			if ((index % 10) == 0) System.out.println();
 		}
-		HashMap<String,Double> tempVector = new HashMap<String,Double>();
-		for (int i=0; i<adjKeywords.length; i++) {
-			tempVector.put(currentKeywords[i], (double)adjKeywords[i]);
+	}
+	
+	public void displayAdjustedQuery(HashMap<String,Double> newQuery, TermFreqVector queryKeyWord) {
+		
+		String[] currentKeywords = queryKeyWord.getTerms();
+		int[] currentValues	= queryKeyWord.getTermFrequencies();
+		int index = 0;
+		int displayindex = 1;
+		System.out.println("Query");
+		System.out.println("KeyWord Values: old  new           old  new                     old  new                   old  new");
+		
+		for (Map.Entry<String,Double> keyword : newQuery.entrySet()){
+			if (!((keyword.getValue() == 0) && (keyword.getValue() == 0))){
+			System.out.printf("%-15s %-3d  ",keyword.getKey(),currentValues[index] );
+			System.out.printf("%-3.3f  ",keyword.getValue());
+			displayindex++;
+			}
+			index++;
+			if ((displayindex % 10) == 0) {
+				displayindex = 1;
+				System.out.println();
+			}
 		}
-		return tempVector;
 	}
 	
 	/**
@@ -251,6 +271,7 @@ public class Task7 {
   				if (forwardIndex.get(nodeId).containsKey(word))
   					n_ij++;
   			}
+  			n_ij += r_ij;		// need all nodes that contain keyword
   		//	if ((r_ij++)>0  && (n_ij++ > 0)){
   				double result = doFormulaAdjPF(R, N, r_ij, n_ij);
   				retVal.put(word, result);
@@ -435,39 +456,50 @@ public class Task7 {
 
 			String taskName = tokens[0];
 			int k = Integer.parseInt(tokens[1]);
-			String nodeName = tokens[2];
-			Task5 task5 = new Task5();
+			
+			//String testNode = tokens[2];
+			Task2 task2 = new Task2();
 			Task1 task1 = new Task1();
 			Task7 task = new Task7();
-			Directory d = task.db.createAllDocumentIndex();
-//			Graph paperGraph = task.getPaperSimilarityGraph(d);
-			System.out.println("ENTERING get sim");
+			
+			Directory docIndex = task.db.createAllDocumentIndex();
 			Graph authorGraph = task1.getCoauthorSimilarityGraph_KeywordVector();
-		//	String testAuthor = "1792339";
-			String testAuthor = "1632506";
-					
-		//	Map.Entry<String, Double>[] results = Task5.GraphSearchContent(g, "1792339", 5);
-		//	System.out.println(testAuthor);
-			Map.Entry<String, Double>[] task5result = Task5.GraphSearchContent(authorGraph, "1632506", 5);
-			System.out.println("done with 5");
-		//	Map.Entry<String, Double>[] task5result = task5.GraphSearchContent(paperGraph, nodeName, k);
-		//	System.out.println("done with 5");
-		//	Map<Integer,String> theNodes = paperGraph.getNodeIndexLabelMap();
-			Map<Integer,String> theNodes = authorGraph.getNodeIndexLabelMap();
+			
+			String testAuthor = "1636579";
+		
+			
+			Map.Entry<String, Double>[] task5result = Task5.GraphSearchContent(authorGraph, testAuthor, k);
 			List<String> nodeList = new ArrayList<String>();
 			for(int i = 0; i < k; i++){
 				nodeList.add(task5result[i].getKey());
+				System.out.print(task5result[i].getKey());
+				System.out.print(" ");
+				System.out.println(task5result[i].getValue());
+				}
+
+			
+			TaskResults outputTask5 = task.doTask7(nodeList, k, authorGraph.getNodeIndexLabelMap(),testAuthor);
+			task.displayAuthors(outputTask5.getSimilarities(),k, testAuthor);
+			task.displayAdjustedQuery(outputTask5.getNewTermFreqVector(),outputTask5.getOldQuery());
+			
+
+			Graph paperGraph = task2.getCoauthorPapersSimilarityGraph_KeywordVector("TF");
+			String testPaper = "159366";
+			task5result = Task5.GraphSearchContent(paperGraph, testPaper, k);
+			nodeList = new ArrayList<String>();
+			for(int i = 0; i < k; i++){
+				nodeList.add(task5result[i].getKey());
+				System.out.print(task5result[i].getKey());
+				System.out.print(" ");
+				System.out.println(task5result[i].getValue());
 			}
 			
-			for (int j = 0; j < k; j++) {
-				String paperID = nodeList.get(j);
-				System.out.printf("%-10s", paperID);
-				System.out.printf("%-10.5f",task5result[j].getValue());
-				System.out.println();
-			}
-
-			TaskResults output = task.doTask7(nodeList, k, authorGraph.getNodeIndexLabelMap(),testAuthor);
-		//	TaskResults output = task.doTask7(nodeList, k, paperGraph.getNodeIndexLabelMap(), nodeName);
+			TaskResults outputPapers = task.doTask7(nodeList, k, paperGraph.getNodeIndexLabelMap(),testPaper);
+			task.displayPapers(outputPapers.getSimilarities(),k, testPaper,docIndex);
+			task.displayAdjustedQuery(outputPapers.getNewTermFreqVector(),outputPapers.getOldQuery());
+			System.out.println(outputPapers.getNewTermFreqVector().size());
+					
+	
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
