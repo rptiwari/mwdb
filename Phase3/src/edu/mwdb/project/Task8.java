@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import org.apache.lucene.store.Directory;
 
 public class Task8 {
 
@@ -42,7 +43,7 @@ public class Task8 {
                 Task4.runTask4(Integer.parseInt(args[1]), args[2], createGraphFromParam(args[3]));
             } 
             else if (taskName.equalsIgnoreCase("Task5")) {
-                Task5.runTask5(Integer.parseInt(args[1]), args[2], createGraphFromParam(args[3]));
+                Task5.runTask5(Integer.parseInt(args[1]), args[2], args[3], createGraphFromParam(args[4]));
             } 
             else if (taskName.equalsIgnoreCase("Task6")) {
                 Task6.runTask6(Integer.parseInt(args[1]), args[2], args[3], createGraphFromParam(args[4]));
@@ -51,11 +52,21 @@ public class Task8 {
                 Task5 t5 = new Task5();
                 DblpData dblp = new DblpData();
                 
-                Map.Entry<String, Double>[] result = t5.GraphSearchContent(createGraphFromParam(args[3]), args[2], Integer.parseInt(args[1]));
+                Map.Entry<String, Double>[] result = t5.GraphSearchContent(createGraphFromParam(args[4]), args[3], Integer.parseInt(args[1]));
                 
-                for (Map.Entry<String, Double> r : result) {
+                if(args[2].equalsIgnoreCase("Author")){
+                    for (Map.Entry<String, Double> r : result) {
                     System.out.println(r.getKey()+"  : "+dblp.getAuthName(r.getKey()) + " : " + r.getValue());
-                } 
+                }
+                }else if(args[2].equalsIgnoreCase("Paper")){
+                    for (Map.Entry<String, Double> r : result) {
+                    System.out.println(r.getKey()+"  : "+dblp.getPaperTitle(r.getKey()) + " : " + r.getValue());
+                }
+                }else{
+                    System.out.println("Incorrect Input");
+                    System.exit(1);
+                }
+                 
                 
                 System.out.println("\nPlease provide comma sepearated IDs for relevence feedback..");
                 Scanner sc = new Scanner(System.in);
@@ -64,9 +75,19 @@ public class Task8 {
                 
                 List<String> nodeList = Arrays.asList(res);
                 Task7 task = new Task7();
-                TaskResults outputTask5 = task.doTask7(nodeList, Integer.parseInt(args[1]), createGraphFromParam(args[3]).getNodeIndexLabelMap(),args[2]);
-                task.displayAuthors(outputTask5.getSimilarities(),Integer.parseInt(args[1]), args[2]);
-                task.displayAdjustedQuery(outputTask5.getNewTermFreqVector(),outputTask5.getOldQuery());
+                TaskResults outputTask5 = task.doTask7(nodeList, Integer.parseInt(args[1]), createGraphFromParam(args[4]).getNodeIndexLabelMap(),args[3]);
+                
+                
+                 if(args[2].equalsIgnoreCase("Author")){
+                    task.displayAuthors(outputTask5.getSimilarities(),Integer.parseInt(args[1]), args[2]);
+                 }
+                 
+                 if(args[2].equalsIgnoreCase("Paper")){
+                    Directory index = dblp.createAllDocumentIndex();
+                    task.displayPapers(outputTask5.getSimilarities(),Integer.parseInt(args[1]), args[3], index);
+                 }
+                 
+                 task.displayAdjustedQuery(outputTask5.getNewTermFreqVector(),outputTask5.getOldQuery());
             } 
             else {
                 System.err.print("Incorrect Usage");

@@ -46,18 +46,28 @@ public class Task5 {
 		}
 	}
         
-        public static void runTask5(int k, String searchID, Graph g) throws MatlabInvocationException, MatlabConnectionException, Exception {
+        public static void runTask5(int k, String param, String searchID, Graph g) throws MatlabInvocationException, MatlabConnectionException, Exception {
             DblpData dblp = new DblpData();
 
             System.out.println("\nPrinting Results for "+searchID+"\n");
             DecimalFormat f = new DecimalFormat("#.####");
             
             Map.Entry<String, Double>[] results = GraphSearchContent(g, searchID, k);
-            for (Map.Entry<String, Double> r : results) {
-                System.out.format("%-30s%10s\n", dblp.getAuthName(r.getKey()), 
-                    f.format(r.getValue()));
+            
+            if(param.equalsIgnoreCase("Author")){
+                for (Map.Entry<String, Double> r : results) {
+                    System.out.format("%-30s%10s\n", dblp.getAuthName(r.getKey()), 
+                        f.format(r.getValue()));
                 
-            }    
+                }
+            }else if(param.equalsIgnoreCase("Paper")){
+                for (Map.Entry<String, Double> r : results) {
+                    System.out.format("%-80s%10s\n", dblp.getPaperTitle(r.getKey()), 
+                        f.format(r.getValue()));
+                
+            }
+            }
+                
         }
         
         
