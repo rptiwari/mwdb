@@ -31,10 +31,14 @@ public class Task8 {
             if (taskName.equalsIgnoreCase("Task1")) {
                 Graph g = createGraphFromParam(args[1]);
                 Utility.printSortedEdges(g);
+                System.out.println("\n\n Graph");
+                Utility.printGraph(g);
             } 
             else if (taskName.equalsIgnoreCase("Task2")) {
                 Graph g = createGraphFromParam(args[1]);
                 Task2.printGraph(g);
+                System.out.println("\n\n Graph");
+                Utility.printGraph(g);
             } 
             else if (taskName.equalsIgnoreCase("Task3")) {
                 Task3.runTask3(Integer.parseInt(args[1]));
