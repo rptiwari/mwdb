@@ -510,6 +510,27 @@ public class DblpData {
 		return null;
 	}
 	
+	public String getPaperAbstract(String paperId){
+		Utility util = new Utility();
+		Connection con = util.getDBConnection();
+
+		String paperData = new String();
+		try{
+			Statement statement = con.createStatement();
+			ResultSet resultSet = statement.executeQuery("select a.abstract from papers a where a.paperid = " + paperId);
+			while (resultSet.next()) 
+			{
+				paperData = resultSet.getString("abstract");
+			}
+			return paperData;
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 	public String getPaperTitle(String paperId){
 		Utility util = new Utility();
 		Connection con = util.getDBConnection();

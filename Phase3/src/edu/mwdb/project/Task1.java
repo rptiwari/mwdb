@@ -29,11 +29,11 @@ public class Task1 {
 		Task1 t1;
 		try {
 			t1 = new Task1();
-			//Graph g = t1.getCoauthorSimilarityGraph_KeywordVector();
+			Graph g = t1.getCoauthorSimilarityGraph_KeywordVector();
 			//Graph g = t1.getCoauthorSimilarityGraph_PCA();
 			//Graph g = t1.getCoauthorSimilarityGraph_SVD();
-			Graph g = t1.getCoauthorSimilarityGraph_LDA();
-			
+			//Graph g = t1.getCoauthorSimilarityGraph_LDA();
+			Utility.printSortedEdges(g);
                         
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
