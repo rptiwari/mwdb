@@ -1,5 +1,6 @@
 package edu.mwdb.project;
 
+import java.text.DecimalFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,10 +49,14 @@ public class Task5 {
         public static void runTask5(int k, String searchID, Graph g) throws MatlabInvocationException, MatlabConnectionException, Exception {
             DblpData dblp = new DblpData();
 
-
+            System.out.println("\nPrinting Results for "+searchID+"\n");
+            DecimalFormat f = new DecimalFormat("#.####");
+            
             Map.Entry<String, Double>[] results = GraphSearchContent(g, searchID, k);
             for (Map.Entry<String, Double> r : results) {
-                System.out.println(dblp.getAuthName(r.getKey()) + " : " + r.getValue());
+                System.out.format("%-30s%10s\n", dblp.getAuthName(r.getKey()), 
+                    f.format(r.getValue()));
+                
             }    
         }
         

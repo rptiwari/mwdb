@@ -606,7 +606,9 @@ public class Utility {
     
     public static void printSortedEdges(Graph g) {
         DecimalFormat f = new DecimalFormat("#.##");
-        
+        System.out.println("\n ***** Printing Top 20 Author ***** \n");
+        System.out.format("%-40s%-30s%7s\n","    Source","    Target","Weight");
+        System.out.println("-------------------------------------------------------------------------------------------");
         List<Edge> edgeList = new ArrayList<Edge>();
         
         for (int i = 0; i < g.getNumNodes(); i++) {
@@ -623,14 +625,18 @@ public class Utility {
         
         for(int i=0; i<20; i++){
             Edge e = edgeList.get(i);
-            System.out.println(dblp.getAuthName(g.getNodeLabel(e.i))+"("+g.getNodeLabel(e.i)+")  =>  "+
-                    dblp.getAuthName(g.getNodeLabel(e.j))+"("+g.getNodeLabel(e.j) + ") ,  "+e.weight);
+            System.out.format("%-40s%-40s%-7s\n", dblp.getAuthName(g.getNodeLabel(e.i))+"("+g.getNodeLabel(e.i)+")", 
+                    dblp.getAuthName(g.getNodeLabel(e.j))+"("+g.getNodeLabel(e.j) + ")", f.format(e.weight));  
+            
         }
     }
     
     public static void printPaperSortedEdges(Graph g) {
-        DecimalFormat f = new DecimalFormat("#.##");
         
+        DecimalFormat f = new DecimalFormat("#.##");
+        System.out.println("\n ***** Printing Top 20 Paper Id ***** \n");
+        System.out.format("%-10s%-10s%7s\n","Source","Target","Weight");
+        System.out.println("----------------------------------");
         List<Edge> edgeList = new ArrayList<Edge>();
         
         for (int i = 0; i < g.getNumNodes(); i++) {
@@ -647,8 +653,9 @@ public class Utility {
         
         for(int i=0; i<20; i++){
             Edge e = edgeList.get(i);
-            System.out.println(g.getNodeLabel(e.i)+"  =>  "
-                    +g.getNodeLabel(e.j) + " ,  "+e.weight);
+            System.out.format("%-10s%-10s%7s\n", g.getNodeLabel(e.i), 
+                    g.getNodeLabel(e.j), f.format(e.weight));  
+            
         }
     }
     
