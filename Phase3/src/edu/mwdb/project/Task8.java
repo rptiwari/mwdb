@@ -83,7 +83,7 @@ public class Task8 {
                 
                 
                  if(args[2].equalsIgnoreCase("Author")){
-                    task.displayAuthors(outputTask5.getSimilarities(),Integer.parseInt(args[1]), args[2]);
+                    task.displayAuthors(outputTask5.getSimilarities(),Integer.parseInt(args[1]), args[3]);
                  }
                  
                  if(args[2].equalsIgnoreCase("Paper")){
